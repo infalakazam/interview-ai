@@ -1,0 +1,3328 @@
+[
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is Java?",
+    "topic": "Java",
+    "subtopic": "Basics",
+    "difficulty": "Easy",
+    "reference_answer": "Java is the high-level, object-oriented, robust, secure programming language, platform-independent, high performance, Multithreaded, and portable programming language. It was developed by James Gosling in June 1991. It provides its own JRE and API.",
+    "key_concepts": [
+      "Java",
+      "JVM",
+      "JRE",
+      "Platform Independence"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 1
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What are the differences between C++ and Java?",
+    "topic": "Java",
+    "subtopic": "Basics",
+    "difficulty": "Medium",
+    "reference_answer": "C++ is platform-dependent and supports pointers, multiple inheritance, and operator overloading, whereas Java is platform-independent, does not support explicit pointers or multiple inheritance through classes, and does not support operator overloading.",
+    "key_concepts": [
+      "C++ vs Java",
+      "Pointers",
+      "Inheritance",
+      "Platform Independence"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 2
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Is delete, next, main, exit or null keyword in java?",
+    "topic": "Java",
+    "subtopic": "Keywords",
+    "difficulty": "Easy",
+    "reference_answer": "No. None of delete, next, main, exit, or null are keywords in Java.",
+    "key_concepts": [
+      "Java Keywords",
+      "Syntax"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 3
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "If I don't provide any arguments on the command line, then what will the value stored in the String array passed into the main() method, empty or NULL?",
+    "topic": "Java",
+    "subtopic": "Main Method & Execution",
+    "difficulty": "Medium",
+    "reference_answer": "It is empty (an array of length 0), but not null.",
+    "key_concepts": [
+      "Main Method",
+      "Command Line Arguments",
+      "String Array"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 4
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What if I write static public void instead of public static void?",
+    "topic": "Java",
+    "subtopic": "Main Method & Modifiers",
+    "difficulty": "Easy",
+    "reference_answer": "The program compiles and runs correctly because the order of specifiers does not matter in Java.",
+    "key_concepts": [
+      "Modifiers",
+      "Main Method Syntax"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 5
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is the default value of the local variables?",
+    "topic": "Java",
+    "subtopic": "Variables & Scope",
+    "difficulty": "Easy",
+    "reference_answer": "Local variables do not have any default values. They must be initialized before use.",
+    "key_concepts": [
+      "Local Variables",
+      "Initialization",
+      "Default Values"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 6
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is object-oriented paradigm?",
+    "topic": "OOP",
+    "subtopic": "Core Principles",
+    "difficulty": "Easy",
+    "reference_answer": "It is a programming paradigm based on objects having data (fields) and methods defined in classes. It features modularity, reusability, encapsulation, abstraction, inheritance, and polymorphism.",
+    "key_concepts": [
+      "OOP Paradigm",
+      "Objects",
+      "Classes"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 7
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is an object?",
+    "topic": "OOP",
+    "subtopic": "Classes & Objects",
+    "difficulty": "Easy",
+    "reference_answer": "An Object is a real-world entity having state and behavior. In Java, an object is an instance of a class created using the 'new' keyword.",
+    "key_concepts": [
+      "Object",
+      "Instance",
+      "State and Behavior"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 8
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is the difference between an object-oriented programming language and object-based programming language?",
+    "topic": "OOP",
+    "subtopic": "Core Principles",
+    "difficulty": "Medium",
+    "reference_answer": "Object-oriented languages follow all OOP concepts including inheritance and polymorphism (e.g. Java, C#), while object-based languages do not support inheritance or polymorphism but have built-in objects (e.g. JavaScript).",
+    "key_concepts": [
+      "OOP vs Object-Based",
+      "Inheritance",
+      "Polymorphism"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 9
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What will be the initial value of an object reference which is defined as an instance variable?",
+    "topic": "Java",
+    "subtopic": "Variables & Initialization",
+    "difficulty": "Easy",
+    "reference_answer": "All object references defined as instance variables are initialized to null by default in Java.",
+    "key_concepts": [
+      "Instance Variables",
+      "Default Initialization",
+      "Null Reference"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 10
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is the constructor?",
+    "topic": "Java",
+    "subtopic": "Constructors",
+    "difficulty": "Easy",
+    "reference_answer": "A constructor is a special type of method used to initialize the state of an object. It is invoked when a class is instantiated and has no explicit return type and the same name as the class.",
+    "key_concepts": [
+      "Constructor",
+      "Object Initialization"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 11
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "How many types of constructors are used in Java?",
+    "topic": "Java",
+    "subtopic": "Constructors",
+    "difficulty": "Easy",
+    "reference_answer": "Two types: Default Constructor (no parameters) and Parameterized Constructor (accepts specific arguments).",
+    "key_concepts": [
+      "Default Constructor",
+      "Parameterized Constructor"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 12
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is the purpose of a default constructor?",
+    "topic": "Java",
+    "subtopic": "Constructors",
+    "difficulty": "Easy",
+    "reference_answer": "To assign default values to the object instance variables. The Java compiler creates a default constructor implicitly if no constructor is defined in the class.",
+    "key_concepts": [
+      "Default Constructor",
+      "Implicit Constructor"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 13
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Does constructor return any value?",
+    "topic": "Java",
+    "subtopic": "Constructors",
+    "difficulty": "Medium",
+    "reference_answer": "Yes, a constructor implicitly returns the current instance of the class, although it cannot have an explicit return type.",
+    "key_concepts": [
+      "Constructor Return Value",
+      "Class Instance"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 14
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Is constructor inherited?",
+    "topic": "Java",
+    "subtopic": "Constructors & Inheritance",
+    "difficulty": "Easy",
+    "reference_answer": "No, constructors are not inherited in Java.",
+    "key_concepts": [
+      "Constructor Inheritance"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 15
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can you make a constructor final?",
+    "topic": "Java",
+    "subtopic": "Constructors & Modifiers",
+    "difficulty": "Easy",
+    "reference_answer": "No, constructors cannot be declared as final in Java.",
+    "key_concepts": [
+      "Final Constructor",
+      "Constructor Modifiers"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 16
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can we overload the constructors?",
+    "topic": "Java",
+    "subtopic": "Constructors",
+    "difficulty": "Easy",
+    "reference_answer": "Yes, constructors can be overloaded by changing the number of arguments or parameter data types.",
+    "key_concepts": [
+      "Constructor Overloading",
+      "Method Signature"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 17
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What do you understand by copy constructor in Java?",
+    "topic": "Java",
+    "subtopic": "Constructors",
+    "difficulty": "Medium",
+    "reference_answer": "There is no explicit copy constructor in Java like C++. However, object state can be copied via parameterized constructors, assigning values from one object to another, or using clone().",
+    "key_concepts": [
+      "Copy Constructor",
+      "Object Copying"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 18
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is the static variable?",
+    "topic": "Java",
+    "subtopic": "Static Keyword",
+    "difficulty": "Easy",
+    "reference_answer": "A static variable is shared among all objects of a class (class-level property) and is allocated memory only once in the class area when the class is loaded.",
+    "key_concepts": [
+      "Static Variable",
+      "Class Memory"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 19
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What are the restrictions that are applied to the Java static methods?",
+    "topic": "Java",
+    "subtopic": "Static Keyword",
+    "difficulty": "Medium",
+    "reference_answer": "1. Static methods cannot directly access non-static data members or non-static methods.\n2. 'this' and 'super' keywords cannot be used in a static context.",
+    "key_concepts": [
+      "Static Method Restrictions",
+      "this",
+      "super"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 20
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Why is the main method static?",
+    "topic": "Java",
+    "subtopic": "Main Method",
+    "difficulty": "Easy",
+    "reference_answer": "Because the object is not required to call static methods. If main() were non-static, JVM would have to instantiate the class first before invoking main(), causing extra memory allocation.",
+    "key_concepts": [
+      "Main Method",
+      "Static Context",
+      "JVM Execution"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 21
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can we override the static methods?",
+    "topic": "Java",
+    "subtopic": "Static Keyword & Polymorphism",
+    "difficulty": "Medium",
+    "reference_answer": "No, static methods belong to the class, not instance objects, so they cannot be overridden (method hiding occurs instead).",
+    "key_concepts": [
+      "Static Method",
+      "Method Overriding",
+      "Method Hiding"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 22
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is the static block?",
+    "topic": "Java",
+    "subtopic": "Static Keyword",
+    "difficulty": "Easy",
+    "reference_answer": "A static block is used to initialize static data members and is executed at class loading time, before the main method is called.",
+    "key_concepts": [
+      "Static Block",
+      "Class Loading"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 23
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can we execute a program without main() method?",
+    "topic": "Java",
+    "subtopic": "Main Method",
+    "difficulty": "Medium",
+    "reference_answer": "No, since JDK 1.7 it is not possible. Prior to JDK 1.7, static blocks could execute before main().",
+    "key_concepts": [
+      "Main Method",
+      "Static Block Execution"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 24
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What if the static modifier is removed from the signature of the main method?",
+    "topic": "Java",
+    "subtopic": "Main Method",
+    "difficulty": "Medium",
+    "reference_answer": "The program compiles successfully, but at runtime throws a NoSuchMethodError because JVM cannot find the required static entry point.",
+    "key_concepts": [
+      "Main Method Signature",
+      "NoSuchMethodError"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 25
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is the difference between static (class) method and instance method?",
+    "topic": "Java",
+    "subtopic": "Static Keyword",
+    "difficulty": "Medium",
+    "reference_answer": "Static methods belong to the class, require no object creation, and cannot access non-static members directly. Instance methods belong to object instances and can access both static and non-static members.",
+    "key_concepts": [
+      "Static vs Instance Methods",
+      "Scope"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 26
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can we make constructors static?",
+    "topic": "Java",
+    "subtopic": "Constructors & Static",
+    "difficulty": "Easy",
+    "reference_answer": "No, constructors are invoked when an object is instantiated, whereas static members belong to the class, making static constructors invalid.",
+    "key_concepts": [
+      "Static Constructor",
+      "Class Instantiation"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 27
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can we make the abstract methods static in Java?",
+    "topic": "Java",
+    "subtopic": "Abstraction & Static",
+    "difficulty": "Medium",
+    "reference_answer": "No, abstract methods must be implemented in subclasses, whereas static methods cannot be overridden.",
+    "key_concepts": [
+      "Abstract Method",
+      "Static Method"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 28
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can we declare the static variables and methods in an abstract class?",
+    "topic": "Java",
+    "subtopic": "Abstraction & Static",
+    "difficulty": "Medium",
+    "reference_answer": "Yes, static variables and static methods can be declared in an abstract class and accessed directly via class name.",
+    "key_concepts": [
+      "Abstract Class",
+      "Static Variables",
+      "Static Methods"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 29
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is this keyword in java?",
+    "topic": "Java",
+    "subtopic": "Keywords",
+    "difficulty": "Easy",
+    "reference_answer": "'this' is a reference variable referring to the current object. It is used to access current class instance variables, invoke constructors (this()), or pass object references.",
+    "key_concepts": [
+      "this Keyword",
+      "Current Object Reference"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 30
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can this keyword be used to refer static members?",
+    "topic": "Java",
+    "subtopic": "Keywords & Static",
+    "difficulty": "Medium",
+    "reference_answer": "Yes, 'this' can access static members through object reference, though referencing static members via class name is preferred.",
+    "key_concepts": [
+      "this Keyword",
+      "Static Members"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 31
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "How can constructor chaining be done using this keyword?",
+    "topic": "Java",
+    "subtopic": "Constructors",
+    "difficulty": "Medium",
+    "reference_answer": "Constructor chaining is achieved using this() call from one constructor to another within the same class (must be the first statement).",
+    "key_concepts": [
+      "Constructor Chaining",
+      "this()"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 32
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Which class is the superclass for all the classes?",
+    "topic": "Java",
+    "subtopic": "Class Hierarchy",
+    "difficulty": "Easy",
+    "reference_answer": "The Object class (java.lang.Object) is the root superclass of all classes in Java.",
+    "key_concepts": [
+      "Object Class",
+      "Superclass"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 33
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is composition?",
+    "topic": "OOP",
+    "subtopic": "Object Relationships",
+    "difficulty": "Medium",
+    "reference_answer": "Composition represents a strong HAS-A relationship where a contained object cannot exist independently of its enclosing class (e.g. Engine in a Car).",
+    "key_concepts": [
+      "Composition",
+      "HAS-A Relationship"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 34
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is the difference between aggregation and composition?",
+    "topic": "OOP",
+    "subtopic": "Object Relationships",
+    "difficulty": "Medium",
+    "reference_answer": "Aggregation represents a weak HAS-A relationship where objects exist independently (e.g., Bike has Indicator), while Composition represents a strong HAS-A relationship (e.g., Bike has Engine).",
+    "key_concepts": [
+      "Aggregation vs Composition",
+      "Object Life Cycle"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 35
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Why does Java not support pointers?",
+    "topic": "Java",
+    "subtopic": "Memory & Security",
+    "difficulty": "Easy",
+    "reference_answer": "Pointers are omitted in Java for security reasons, memory protection, simplicity, and to allow automated garbage collection.",
+    "key_concepts": [
+      "Pointers",
+      "Memory Safety",
+      "Security"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 36
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is super in java?",
+    "topic": "Java",
+    "subtopic": "Keywords",
+    "difficulty": "Easy",
+    "reference_answer": "'super' is a reference variable used to refer to immediate parent class objects, invoke parent constructors super(), or access parent methods.",
+    "key_concepts": [
+      "super Keyword",
+      "Inheritance"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 37
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can you use this() and super() both in a constructor?",
+    "topic": "Java",
+    "subtopic": "Constructors",
+    "difficulty": "Medium",
+    "reference_answer": "No, because both this() and super() must be the very first statement in a constructor.",
+    "key_concepts": [
+      "this()",
+      "super()",
+      "Constructor Syntax"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 38
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is method overloading?",
+    "topic": "Java",
+    "subtopic": "Polymorphism",
+    "difficulty": "Easy",
+    "reference_answer": "Defining multiple methods in the same class with the same name but different signatures (different parameter counts or types).",
+    "key_concepts": [
+      "Method Overloading",
+      "Compile-time Polymorphism"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 39
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Why is method overloading not possible by changing the return type in java?",
+    "topic": "Java",
+    "subtopic": "Polymorphism",
+    "difficulty": "Medium",
+    "reference_answer": "Because it introduces ambiguity for the compiler when invoking a method without assigning its return value.",
+    "key_concepts": [
+      "Method Overloading",
+      "Return Type Ambiguity"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 40
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "What is method overriding:",
+    "topic": "Java",
+    "subtopic": "Polymorphism",
+    "difficulty": "Easy",
+    "reference_answer": "When a subclass provides a specific implementation of a method already defined in its parent class with the exact same name, return type, and parameters.",
+    "key_concepts": [
+      "Method Overriding",
+      "Runtime Polymorphism"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 41
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can we override the private methods?",
+    "topic": "Java",
+    "subtopic": "Polymorphism & Access Control",
+    "difficulty": "Easy",
+    "reference_answer": "No, private methods are bound to their class scope and cannot be seen or overridden in sub-classes.",
+    "key_concepts": [
+      "Private Methods",
+      "Method Overriding"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 42
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can we change the scope of the overridden method in the subclass?",
+    "topic": "Java",
+    "subtopic": "Polymorphism & Access Control",
+    "difficulty": "Medium",
+    "reference_answer": "Yes, but only to make it more accessible (e.g. protected to public), not more restrictive.",
+    "key_concepts": [
+      "Access Modifiers",
+      "Method Overriding Rules"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 43
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can we initialize the final blank variable?",
+    "topic": "Java",
+    "subtopic": "Final Keyword",
+    "difficulty": "Medium",
+    "reference_answer": "Yes, an uninitialized (blank) final instance variable must be initialized in the constructor. If static, it must be initialized in a static block.",
+    "key_concepts": [
+      "Blank Final Variable",
+      "Constructor Initialization",
+      "Static Block"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 44
+  },
+  {
+    "source": "Core Java -Basics of Java Interview Questions.pdf",
+    "question": "Can you declare the main method as final?",
+    "topic": "Java",
+    "subtopic": "Main Method",
+    "difficulty": "Easy",
+    "reference_answer": "Yes, public static final void main(String[] args) is valid syntax in Java.",
+    "key_concepts": [
+      "Main Method",
+      "Final Keyword"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 45
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "What is the difference between compile-time polymorphism and runtime polymorphism?",
+    "topic": "Java",
+    "subtopic": "Polymorphism",
+    "difficulty": "Medium",
+    "reference_answer": "Compile-time polymorphism (overloading/static binding) resolves calls at compile time. Runtime polymorphism (overriding/dynamic binding) resolves calls at runtime based on the actual object instance.",
+    "key_concepts": [
+      "Compile-Time Polymorphism",
+      "Runtime Polymorphism",
+      "Static Binding",
+      "Dynamic Binding"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 46
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "What is Runtime Polymorphism?",
+    "topic": "Java",
+    "subtopic": "Polymorphism",
+    "difficulty": "Medium",
+    "reference_answer": "Runtime polymorphism (Dynamic Method Dispatch) is a process in which a call to an overridden method is resolved at runtime rather than compile-time through parent reference variables.",
+    "key_concepts": [
+      "Dynamic Method Dispatch",
+      "Overridden Methods"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 47
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "Can you achieve Runtime Polymorphism by data members?",
+    "topic": "Java",
+    "subtopic": "Polymorphism",
+    "difficulty": "Medium",
+    "reference_answer": "No, because data members cannot be overridden in Java; only methods can be overridden.",
+    "key_concepts": [
+      "Data Members",
+      "Method Overriding"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 48
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "What is Java instanceOf operator?",
+    "topic": "Java",
+    "subtopic": "Operators",
+    "difficulty": "Easy",
+    "reference_answer": "The instanceof operator compares an object reference against a specified class/interface type, returning true or false.",
+    "key_concepts": [
+      "instanceof Operator",
+      "Type Comparison"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 49
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "What is the interface?",
+    "topic": "Java",
+    "subtopic": "Interfaces",
+    "difficulty": "Easy",
+    "reference_answer": "An interface is a blueprint of a class containing static constants and abstract methods (and default/static methods in newer Java versions) used to achieve full abstraction and multiple inheritance.",
+    "key_concepts": [
+      "Interface",
+      "Abstraction",
+      "Multiple Inheritance"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 50
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "What are the differences between abstract class and interface?",
+    "topic": "Java",
+    "subtopic": "Abstraction & Interfaces",
+    "difficulty": "Medium",
+    "reference_answer": "Abstract classes can have instance variables, constructors, concrete methods, and state, extending one class. Interfaces have abstract methods, static constants, no instance fields or constructors, and support multiple inheritance.",
+    "key_concepts": [
+      "Abstract Class vs Interface",
+      "Multiple Inheritance"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 51
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "Can we define private and protected modifiers for the members in interfaces?",
+    "topic": "Java",
+    "subtopic": "Interfaces & Access Control",
+    "difficulty": "Easy",
+    "reference_answer": "No, interface members are public by default (though private methods were added in Java 9 for code reuse within the interface).",
+    "key_concepts": [
+      "Interface Members",
+      "Access Modifiers"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 52
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "When can an object reference be cast to an interface reference?",
+    "topic": "Java",
+    "subtopic": "Interfaces & Type Casting",
+    "difficulty": "Medium",
+    "reference_answer": "When the object's class implements that specific interface.",
+    "key_concepts": [
+      "Type Casting",
+      "Interface Reference"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 53
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "How to make a read-only class in Java?",
+    "topic": "Java",
+    "subtopic": "Encapsulation",
+    "difficulty": "Easy",
+    "reference_answer": "By making all fields private and providing only getter methods, with no setter methods.",
+    "key_concepts": [
+      "Read-Only Class",
+      "Encapsulation",
+      "Getters"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 54
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "What is the static import?",
+    "topic": "Java",
+    "subtopic": "Imports & Syntax",
+    "difficulty": "Easy",
+    "reference_answer": "Static import allows accessing static members of a class directly without qualifying them with the class name.",
+    "key_concepts": [
+      "Static Import",
+      "Class Members"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 55
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "How many types of exception can occur in a Java program?",
+    "topic": "Java",
+    "subtopic": "Exception Handling",
+    "difficulty": "Easy",
+    "reference_answer": "Mainly two: Checked exceptions (checked at compile-time) and Unchecked exceptions (handled at runtime, including RuntimeException and Errors).",
+    "key_concepts": [
+      "Checked Exception",
+      "Unchecked Exception",
+      "Error"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 56
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "What is the base class for Error and Exception?",
+    "topic": "Java",
+    "subtopic": "Exception Handling",
+    "difficulty": "Easy",
+    "reference_answer": "The Throwable class (java.lang.Throwable) is the base superclass for both Error and Exception.",
+    "key_concepts": [
+      "Throwable Class",
+      "Error",
+      "Exception"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 57
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "Is it necessary that each try block must be followed by a catch block?",
+    "topic": "Java",
+    "subtopic": "Exception Handling",
+    "difficulty": "Easy",
+    "reference_answer": "No, a try block can be followed by a finally block instead of a catch block.",
+    "key_concepts": [
+      "try-catch-finally",
+      "Exception Handling Syntax"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 58
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "How many objects will be created in the following code?\nString s1=\"Welcome\";\nString s2=\"Welcome\";\nString s3=\"Welcome\";",
+    "topic": "Java",
+    "subtopic": "Strings & Memory",
+    "difficulty": "Easy",
+    "reference_answer": "Only one object is created in the String Constant Pool because String literals are cached and immutable in Java.",
+    "key_concepts": [
+      "String Constant Pool",
+      "Immutability",
+      "Literals"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 59
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "Why java uses the concept of the string literal?",
+    "topic": "Java",
+    "subtopic": "Strings & Memory",
+    "difficulty": "Easy",
+    "reference_answer": "To optimize memory usage by re-using string instances stored in the String Constant Pool.",
+    "key_concepts": [
+      "String Literal",
+      "Memory Efficiency",
+      "Constant Pool"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 60
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "What is the nested interface?",
+    "topic": "Java",
+    "subtopic": "Interfaces",
+    "difficulty": "Medium",
+    "reference_answer": "An interface declared inside another interface or class, implicitly static, used to group related interfaces.",
+    "key_concepts": [
+      "Nested Interface",
+      "Static Member"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 61
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "Can a class have an interface?",
+    "topic": "Java",
+    "subtopic": "Interfaces",
+    "difficulty": "Easy",
+    "reference_answer": "Yes, an interface can be defined inside a class as a nested interface.",
+    "key_concepts": [
+      "Nested Interface",
+      "Class Scope"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 62
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "Can an Interface have a class?",
+    "topic": "Java",
+    "subtopic": "Interfaces",
+    "difficulty": "Medium",
+    "reference_answer": "Yes, a class can be declared inside an interface and is implicitly public and static.",
+    "key_concepts": [
+      "Nested Class in Interface"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 63
+  },
+  {
+    "source": "Core Java OOPs- Polymorphism Interview Questions.pdf",
+    "question": "What is Garbage Collection?",
+    "topic": "Java",
+    "subtopic": "Memory Management",
+    "difficulty": "Easy",
+    "reference_answer": "Garbage Collection is an automated process in Java runtime (JVM) that reclaims memory occupied by unreferenced or unreachable heap objects.",
+    "key_concepts": [
+      "Garbage Collection",
+      "JVM Memory",
+      "Heap"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 64
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is DBMS?",
+    "topic": "DBMS",
+    "subtopic": "Basics",
+    "difficulty": "Easy",
+    "reference_answer": "DBMS is a collection of programs that facilitates users to create, maintain, and manipulate databases securely with data integrity.",
+    "key_concepts": [
+      "DBMS Definition",
+      "Database Security",
+      "Data Integrity"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 65
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What are the advantages of DBMS?",
+    "topic": "DBMS",
+    "subtopic": "Basics",
+    "difficulty": "Easy",
+    "reference_answer": "Redundancy control, restriction of unauthorized access, multiple user interfaces, backup and recovery, integrity constraints, and query-based processing.",
+    "key_concepts": [
+      "Redundancy Control",
+      "Integrity Constraints",
+      "Backup and Recovery"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 66
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is a checkpoint in DBMS?",
+    "topic": "DBMS",
+    "subtopic": "Transaction Processing & Recovery",
+    "difficulty": "Medium",
+    "reference_answer": "A checkpoint is a mechanism where log records are flushed to permanent disk storage, reducing recovery time during crash restarts.",
+    "key_concepts": [
+      "Checkpoint",
+      "Log Management",
+      "Crash Recovery"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 67
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What are the unary operations in Relational Algebra?",
+    "topic": "DBMS",
+    "subtopic": "Relational Algebra",
+    "difficulty": "Easy",
+    "reference_answer": "PROJECTION, SELECTION, and RENAME are unary operations because they operate on a single relation.",
+    "key_concepts": [
+      "Unary Operations",
+      "Selection",
+      "Projection",
+      "Rename"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 68
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is RDBMS?",
+    "topic": "DBMS",
+    "subtopic": "Relational Databases",
+    "difficulty": "Easy",
+    "reference_answer": "Relational Database Management System based on relational model where data is stored in structured tables linked by relationships.",
+    "key_concepts": [
+      "RDBMS",
+      "Tables",
+      "Relational Model"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 69
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What do you understand by Data Model?",
+    "topic": "DBMS",
+    "subtopic": "Data Modeling",
+    "difficulty": "Easy",
+    "reference_answer": "A collection of conceptual tools for describing data, data relationships, data semantics, and constraints.",
+    "key_concepts": [
+      "Data Model",
+      "Relationships",
+      "Constraints"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 70
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is Relational Calculus?",
+    "topic": "DBMS",
+    "subtopic": "Relational Calculus",
+    "difficulty": "Hard",
+    "reference_answer": "A non-procedural query language based on mathematical predicate calculus (Tuple Relational Calculus and Domain Relational Calculus).",
+    "key_concepts": [
+      "Relational Calculus",
+      "Predicate Calculus",
+      "Non-Procedural"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 71
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What do you understand by query optimization?",
+    "topic": "DBMS",
+    "subtopic": "Query Optimization",
+    "difficulty": "Medium",
+    "reference_answer": "Finding an efficient execution plan for evaluating a query with the minimal estimated computational and disk I/O cost.",
+    "key_concepts": [
+      "Query Optimization",
+      "Execution Plan",
+      "Cost Estimation"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 72
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What do you mean by durability in DBMS?",
+    "topic": "DBMS",
+    "subtopic": "ACID Properties",
+    "difficulty": "Easy",
+    "reference_answer": "Durability guarantees that once a transaction commits, its changes persist permanently in non-volatile storage even if system failures occur.",
+    "key_concepts": [
+      "Durability",
+      "ACID",
+      "Non-volatile Memory"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 73
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is normalization?",
+    "topic": "DBMS",
+    "subtopic": "Normalization",
+    "difficulty": "Easy",
+    "reference_answer": "Analyzing relation schemas based on functional dependencies to minimize data redundancy and prevent insertion, deletion, and update anomalies.",
+    "key_concepts": [
+      "Normalization",
+      "Data Redundancy",
+      "Anomalies"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 74
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is Denormalization?",
+    "topic": "DBMS",
+    "subtopic": "Optimization & Normalization",
+    "difficulty": "Medium",
+    "reference_answer": "Adding intentional redundant data to a normalized database to optimize query performance and reduce costly JOIN operations.",
+    "key_concepts": [
+      "Denormalization",
+      "Query Performance",
+      "JOIN Reduction"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 75
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is functional Dependency?",
+    "topic": "DBMS",
+    "subtopic": "Normalization",
+    "difficulty": "Medium",
+    "reference_answer": "A relationship between attributes where the value of one attribute (or set) uniquely determines the value of another attribute.",
+    "key_concepts": [
+      "Functional Dependency",
+      "Determinant",
+      "Keys"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 76
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What are the three levels of data abstraction?",
+    "topic": "DBMS",
+    "subtopic": "Architecture",
+    "difficulty": "Easy",
+    "reference_answer": "1. Physical level (how data is stored on disk)\n2. Logical level (what data is stored and relationships)\n3. View level (user-facing view).",
+    "key_concepts": [
+      "Data Abstraction",
+      "Physical Level",
+      "Logical Level",
+      "View Level"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 77
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is Join?",
+    "topic": "DBMS",
+    "subtopic": "Relational Operations",
+    "difficulty": "Easy",
+    "reference_answer": "A relational operation used to combine rows from two or more tables based on related columns (e.g., Inner Join, Outer Join).",
+    "key_concepts": [
+      "Join",
+      "Inner Join",
+      "Outer Join"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 78
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is 1NF?",
+    "topic": "DBMS",
+    "subtopic": "Normalization",
+    "difficulty": "Easy",
+    "reference_answer": "First Normal Form requires atomic column values (no multi-valued attributes) and unique rows.",
+    "key_concepts": [
+      "1NF",
+      "Atomic Values"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 79
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is 2NF?",
+    "topic": "DBMS",
+    "subtopic": "Normalization",
+    "difficulty": "Medium",
+    "reference_answer": "Second Normal Form requires 1NF and no partial dependencies (every non-key attribute is fully functionally dependent on the primary key).",
+    "key_concepts": [
+      "2NF",
+      "Partial Dependency"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 80
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is 3NF?",
+    "topic": "DBMS",
+    "subtopic": "Normalization",
+    "difficulty": "Medium",
+    "reference_answer": "Third Normal Form requires 2NF and no transitive functional dependencies.",
+    "key_concepts": [
+      "3NF",
+      "Transitive Dependency"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 81
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is BCNF?",
+    "topic": "DBMS",
+    "subtopic": "Normalization",
+    "difficulty": "Hard",
+    "reference_answer": "Boyce-Codd Normal Form is a stricter version of 3NF where every determinant must be a super key.",
+    "key_concepts": [
+      "BCNF",
+      "Super Key",
+      "Determinant"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 82
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "Explain ACID properties",
+    "topic": "DBMS",
+    "subtopic": "Transactions",
+    "difficulty": "Easy",
+    "reference_answer": "Atomicity (all or nothing), Consistency (preserves validity), Isolation (concurrent execution independence), Durability (permanent storage).",
+    "key_concepts": [
+      "ACID",
+      "Atomicity",
+      "Consistency",
+      "Isolation",
+      "Durability"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 83
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is 2-Tier architecture?",
+    "topic": "DBMS",
+    "subtopic": "Architecture",
+    "difficulty": "Easy",
+    "reference_answer": "A client-server architecture where client application directly communicates with the database system on the server side.",
+    "key_concepts": [
+      "2-Tier Architecture",
+      "Client-Server"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 84
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is the 3-Tier architecture?",
+    "topic": "DBMS",
+    "subtopic": "Architecture",
+    "difficulty": "Easy",
+    "reference_answer": "An architecture containing an intermediate application server between client GUI and database server for security and modularity.",
+    "key_concepts": [
+      "3-Tier Architecture",
+      "Application Server"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 85
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "How do you communicate with an RDBMS?",
+    "topic": "DBMS",
+    "subtopic": "SQL Communication",
+    "difficulty": "Easy",
+    "reference_answer": "Using Structured Query Language (SQL) statements.",
+    "key_concepts": [
+      "SQL",
+      "RDBMS Communication"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 86
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "What is the difference between a shared lock and exclusive lock?",
+    "topic": "DBMS",
+    "subtopic": "Concurrency Control",
+    "difficulty": "Medium",
+    "reference_answer": "Shared lock allows multiple transactions to read a data item concurrently; Exclusive lock grants single transaction write access, locking out other transactions.",
+    "key_concepts": [
+      "Shared Lock",
+      "Exclusive Lock",
+      "Concurrency Control"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 87
+  },
+  {
+    "source": "DBMS Interview Questions.pdf",
+    "question": "Describe the types of keys?",
+    "topic": "DBMS",
+    "subtopic": "Database Keys",
+    "difficulty": "Easy",
+    "reference_answer": "Primary Key (unique non-null identifier), Candidate Key (minimal super key), Super Key (unique tuple identifier), Foreign Key (cross-reference key linking tables).",
+    "key_concepts": [
+      "Primary Key",
+      "Candidate Key",
+      "Super Key",
+      "Foreign Key"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 88
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What is Data Structure? Explain.",
+    "topic": "DSA",
+    "subtopic": "Basics",
+    "difficulty": "Easy",
+    "reference_answer": "A data structure is a specialized format for organizing, processing, retrieving, and storing data, defining relationships between data elements.",
+    "key_concepts": [
+      "Data Structure Definition",
+      "Data Organization"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 89
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Describe the types of Data Structures?",
+    "topic": "DSA",
+    "subtopic": "Classification",
+    "difficulty": "Easy",
+    "reference_answer": "Linear Data Structures (elements arranged sequentially e.g. Array, Stack, Queue) and Non-Linear Data Structures (elements hierarchically/connected e.g. Tree, Graph).",
+    "key_concepts": [
+      "Linear DS",
+      "Non-Linear DS"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 90
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "List the area of applications of Data Structure.",
+    "topic": "DSA",
+    "subtopic": "Applications",
+    "difficulty": "Easy",
+    "reference_answer": "Compiler Design, Operating Systems, DBMS, Graphics, AI, Numerical Analysis, Simulations.",
+    "key_concepts": [
+      "DS Applications"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 91
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What is the difference between file structure and storage structure?",
+    "topic": "DSA",
+    "subtopic": "Memory & Storage",
+    "difficulty": "Medium",
+    "reference_answer": "Storage structure is memory representation in main memory (RAM), while file structure is representation in auxiliary secondary memory (Disk).",
+    "key_concepts": [
+      "Storage Structure",
+      "File Structure",
+      "RAM vs Disk"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 92
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "List the data structures which are used in RDBMS, Network Data Modal, and Hierarchical Data Model.",
+    "topic": "DSA",
+    "subtopic": "Applications in Databases",
+    "difficulty": "Medium",
+    "reference_answer": "RDBMS uses Array/Structures; Network data model uses Graph; Hierarchical model uses Trees.",
+    "key_concepts": [
+      "RDBMS Data Structures",
+      "Graph",
+      "Tree"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 93
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Which data structure is used to perform recursion?",
+    "topic": "DSA",
+    "subtopic": "Stacks & Recursion",
+    "difficulty": "Easy",
+    "reference_answer": "Stack data structure, because of its Last-In-First-Out (LIFO) property to manage return addresses and function call state.",
+    "key_concepts": [
+      "Recursion",
+      "Stack",
+      "Call Stack"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 94
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What is a Stack?",
+    "topic": "DSA",
+    "subtopic": "Stacks",
+    "difficulty": "Easy",
+    "reference_answer": "An ordered linear list following Last-In-First-Out (LIFO) where insertions and deletions happen only at one end called top.",
+    "key_concepts": [
+      "Stack",
+      "LIFO"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 95
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "List the area of applications where stack data structure can be used?",
+    "topic": "DSA",
+    "subtopic": "Stacks",
+    "difficulty": "Easy",
+    "reference_answer": "Expression evaluation, backtracking, memory management, function call frames.",
+    "key_concepts": [
+      "Stack Applications"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 96
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What are the operations that can be performed on a stack?",
+    "topic": "DSA",
+    "subtopic": "Stacks",
+    "difficulty": "Easy",
+    "reference_answer": "Push (insert element), Pop (remove top element), Peek/Top (inspect top element without deleting).",
+    "key_concepts": [
+      "Push",
+      "Pop",
+      "Peek"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 97
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Write the stack overflow condition.",
+    "topic": "DSA",
+    "subtopic": "Stacks",
+    "difficulty": "Easy",
+    "reference_answer": "Overflow occurs when attempting to push onto a full stack: top == MaxSize - 1.",
+    "key_concepts": [
+      "Stack Overflow",
+      "MaxSize"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 98
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What is the difference between PUSH and POP?",
+    "topic": "DSA",
+    "subtopic": "Stacks",
+    "difficulty": "Easy",
+    "reference_answer": "PUSH inserts an element onto the top of the stack, while POP removes and returns the top element from the stack.",
+    "key_concepts": [
+      "PUSH",
+      "POP"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 99
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What is an array?",
+    "topic": "DSA",
+    "subtopic": "Arrays",
+    "difficulty": "Easy",
+    "reference_answer": "A linear data structure storing elements of identical data types in contiguous memory locations accessed by index.",
+    "key_concepts": [
+      "Array",
+      "Contiguous Memory",
+      "Indexing"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 100
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "How to reference all the elements in a one-dimension array?",
+    "topic": "DSA",
+    "subtopic": "Arrays",
+    "difficulty": "Easy",
+    "reference_answer": "Using a loop indexed from 0 to array size minus 1.",
+    "key_concepts": [
+      "Array Traversal",
+      "Indexing"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 101
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What is a multidimensional array?",
+    "topic": "DSA",
+    "subtopic": "Arrays",
+    "difficulty": "Easy",
+    "reference_answer": "An array of arrays (e.g. 2D matrix) storing data in rows and columns.",
+    "key_concepts": [
+      "Multidimensional Array",
+      "2D Array"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 102
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "How are the elements of a 2D array stored in the memory?",
+    "topic": "DSA",
+    "subtopic": "Arrays & Memory",
+    "difficulty": "Medium",
+    "reference_answer": "Row-Major Order (storing rows contiguously) or Column-Major Order (storing columns contiguously).",
+    "key_concepts": [
+      "Row-Major Order",
+      "Column-Major Order"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 103
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Calculate the address of a random element present in a 2D array, given base address as BA.",
+    "topic": "DSA",
+    "subtopic": "Arrays & Memory",
+    "difficulty": "Hard",
+    "reference_answer": "Row-Major: Address(a[i][j]) = BA + (i * n + j) * size.\nColumn-Major: Address(a[i][j]) = BA + (j * m + i) * size.",
+    "key_concepts": [
+      "Base Address Calculation",
+      "Memory Layout"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 104
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Define Linked List Data structure.",
+    "topic": "DSA",
+    "subtopic": "Linked Lists",
+    "difficulty": "Easy",
+    "reference_answer": "A linear sequence of data nodes linked via pointers, where each node contains data and pointer fields.",
+    "key_concepts": [
+      "Linked List",
+      "Nodes",
+      "Pointers"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 105
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Are linked lists considered linear or non-linear data structures?",
+    "topic": "DSA",
+    "subtopic": "Linked Lists",
+    "difficulty": "Easy",
+    "reference_answer": "Linear based on logical access order, but non-linear based on physical memory allocation.",
+    "key_concepts": [
+      "Linear Access",
+      "Non-contiguous Storage"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 106
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Define the queue data structure.",
+    "topic": "DSA",
+    "subtopic": "Queues",
+    "difficulty": "Easy",
+    "reference_answer": "An ordered linear list following First-In-First-Out (FIFO) where insertions occur at REAR and deletions occur at FRONT.",
+    "key_concepts": [
+      "Queue",
+      "FIFO",
+      "FRONT",
+      "REAR"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 107
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "List some applications of queue data structure.",
+    "topic": "DSA",
+    "subtopic": "Queues",
+    "difficulty": "Easy",
+    "reference_answer": "CPU process scheduling, disk scheduling, print spooling, IO buffer management, BFS traversal.",
+    "key_concepts": [
+      "Queue Applications"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 108
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What is the minimum number of queues that can be used to implement a priority queue?",
+    "topic": "DSA",
+    "subtopic": "Priority Queues",
+    "difficulty": "Medium",
+    "reference_answer": "Two queues: one for storing data items, and another for storing priority values.",
+    "key_concepts": [
+      "Priority Queue Implementation"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 109
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Define the tree data structure.",
+    "topic": "DSA",
+    "subtopic": "Trees",
+    "difficulty": "Easy",
+    "reference_answer": "A non-linear recursive data structure consisting of nodes connected by edges starting from a single root node.",
+    "key_concepts": [
+      "Tree",
+      "Root",
+      "Children",
+      "Subtree"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 110
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "List the types of tree.",
+    "topic": "DSA",
+    "subtopic": "Trees",
+    "difficulty": "Easy",
+    "reference_answer": "General Tree, Binary Tree, Binary Search Tree, Expression Tree, Tournament Tree, Forests.",
+    "key_concepts": [
+      "Types of Trees"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 111
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What are Binary trees?",
+    "topic": "DSA",
+    "subtopic": "Trees",
+    "difficulty": "Easy",
+    "reference_answer": "A tree where every node has at most two child nodes (left child and right child).",
+    "key_concepts": [
+      "Binary Tree",
+      "Left Subtree",
+      "Right Subtree"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 112
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What is the maximum number of nodes in a binary tree of height k?",
+    "topic": "DSA",
+    "subtopic": "Trees",
+    "difficulty": "Medium",
+    "reference_answer": "2^(k+1) - 1 nodes (for height k >= 1).",
+    "key_concepts": [
+      "Binary Tree Node Formula",
+      "Tree Height"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 113
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What are the differences between B tree and B+ tree?",
+    "topic": "DSA",
+    "subtopic": "Trees",
+    "difficulty": "Hard",
+    "reference_answer": "In B-Tree, keys and data can be stored in both internal and leaf nodes; in B+ Tree, data is stored only in leaf nodes, and leaf nodes are linked sequentially.",
+    "key_concepts": [
+      "B-Tree vs B+ Tree",
+      "Indexing"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 114
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Define the graph data structure?",
+    "topic": "DSA",
+    "subtopic": "Graphs",
+    "difficulty": "Easy",
+    "reference_answer": "A non-linear data structure G(V, E) consisting of a set of vertices V and edges E connecting them.",
+    "key_concepts": [
+      "Graph",
+      "Vertices",
+      "Edges"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 115
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Mention the data structures which are used in graph implementation.",
+    "topic": "DSA",
+    "subtopic": "Graphs",
+    "difficulty": "Medium",
+    "reference_answer": "Adjacency Matrix (sequential 2D array) and Adjacency List (linked representation).",
+    "key_concepts": [
+      "Adjacency Matrix",
+      "Adjacency List"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 116
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "Which data structures are used in BFS and DFS algorithm?",
+    "topic": "DSA",
+    "subtopic": "Graph Algorithms",
+    "difficulty": "Easy",
+    "reference_answer": "BFS uses Queue; DFS uses Stack.",
+    "key_concepts": [
+      "BFS Queue",
+      "DFS Stack"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 117
+  },
+  {
+    "source": "Data Structure Interview Questions.pdf",
+    "question": "What is the difference between NULL and VOID?",
+    "topic": "C/C++",
+    "subtopic": "Data Types & Pointers",
+    "difficulty": "Easy",
+    "reference_answer": "NULL is a macro value representing an empty pointer reference; VOID is a data type identifier representing no type or no return value.",
+    "key_concepts": [
+      "NULL Pointer",
+      "VOID Type"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 118
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "Why is C called procedural language?",
+    "topic": "C/C++",
+    "subtopic": "Basics",
+    "difficulty": "Easy",
+    "reference_answer": "Because C programs follow a top-down procedure of steps executed via functions, focusing on computational flow rather than data object bundling.",
+    "key_concepts": [
+      "Procedural Language",
+      "Functions",
+      "Top-down Approach"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 119
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "Why do you use stdio.h before the program?",
+    "topic": "C/C++",
+    "subtopic": "Pre-processor Directives",
+    "difficulty": "Easy",
+    "reference_answer": "stdio stands for standard input output. Including stdio.h imports library function declarations like printf and scanf.",
+    "key_concepts": [
+      "stdio.h",
+      "Header Files",
+      "I/O Functions"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 120
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "What is the use of return 0?",
+    "topic": "C/C++",
+    "subtopic": "Basics",
+    "difficulty": "Easy",
+    "reference_answer": "In C/C++, main() returns an exit status integer to the OS; returning 0 indicates successful execution.",
+    "key_concepts": [
+      "return 0",
+      "Exit Status"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 121
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "What is a pointer on pointer?",
+    "topic": "C/C++",
+    "subtopic": "Pointers",
+    "difficulty": "Medium",
+    "reference_answer": "A pointer variable that stores the memory address of another pointer variable (double pointer, e.g. int **q).",
+    "key_concepts": [
+      "Double Pointer",
+      "Pointer to Pointer"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 122
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "What is NULL pointer in C?",
+    "topic": "C/C++",
+    "subtopic": "Pointers",
+    "difficulty": "Easy",
+    "reference_answer": "A pointer assigned the NULL value (0) that points to no valid memory location.",
+    "key_concepts": [
+      "NULL Pointer"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 123
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "If you are using C language to implement the heterogeneous linked list, what pointer type will you use?",
+    "topic": "C/C++",
+    "subtopic": "Pointers & Linked Lists",
+    "difficulty": "Medium",
+    "reference_answer": "A void pointer (void*), because it is a generic pointer capable of pointing to any data type.",
+    "key_concepts": [
+      "Heterogeneous Linked List",
+      "Void Pointer"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 124
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "How to select first 5 characters from First name in Employee table?",
+    "topic": "SQL",
+    "subtopic": "String Functions",
+    "difficulty": "Medium",
+    "reference_answer": "Select Substr(First_name, 1, 5) from Employee; (or Substr(0,5) in Oracle).",
+    "key_concepts": [
+      "SQL Substring",
+      "Substr"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 125
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "How to fetch all the records from Employee whose joining year is 2017?",
+    "topic": "SQL",
+    "subtopic": "Queries & Date Functions",
+    "difficulty": "Medium",
+    "reference_answer": "select * from Employee where To_char(Joining_date, 'YYYY') = '2017';",
+    "key_concepts": [
+      "SQL Date Parsing",
+      "To_char"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 126
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "What is mean by Sequence in database?",
+    "topic": "SQL",
+    "subtopic": "Database Objects",
+    "difficulty": "Medium",
+    "reference_answer": "A database sequence is an object that generates unique numeric values sequentially, frequently used for primary key generation.",
+    "key_concepts": [
+      "Sequence",
+      "Auto Increment",
+      "Primary Keys"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 127
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "What is a cascading update?",
+    "topic": "DBMS",
+    "subtopic": "Referential Integrity",
+    "difficulty": "Medium",
+    "reference_answer": "A referential integrity feature where updating a primary key automatically updates matching foreign key values in dependent tables.",
+    "key_concepts": [
+      "Cascading Update",
+      "Referential Integrity",
+      "Foreign Key"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 128
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "Select TOP N salary from employee table",
+    "topic": "SQL",
+    "subtopic": "Queries",
+    "difficulty": "Medium",
+    "reference_answer": "Oracle: select * from (select * from employee order by SALARY desc) where rownum <= N;",
+    "key_concepts": [
+      "TOP N Salary",
+      "Subquery",
+      "Order By"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 129
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "Can doubly linked be implemented using a single pointer variable in every node?",
+    "topic": "DSA",
+    "subtopic": "Linked Lists",
+    "difficulty": "Hard",
+    "reference_answer": "Yes, using an XOR Linked List (Memory Efficient Linked List) where each node stores the bitwise XOR of previous and next node addresses.",
+    "key_concepts": [
+      "XOR Linked List",
+      "Memory Efficient"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 130
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "Which Data Structure should be used for implementing LRU cache?",
+    "topic": "DSA",
+    "subtopic": "System Design & DS",
+    "difficulty": "Hard",
+    "reference_answer": "A Doubly Linked List paired with a Hash Map.",
+    "key_concepts": [
+      "LRU Cache",
+      "Doubly Linked List",
+      "HashMap"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 131
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "How to check if a given Binary Tree is BST or not?",
+    "topic": "DSA",
+    "subtopic": "Trees",
+    "difficulty": "Hard",
+    "reference_answer": "Validate that for every node, all left subtree keys are strictly less, all right subtree keys are strictly greater, and perform in-order traversal to check sorted order.",
+    "key_concepts": [
+      "BST Verification",
+      "In-order Traversal"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 132
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "Differentiate between Structure and Class ?",
+    "topic": "C/C++",
+    "subtopic": "OOPs & Structures",
+    "difficulty": "Medium",
+    "reference_answer": "Structures are value types (stack memory, default public members), while classes are reference types (heap memory, default private members, member methods).",
+    "key_concepts": [
+      "struct vs class",
+      "Value vs Reference Type",
+      "Access Modifiers"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 133
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "What are manipulators?",
+    "topic": "C/C++",
+    "subtopic": "I/O Streams",
+    "difficulty": "Easy",
+    "reference_answer": "Functions used with stream insertion (<<) and extraction (>>) operators to format output (e.g. endl, setw).",
+    "key_concepts": [
+      "Manipulators",
+      "endl",
+      "setw"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 134
+  },
+  {
+    "source": "Interview_Questions.docx",
+    "question": "What is the use of finalize method?",
+    "topic": "Java",
+    "subtopic": "Memory & Garbage Collection",
+    "difficulty": "Medium",
+    "reference_answer": "A protected method called by Garbage Collector before destroying an object to perform resource cleanup.",
+    "key_concepts": [
+      "finalize Method",
+      "Garbage Collection"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 135
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is the network?",
+    "topic": "CN",
+    "subtopic": "Basics",
+    "difficulty": "Easy",
+    "reference_answer": "A network is a collection of devices connected by physical or wireless transmission media links to share data and resources.",
+    "key_concepts": [
+      "Computer Network",
+      "Nodes",
+      "Transmission Media"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 136
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What do you mean by network topology?",
+    "topic": "CN",
+    "subtopic": "Topologies",
+    "difficulty": "Easy",
+    "reference_answer": "Network topology defines the physical or logical arrangement of cables, nodes, and devices in a network (Bus, Star, Ring, Tree, Mesh, Hybrid).",
+    "key_concepts": [
+      "Network Topology",
+      "Bus",
+      "Star",
+      "Ring",
+      "Mesh"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 137
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What are the advantages of Distributed Processing?",
+    "topic": "CN",
+    "subtopic": "Distributed Systems",
+    "difficulty": "Medium",
+    "reference_answer": "Enhanced security, data redundancy, collaborative processing power, faster problem solving, and encapsulation.",
+    "key_concepts": [
+      "Distributed Processing",
+      "Redundancy",
+      "Parallel Computing"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 138
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is the criteria to check the network reliability?",
+    "topic": "CN",
+    "subtopic": "Network Metrics",
+    "difficulty": "Easy",
+    "reference_answer": "Reliability is measured by frequency of failure, mean time to recovery (MTTR), and resilience against catastrophe.",
+    "key_concepts": [
+      "Network Reliability",
+      "MTTR",
+      "Fault Tolerance"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 139
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is bandwidth?",
+    "topic": "CN",
+    "subtopic": "Network Metrics",
+    "difficulty": "Easy",
+    "reference_answer": "The maximum data transmission capacity of a signal or channel, representing the range between upper and lower frequencies.",
+    "key_concepts": [
+      "Bandwidth",
+      "Data Rate"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 140
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is DNS?",
+    "topic": "CN",
+    "subtopic": "Application Layer Protocols",
+    "difficulty": "Easy",
+    "reference_answer": "Domain Name System is a hierarchical distributed naming system that maps domain names to IP addresses.",
+    "key_concepts": [
+      "DNS",
+      "IP Mapping",
+      "Domain Name"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 141
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is NIC?",
+    "topic": "CN",
+    "subtopic": "Network Hardware",
+    "difficulty": "Easy",
+    "reference_answer": "Network Interface Card is a hardware adapter that connects a computer to a physical or wireless network, housing a unique MAC address.",
+    "key_concepts": [
+      "NIC",
+      "MAC Address",
+      "Network Adapter"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 142
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is the meaning of 10Base-T?",
+    "topic": "CN",
+    "subtopic": "Ethernet Standards",
+    "difficulty": "Medium",
+    "reference_answer": "An Ethernet standard where 10 indicates 10 Mbps transfer speed, Base means baseband signaling, and T stands for twisted-pair cabling.",
+    "key_concepts": [
+      "10Base-T",
+      "Ethernet",
+      "Twisted-Pair"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 143
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What are the different types of networks?",
+    "topic": "CN",
+    "subtopic": "Network Types",
+    "difficulty": "Easy",
+    "reference_answer": "PAN (Personal), LAN (Local), HAN (Home), CAN (Campus), MAN (Metropolitan), WAN (Wide), GAN (Global).",
+    "key_concepts": [
+      "LAN",
+      "MAN",
+      "WAN",
+      "PAN"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 144
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is POP3?",
+    "topic": "CN",
+    "subtopic": "Application Layer Protocols",
+    "difficulty": "Easy",
+    "reference_answer": "Post Office Protocol version 3 is an application-layer protocol used by email clients to retrieve emails from a mail server.",
+    "key_concepts": [
+      "POP3",
+      "Email Protocols"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 145
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What do you understand by MAC address?",
+    "topic": "CN",
+    "subtopic": "Data Link Layer",
+    "difficulty": "Easy",
+    "reference_answer": "Media Access Control address is a unique 48-bit hardware address assigned to a NIC by its manufacturer.",
+    "key_concepts": [
+      "MAC Address",
+      "Hardware Address",
+      "Data Link Layer"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 146
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is private IP address?",
+    "topic": "CN",
+    "subtopic": "IP Addressing",
+    "difficulty": "Easy",
+    "reference_answer": "IP addresses reserved for local area networks (Class A: 10.x, Class B: 172.16-31.x, Class C: 192.168.x) that are non-routable on the public internet.",
+    "key_concepts": [
+      "Private IP",
+      "NAT",
+      "Non-routable IP"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 147
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is public IP address?",
+    "topic": "CN",
+    "subtopic": "IP Addressing",
+    "difficulty": "Easy",
+    "reference_answer": "A globally unique IP address assigned by an ISP to allow direct communication over the public internet.",
+    "key_concepts": [
+      "Public IP",
+      "ISP"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 148
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is APIPA?",
+    "topic": "CN",
+    "subtopic": "IP Addressing",
+    "difficulty": "Medium",
+    "reference_answer": "Automatic Private IP Addressing is a feature where Windows automatically assigns an IP address (169.254.x.x) when a DHCP server is unreachable.",
+    "key_concepts": [
+      "APIPA",
+      "169.254.x.x",
+      "DHCP Failure"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 149
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is RAID?",
+    "topic": "CN",
+    "subtopic": "Storage & Fault Tolerance",
+    "difficulty": "Medium",
+    "reference_answer": "Redundant Array of Independent Disks combines multiple physical hard drives to achieve data redundancy, fault tolerance, and improved performance.",
+    "key_concepts": [
+      "RAID",
+      "Fault Tolerance",
+      "Redundancy"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 150
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What are the main elements of a protocol?",
+    "topic": "CN",
+    "subtopic": "Protocols",
+    "difficulty": "Medium",
+    "reference_answer": "1. Syntax (format/structure of data)\n2. Semantics (meaning of bit sections)\n3. Timing (speed and sequencing).",
+    "key_concepts": [
+      "Syntax",
+      "Semantics",
+      "Timing"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 151
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "How many layers are in OSI reference model?",
+    "topic": "CN",
+    "subtopic": "OSI Model",
+    "difficulty": "Easy",
+    "reference_answer": "Seven layers: Physical, Data Link, Network, Transport, Session, Presentation, Application.",
+    "key_concepts": [
+      "OSI Model",
+      "7 Layers"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 152
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is RIP?",
+    "topic": "CN",
+    "subtopic": "Routing Protocols",
+    "difficulty": "Medium",
+    "reference_answer": "Routing Information Protocol is a distance-vector routing protocol using hop count as a metric to determine the best path.",
+    "key_concepts": [
+      "RIP",
+      "Hop Count",
+      "Distance Vector Routing"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 153
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is netstat?",
+    "topic": "CN",
+    "subtopic": "Network Utilities",
+    "difficulty": "Easy",
+    "reference_answer": "A command-line tool that displays active TCP/UDP network connections, routing tables, and interface statistics.",
+    "key_concepts": [
+      "netstat",
+      "Network Diagnostics"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 154
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What do you understand by ping command?",
+    "topic": "CN",
+    "subtopic": "Network Utilities",
+    "difficulty": "Easy",
+    "reference_answer": "A network administration utility that sends ICMP Echo Request messages to test host reachability and measure round-trip time.",
+    "key_concepts": [
+      "ping",
+      "ICMP",
+      "Network Connectivity"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 155
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is RSA Algorithm?",
+    "topic": "CN",
+    "subtopic": "Network Security & Cryptography",
+    "difficulty": "Hard",
+    "reference_answer": "An asymmetric public-key cryptographic algorithm based on prime factorization difficulty, used for secure data encryption and digital signatures.",
+    "key_concepts": [
+      "RSA",
+      "Asymmetric Cryptography",
+      "Public Key"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 156
+  },
+  {
+    "source": "Networking Interview Questions.pdf",
+    "question": "What is the difference between TCP/IP model and the OSI model?",
+    "topic": "CN",
+    "subtopic": "Network Models",
+    "difficulty": "Medium",
+    "reference_answer": "OSI has 7 layers (theoretical, protocol independent); TCP/IP has 4 layers (practical, protocol specific, combines Session/Presentation into Application).",
+    "key_concepts": [
+      "OSI vs TCP/IP",
+      "4 Layers",
+      "7 Layers"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 157
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "What do you understand by OOP?",
+    "topic": "OOP",
+    "subtopic": "Core Principles",
+    "difficulty": "Easy",
+    "reference_answer": "Object-Oriented Programming is a software paradigm centered around objects containing state (attributes) and behavior (methods).",
+    "key_concepts": [
+      "OOP",
+      "Objects",
+      "Classes"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 158
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "What are the four main features of OOPs?",
+    "topic": "OOP",
+    "subtopic": "Core Principles",
+    "difficulty": "Easy",
+    "reference_answer": "Encapsulation, Data Abstraction, Inheritance, and Polymorphism.",
+    "key_concepts": [
+      "Encapsulation",
+      "Abstraction",
+      "Inheritance",
+      "Polymorphism"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 159
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "What are the differences between class and object?",
+    "topic": "OOP",
+    "subtopic": "Classes & Objects",
+    "difficulty": "Easy",
+    "reference_answer": "A class is a logical template/blueprint (occupies no memory), whereas an object is a physical instance of a class (occupies memory).",
+    "key_concepts": [
+      "Class vs Object",
+      "Blueprint vs Instance"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 160
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "What is the concept of access specifiers when should we use these?",
+    "topic": "OOP",
+    "subtopic": "Access Control",
+    "difficulty": "Easy",
+    "reference_answer": "Keywords (public, private, protected) that define the scope and visibility of classes, methods, and variables to enforce encapsulation.",
+    "key_concepts": [
+      "Access Specifiers",
+      "Encapsulation",
+      "Scope"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 161
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "How does procedural programming be different from OOP",
+    "topic": "OOP",
+    "subtopic": "Core Principles",
+    "difficulty": "Easy",
+    "reference_answer": "Procedural focuses on functions and top-down step sequences with global data visibility; OOP focuses on objects, bottom-up design, and data encapsulation.",
+    "key_concepts": [
+      "POP vs OOP",
+      "Encapsulation",
+      "Design Paradigm"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 162
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "What are the differences between error and exception?",
+    "topic": "Java",
+    "subtopic": "Exception Handling",
+    "difficulty": "Medium",
+    "reference_answer": "Errors are irrecoverable runtime conditions caused by environment issues (e.g. OutOfMemoryError); Exceptions are recoverable conditions caused by application code.",
+    "key_concepts": [
+      "Error vs Exception",
+      "Recoverable Conditions"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 163
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "Identify which OOPs concept should be used in the following scenario?\nA group of 5 friends, one boy never gives any contribution when the group goes for the outing. Suddenly a beautiful girl joins the same group. The boy who never contributes is now spending a lot of money for the group.",
+    "topic": "OOP",
+    "subtopic": "Polymorphism Scenarios",
+    "difficulty": "Medium",
+    "reference_answer": "Runtime Polymorphism (the same individual exhibits different behavior under different conditions/contexts).",
+    "key_concepts": [
+      "Runtime Polymorphism",
+      "Behavioral Changes"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 164
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "What is Coupling in OOP and why it is helpful?",
+    "topic": "OOP",
+    "subtopic": "Software Design Principles",
+    "difficulty": "Medium",
+    "reference_answer": "Coupling refers to the degree of interdependence between software modules. Loose coupling is desirable because it reduces dependencies and increases flexibility.",
+    "key_concepts": [
+      "Coupling",
+      "Loose Coupling",
+      "Modular Design"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 165
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "Name the operators that cannot be overload.",
+    "topic": "C/C++",
+    "subtopic": "Operator Overloading",
+    "difficulty": "Easy",
+    "reference_answer": "Scope resolution operator (::), Ternary operator (?:), Member selector (.), Member pointer selector (.*), and sizeof.",
+    "key_concepts": [
+      "Operator Overloading",
+      "Non-overloadable Operators"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 166
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "What is Cohesion in OOP?",
+    "topic": "OOP",
+    "subtopic": "Software Design Principles",
+    "difficulty": "Medium",
+    "reference_answer": "Cohesion measures how strongly related and focused the responsibilities inside a single module or class are. High cohesion is desirable.",
+    "key_concepts": [
+      "Cohesion",
+      "High Cohesion",
+      "Single Responsibility"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 167
+  },
+  {
+    "source": "OOPs Interview Questions.pdf",
+    "question": "What is data abstraction and how can we achieve data abstraction?",
+    "topic": "OOP",
+    "subtopic": "Core Principles",
+    "difficulty": "Easy",
+    "reference_answer": "Hiding internal implementation details and exposing only essential interface functionalities. Achieved using abstract classes and interfaces.",
+    "key_concepts": [
+      "Data Abstraction",
+      "Abstract Classes",
+      "Interfaces"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 168
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is an operating system?",
+    "topic": "OS",
+    "subtopic": "Basics",
+    "difficulty": "Easy",
+    "reference_answer": "An operating system is system software that manages computer hardware, software resources, and provides common services for computer programs.",
+    "key_concepts": [
+      "Operating System",
+      "Hardware Management"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 169
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is kernel?",
+    "topic": "OS",
+    "subtopic": "Kernel Architecture",
+    "difficulty": "Easy",
+    "reference_answer": "The central core component of an OS that manages system resources, process execution, memory allocation, and hardware communication.",
+    "key_concepts": [
+      "Kernel",
+      "Core OS"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 170
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is monolithic kernel?",
+    "topic": "OS",
+    "subtopic": "Kernel Architecture",
+    "difficulty": "Medium",
+    "reference_answer": "An OS architecture where all operating system services (file system, drivers, memory management) run in a single large kernel memory space.",
+    "key_concepts": [
+      "Monolithic Kernel",
+      "Address Space"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 171
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What do you mean by a process?",
+    "topic": "OS",
+    "subtopic": "Process Management",
+    "difficulty": "Easy",
+    "reference_answer": "A program in execution, including its program counter, registers, stack, and memory space.",
+    "key_concepts": [
+      "Process",
+      "Program in Execution"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 172
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What are the different states of a process?",
+    "topic": "OS",
+    "subtopic": "Process Management",
+    "difficulty": "Easy",
+    "reference_answer": "New, Ready, Running, Waiting (Blocked), and Terminated.",
+    "key_concepts": [
+      "Process States",
+      "State Diagram"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 173
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is the difference between micro kernel and macro kernel?",
+    "topic": "OS",
+    "subtopic": "Kernel Architecture",
+    "difficulty": "Medium",
+    "reference_answer": "Microkernel runs minimal essential services in kernel space (IPC, scheduling) moving others to user space; Macro (monolithic) kernel runs all services in kernel space.",
+    "key_concepts": [
+      "Microkernel",
+      "Macrokernel"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 174
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is the concept of reentrancy?",
+    "topic": "OS",
+    "subtopic": "Process Synchronization",
+    "difficulty": "Medium",
+    "reference_answer": "A memory-saving technique where a single copy of executable program code can be shared simultaneously by multiple user processes without modifying itself.",
+    "key_concepts": [
+      "Reentrancy",
+      "Shared Code"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 175
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is the use of paging in operating system?",
+    "topic": "OS",
+    "subtopic": "Memory Management",
+    "difficulty": "Easy",
+    "reference_answer": "A memory management scheme that eliminates external fragmentation by allocating memory in fixed-size blocks called pages and frames.",
+    "key_concepts": [
+      "Paging",
+      "Pages",
+      "Frames",
+      "External Fragmentation"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 176
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is the concept of demand paging?",
+    "topic": "OS",
+    "subtopic": "Virtual Memory",
+    "difficulty": "Medium",
+    "reference_answer": "Loading virtual memory pages into physical RAM only when they are explicitly requested/referenced during execution.",
+    "key_concepts": [
+      "Demand Paging",
+      "Page Fault"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 177
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is virtual memory?",
+    "topic": "OS",
+    "subtopic": "Virtual Memory",
+    "difficulty": "Easy",
+    "reference_answer": "A memory management technique that provides an idealization of storage resources, allowing execution of processes larger than physical RAM.",
+    "key_concepts": [
+      "Virtual Memory",
+      "Paging",
+      "Swapping"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 178
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is thrashing?",
+    "topic": "OS",
+    "subtopic": "Virtual Memory",
+    "difficulty": "Medium",
+    "reference_answer": "A condition where an OS spends significantly more time swapping pages in and out of disk than executing program instructions.",
+    "key_concepts": [
+      "Thrashing",
+      "Page Swapping"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 179
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What are the four necessary and sufficient conditions behind the deadlock?",
+    "topic": "OS",
+    "subtopic": "Deadlocks",
+    "difficulty": "Medium",
+    "reference_answer": "1. Mutual Exclusion\n2. Hold and Wait\n3. No Preemption\n4. Circular Wait.",
+    "key_concepts": [
+      "Deadlock Conditions",
+      "Coffman Conditions"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 180
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is FCFS?",
+    "topic": "OS",
+    "subtopic": "CPU Scheduling",
+    "difficulty": "Easy",
+    "reference_answer": "First-Come, First-Served scheduling algorithm that allocates CPU to processes in order of arrival using a FIFO queue.",
+    "key_concepts": [
+      "FCFS",
+      "CPU Scheduling",
+      "FIFO"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 181
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is Banker's algorithm?",
+    "topic": "OS",
+    "subtopic": "Deadlocks",
+    "difficulty": "Hard",
+    "reference_answer": "A deadlock avoidance algorithm that tests for safety by simulating resource allocation for maximum possible claims before granting requests.",
+    "key_concepts": [
+      "Banker's Algorithm",
+      "Deadlock Avoidance",
+      "Safe State"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 182
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is fragmentation?",
+    "topic": "OS",
+    "subtopic": "Memory Management",
+    "difficulty": "Easy",
+    "reference_answer": "Unused or wasted memory space resulting from non-contiguous memory allocation (Internal or External fragmentation).",
+    "key_concepts": [
+      "Fragmentation",
+      "Internal Fragmentation",
+      "External Fragmentation"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 183
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is spooling?",
+    "topic": "OS",
+    "subtopic": "I/O Management",
+    "difficulty": "Easy",
+    "reference_answer": "Simultaneous Peripheral Operations On-Line, a buffering process where I/O data is held in secondary storage queue for execution by slow devices like printers.",
+    "key_concepts": [
+      "Spooling",
+      "Print Queue",
+      "I/O Buffering"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 184
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is semaphore?",
+    "topic": "OS",
+    "subtopic": "Process Synchronization",
+    "difficulty": "Medium",
+    "reference_answer": "A synchronization tool consisting of an integer variable accessed via wait() [P] and signal() [V] atomic operations to manage access to shared resources.",
+    "key_concepts": [
+      "Semaphore",
+      "Binary Semaphore",
+      "Counting Semaphore",
+      "Synchronization"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 185
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is Belady's Anomaly?",
+    "topic": "OS",
+    "subtopic": "Virtual Memory",
+    "difficulty": "Hard",
+    "reference_answer": "The phenomenon in FIFO page replacement where increasing the number of page frames results in an increased number of page faults.",
+    "key_concepts": [
+      "Belady's Anomaly",
+      "FIFO Page Replacement",
+      "Page Faults"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 186
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is starvation in Operating System?",
+    "topic": "OS",
+    "subtopic": "CPU Scheduling",
+    "difficulty": "Medium",
+    "reference_answer": "A problem where a runnable process is perpetually denied necessary processor or resource allocation due to higher-priority processes.",
+    "key_concepts": [
+      "Starvation",
+      "Indefinite Blocking"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 187
+  },
+  {
+    "source": "Operating System Interview Question.pdf",
+    "question": "What is aging in Operating System?",
+    "topic": "OS",
+    "subtopic": "CPU Scheduling",
+    "difficulty": "Easy",
+    "reference_answer": "A technique to prevent starvation by gradually increasing the priority of processes that wait in the queue for long periods.",
+    "key_concepts": [
+      "Aging",
+      "Starvation Prevention"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 188
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is Python?",
+    "topic": "Python",
+    "subtopic": "Basics",
+    "difficulty": "Easy",
+    "reference_answer": "An interpreted, high-level, general-purpose programming language created by Guido van Rossum in 1991, featuring dynamic typing and automated memory management.",
+    "key_concepts": [
+      "Python",
+      "Interpreted Language",
+      "Guido van Rossum"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 189
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is PEP 8?",
+    "topic": "Python",
+    "subtopic": "Code Style",
+    "difficulty": "Easy",
+    "reference_answer": "Python Enhancement Proposal 8, the official style guide providing conventions for writing readable Python code.",
+    "key_concepts": [
+      "PEP 8",
+      "Code Readability",
+      "Style Guide"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 190
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What do you mean by Python literals?",
+    "topic": "Python",
+    "subtopic": "Syntax & Data Types",
+    "difficulty": "Easy",
+    "reference_answer": "Raw data given in a variable or constant (e.g. String, Numeric, Boolean, and Special literal 'None').",
+    "key_concepts": [
+      "Literals",
+      "None Literal"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 191
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is zip() function in Python?",
+    "topic": "Python",
+    "subtopic": "Built-in Functions",
+    "difficulty": "Easy",
+    "reference_answer": "zip() takes multiple iterables, aggregates corresponding elements into tuples, and returns an iterator of tuples.",
+    "key_concepts": [
+      "zip()",
+      "Iterables",
+      "Tuples"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 192
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "How to overload constructors or methods in Python?",
+    "topic": "Python",
+    "subtopic": "OOP in Python",
+    "difficulty": "Medium",
+    "reference_answer": "Python does not support traditional method/constructor overloading natively; defining multiple __init__ methods overwrites earlier ones. Overloading behavior is simulated using default arguments or variable arguments (*args, **kwargs).",
+    "key_concepts": [
+      "Constructor Overloading",
+      "__init__",
+      "Default Arguments"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 193
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is the difference between remove() function and del statement?",
+    "topic": "Python",
+    "subtopic": "Data Structures",
+    "difficulty": "Easy",
+    "reference_answer": "remove() deletes the first occurrence of a matching value from a list, whereas del deletes an item at a specified index or deletes an entire variable.",
+    "key_concepts": [
+      "remove()",
+      "del",
+      "List Manipulation"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 194
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is swapcase() function in the Python?",
+    "topic": "Python",
+    "subtopic": "Strings",
+    "difficulty": "Easy",
+    "reference_answer": "A string method that converts all uppercase characters to lowercase and vice versa.",
+    "key_concepts": [
+      "swapcase()",
+      "String Methods"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 195
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is the use of break statement?",
+    "topic": "Python",
+    "subtopic": "Control Flow",
+    "difficulty": "Easy",
+    "reference_answer": "Terminates the execution of the innermost enclosing loop immediately.",
+    "key_concepts": [
+      "break",
+      "Loop Control"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 196
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is tuple in Python?",
+    "topic": "Python",
+    "subtopic": "Data Structures",
+    "difficulty": "Easy",
+    "reference_answer": "An ordered, immutable sequence of Python objects defined using parentheses ().",
+    "key_concepts": [
+      "Tuple",
+      "Immutability"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 197
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "Which are the file related libraries/modules in Python?",
+    "topic": "Python",
+    "subtopic": "Modules & File I/O",
+    "difficulty": "Easy",
+    "reference_answer": "os, os.path, and shutil modules for directory traversal, path operations, and file copying/deletion.",
+    "key_concepts": [
+      "os module",
+      "shutil module",
+      "File Processing"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 198
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What are the different file processing modes supported by Python?",
+    "topic": "Python",
+    "subtopic": "File I/O",
+    "difficulty": "Easy",
+    "reference_answer": "Read-only ('r'), write-only ('w'), append ('a'), read-write ('r+'), and binary modes ('rb', 'wb').",
+    "key_concepts": [
+      "File Modes",
+      "r",
+      "w",
+      "a"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 199
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "How is memory managed in Python?",
+    "topic": "Python",
+    "subtopic": "Memory Management",
+    "difficulty": "Medium",
+    "reference_answer": "Managed via a private heap containing all Python objects, handled by Python's memory manager and automatic reference-counting Garbage Collector.",
+    "key_concepts": [
+      "Private Heap",
+      "Garbage Collection",
+      "Reference Counting"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 200
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is the Python decorator?",
+    "topic": "Python",
+    "subtopic": "Advanced Python",
+    "difficulty": "Medium",
+    "reference_answer": "A design pattern function that wraps another function to extend or modify its behavior without permanently altering the source code.",
+    "key_concepts": [
+      "Decorator",
+      "Metaprogramming",
+      "Wrapper Function"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 201
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is the namespace in Python?",
+    "topic": "Python",
+    "subtopic": "Scope & Namespaces",
+    "difficulty": "Medium",
+    "reference_answer": "A mapping from variable names to objects (Built-in, Global, Enclosing, Local) that prevents naming conflicts.",
+    "key_concepts": [
+      "Namespace",
+      "Scope",
+      "LEGB Rule"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 202
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is the usage of help() and dir() function in Python?",
+    "topic": "Python",
+    "subtopic": "Built-in Functions",
+    "difficulty": "Easy",
+    "reference_answer": "help() displays docstrings and detailed documentation for modules/functions; dir() returns a sorted list of valid attribute names for an object.",
+    "key_concepts": [
+      "help()",
+      "dir()",
+      "Introspection"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 203
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is the shortest method to open a text file and display its content?",
+    "topic": "Python",
+    "subtopic": "File I/O",
+    "difficulty": "Easy",
+    "reference_answer": "Using the 'with' statement: with open('file.txt', 'r') as f: print(f.read())",
+    "key_concepts": [
+      "Context Manager",
+      "with open",
+      "File Reading"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 204
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is the usage of enumerate () function in Python?",
+    "topic": "Python",
+    "subtopic": "Built-in Functions",
+    "difficulty": "Easy",
+    "reference_answer": "enumerate() adds a counter to an iterable and returns an enumerate object yielding (index, element) tuples.",
+    "key_concepts": [
+      "enumerate()",
+      "Indexing",
+      "Iterables"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 205
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is PYTHONPATH?",
+    "topic": "Python",
+    "subtopic": "Environment & Modules",
+    "difficulty": "Easy",
+    "reference_answer": "An environment variable setting additional directory paths where the Python interpreter searches for imported modules.",
+    "key_concepts": [
+      "PYTHONPATH",
+      "Module Search Path"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 206
+  },
+  {
+    "source": "Python Interview Questions.pdf",
+    "question": "What is the difference between range & xrange?",
+    "topic": "Python",
+    "subtopic": "Python 2 vs 3",
+    "difficulty": "Medium",
+    "reference_answer": "In Python 2, range() returns a complete list object in memory, while xrange() returns a generator object. In Python 3, range() behaves like xrange().",
+    "key_concepts": [
+      "range",
+      "xrange",
+      "Generators"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 207
+  },
+  {
+    "source": "README.md",
+    "question": "What topics and resources are contained in the Interviews-Resources repository?",
+    "topic": "Software Engineering",
+    "subtopic": "Career & Repositories",
+    "difficulty": "Easy",
+    "reference_answer": "The repository contains interview preparation question banks for DBMS, DSA, Java, Networking, OOPS, OS, Python, SQL, and HR questions.",
+    "key_concepts": [
+      "Interview Resources",
+      "CS Topics"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 208
+  },
+  {
+    "source": "SQL Interview Questions and Answers.pdf",
+    "question": "What is Normalization in a Database?",
+    "topic": "SQL",
+    "subtopic": "Database Design",
+    "difficulty": "Easy",
+    "reference_answer": "A systematic technique of organizing database tables and columns to reduce data redundancy and eliminate update anomalies.",
+    "key_concepts": [
+      "Normalization",
+      "Database Design",
+      "Data Integrity"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 209
+  },
+  {
+    "source": "SQL Interview Questions and Answers.pdf",
+    "question": "What is an Index in SQL?",
+    "topic": "SQL",
+    "subtopic": "Indexing",
+    "difficulty": "Easy",
+    "reference_answer": "A disk structure associated with a table or view that speeds up data row retrieval by maintaining pointers to physical records.",
+    "key_concepts": [
+      "SQL Index",
+      "Query Optimization"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 210
+  },
+  {
+    "source": "SQL Interview Questions and Answers.pdf",
+    "question": "What is clustered index in SQL?",
+    "topic": "SQL",
+    "subtopic": "Indexing",
+    "difficulty": "Medium",
+    "reference_answer": "An index that defines the physical order of data rows stored in a table. Only one clustered index can exist per table.",
+    "key_concepts": [
+      "Clustered Index",
+      "Physical Sorting"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 211
+  },
+  {
+    "source": "SQL Interview Questions and Answers.pdf",
+    "question": "What is the non-clustered index in SQL?",
+    "topic": "SQL",
+    "subtopic": "Indexing",
+    "difficulty": "Medium",
+    "reference_answer": "An index created separately from physical data rows that maintains logical key ordering pointing to row locations.",
+    "key_concepts": [
+      "Non-Clustered Index",
+      "Logical Ordering"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 212
+  },
+  {
+    "source": "SQL Interview Questions and Answers.pdf",
+    "question": "What is the difference between DELETE and TRUNCATE statements in SQL?",
+    "topic": "SQL",
+    "subtopic": "DML vs DDL",
+    "difficulty": "Medium",
+    "reference_answer": "DELETE is a DML command that removes specific rows (can be rolled back, logs row operations, supports WHERE). TRUNCATE is a DDL command that removes all rows (faster, resets identity seed, cannot use WHERE).",
+    "key_concepts": [
+      "DELETE vs TRUNCATE",
+      "DML vs DDL",
+      "Rollback"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 213
+  },
+  {
+    "source": "SQL Interview Questions and Answers.pdf",
+    "question": "Is a blank space or zero the same as a NULL value?",
+    "topic": "SQL",
+    "subtopic": "Syntax & Data Types",
+    "difficulty": "Easy",
+    "reference_answer": "No. NULL represents an unknown or missing value, whereas zero is a number and a blank space is a string character.",
+    "key_concepts": [
+      "NULL",
+      "Zero vs NULL"
+    ],
+    "original_difficulty": null,
+    "review_status": "Verified",
+    "id": 214
+  }
+]

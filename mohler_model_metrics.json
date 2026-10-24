@@ -1,0 +1,29 @@
+{
+  "dataset": "nkazi/MohlerASAG, cleaned/open_ended",
+  "rows": 2273,
+  "distinct_questions": 79,
+  "train_rows": 1830,
+  "test_rows": 443,
+  "question_overlap": 0,
+  "score_scale": "0-5",
+  "feature_pipeline": "TF-IDF word unigrams and bigrams over question, reference answer, and student answer",
+  "model_comparison": {
+    "Ridge Regression": {
+      "grouped_cv_mae_mean": 0.8969833252434132,
+      "grouped_cv_mae_std": 0.0797035826660228
+    },
+    "Linear Support Vector Regression": {
+      "grouped_cv_mae_mean": 0.8650213321988598,
+      "grouped_cv_mae_std": 0.07839348911725916
+    },
+    "Extra Trees Regression": {
+      "grouped_cv_mae_mean": 0.9232818548964522,
+      "grouped_cv_mae_std": 0.06846361934823776
+    }
+  },
+  "selected_model": "Linear Support Vector Regression",
+  "holdout_mae": 0.7817003394559852,
+  "holdout_rmse": 1.010669520375561,
+  "holdout_r2": 0.014395678521521793,
+  "split": "GroupShuffleSplit by normalized question, test_size=0.2, random_state=42"
+}

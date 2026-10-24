@@ -1,0 +1,3 @@
+-r requirements-ml.txt
+datasets>=3.0,<6.0
+pandas>=2.2,<4.0
