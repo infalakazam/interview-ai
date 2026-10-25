@@ -20,7 +20,16 @@ from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import GroupKFold, GroupShuffleSplit, cross_val_score
 from sklearn.pipeline import FeatureUnion, Pipeline
+<<<<<<< HEAD
+=======
+from sklearn.preprocessing import FunctionTransformer, StandardScaler
+>>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
 from sklearn.svm import LinearSVR
+from backend.model_features import (
+    answer_pair_text,
+    combined_text,
+    comparison_features,
+)
 
 ROOT = Path(__file__).resolve().parent
 ARTIFACT_FILE = ROOT / "prepai_mohler_model.joblib"
@@ -38,6 +47,7 @@ def compose_text(question: str, reference: str, answer: str) -> str:
     return f"Question: {question}\nReference answer: {reference}\nStudent answer: {answer}"
 
 
+<<<<<<< HEAD
 def clean_text_column(values: pd.Series) -> pd.Series:
     return values.fillna("").astype(str).str.replace("<br>", " ", regex=False).str.strip()
 
@@ -106,20 +116,98 @@ def build_pipeline(regressor, include_char_ngrams: bool = False) -> Pipeline:
         [
             ("tfidf", features),
             ("regressor", regressor),
+=======
+BASELINE_NAME = "Baseline TF-IDF + LinearSVR"
+
+
+def build_baseline_pipeline(regressor=None) -> Pipeline:
+    return Pipeline(
+        [
+            ("text", FunctionTransformer(combined_text, validate=False)),
+            (
+                "tfidf",
+                TfidfVectorizer(
+                    lowercase=True,
+                    strip_accents="unicode",
+                    stop_words="english",
+                    ngram_range=(1, 2),
+                    max_features=12000,
+                    sublinear_tf=True,
+                ),
+            ),
+            ("regressor", regressor or LinearSVR(C=0.5, epsilon=0.1, random_state=42, max_iter=20000)),
+>>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
         ]
     )
 
 
-def model_candidates() -> dict[str, object]:
+def build_hybrid_features() -> FeatureUnion:
+    return FeatureUnion(
+        [
+            (
+                "combined_word_tfidf",
+                Pipeline(
+                    [
+                        ("text", FunctionTransformer(combined_text, validate=False)),
+                        ("tfidf", TfidfVectorizer(lowercase=True, strip_accents="unicode", stop_words="english", ngram_range=(1, 2), max_features=14000, min_df=2, sublinear_tf=True)),
+                    ]
+                ),
+            ),
+            (
+                "answer_pair_word_tfidf",
+                Pipeline(
+                    [
+                        ("text", FunctionTransformer(answer_pair_text, validate=False)),
+                        ("tfidf", TfidfVectorizer(lowercase=True, strip_accents="unicode", stop_words="english", ngram_range=(1, 2), max_features=9000, min_df=2, sublinear_tf=True)),
+                    ]
+                ),
+            ),
+            (
+                "answer_pair_char_tfidf",
+                Pipeline(
+                    [
+                        ("text", FunctionTransformer(answer_pair_text, validate=False)),
+                        ("tfidf", TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5), max_features=18000, min_df=2, sublinear_tf=True)),
+                    ]
+                ),
+            ),
+            (
+                "answer_comparison",
+                Pipeline(
+                    [
+                        ("features", FunctionTransformer(comparison_features, validate=False)),
+                        ("scale", StandardScaler(with_mean=False)),
+                    ]
+                ),
+            ),
+        ],
+        n_jobs=1,
+    )
+
+
+def build_hybrid_pipeline(regressor) -> Pipeline:
+    return Pipeline([("features", build_hybrid_features()), ("regressor", regressor)])
+
+
+def model_candidates() -> dict[str, Pipeline]:
     return {
+<<<<<<< HEAD
         "Ridge Regression": Ridge(alpha=2.0),
         "Linear Support Vector Regression": LinearSVR(C=0.5, epsilon=0.1, random_state=42, max_iter=3000, tol=1e-3),
         "Word + character Ridge Regression": (Ridge(alpha=2.0), True),
         "Word + character Linear SVR": (LinearSVR(C=0.5, epsilon=0.1, random_state=42, max_iter=3000, tol=1e-3), True),
+=======
+        BASELINE_NAME: build_baseline_pipeline(),
+        "Hybrid Ridge (alpha=0.5)": build_hybrid_pipeline(Ridge(alpha=0.5)),
+        "Hybrid Ridge (alpha=2.0)": build_hybrid_pipeline(Ridge(alpha=2.0)),
+        "Hybrid LinearSVR (C=0.25)": build_hybrid_pipeline(LinearSVR(C=0.25, epsilon=0.08, random_state=42, max_iter=20000)),
+        "Hybrid LinearSVR (C=0.75)": build_hybrid_pipeline(LinearSVR(C=0.75, epsilon=0.08, random_state=42, max_iter=20000)),
+>>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     }
 
 
 def main() -> None:
+<<<<<<< HEAD
     frame = load_training_data()
     texts = [
         compose_text(question, reference, answer)
@@ -128,25 +216,54 @@ def main() -> None:
         )
     ]
     target = frame["score"].astype(float).to_numpy()
+=======
+    dataset = load_dataset(DATASET_NAME, name="cleaned", split="open_ended")
+    frame = dataset.to_pandas()[
+        ["question", "instructor_answer", "student_answer", "score_avg"]
+    ].copy()
+    frame = frame.rename(columns={"instructor_answer": "reference_answer"})
+    for column in ["question", "reference_answer", "student_answer"]:
+        frame[column] = frame[column].fillna("").astype(str).str.strip()
+    frame = frame[
+        (frame["question"] != "")
+        & (frame["reference_answer"] != "")
+        & (frame["student_answer"] != "")
+        & frame["score_avg"].notna()
+    ].reset_index(drop=True)
+    if frame.empty:
+        raise ValueError("No usable open-ended Mohler rows were loaded.")
+
+    target = frame["score_avg"].astype(float).to_numpy()
+>>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     if target.min() < 0 or target.max() > 5:
         raise ValueError(f"Expected normalized training scores on a 0-5 scale; observed {target.min()} to {target.max()}.")
 
     groups = frame["question"].map(normalize_group).to_numpy()
     split = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+<<<<<<< HEAD
     train_idx, test_idx = next(split.split(texts, target, groups))
     cv_splits = min(3, len(np.unique(groups[train_idx])))
+=======
+    train_idx, test_idx = next(split.split(frame, target, groups))
+    cv_splits = min(5, len(np.unique(groups[train_idx])))
+>>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     if cv_splits < 2:
         raise ValueError("Not enough distinct questions for grouped model selection.")
     cv = GroupKFold(n_splits=cv_splits)
 
     comparisons = {}
+<<<<<<< HEAD
     for name, candidate in model_candidates().items():
         print(f"Evaluating {name} with {cv_splits}-fold question-grouped validation…", flush=True)
         regressor, include_char_ngrams = candidate if isinstance(candidate, tuple) else (candidate, False)
         pipeline = build_pipeline(regressor, include_char_ngrams)
+=======
+    candidates = model_candidates()
+    for name, pipeline in candidates.items():
+>>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
         negative_mae = cross_val_score(
             pipeline,
-            [texts[i] for i in train_idx],
+            frame.iloc[train_idx],
             target[train_idx],
             groups=groups[train_idx],
             cv=cv,
@@ -160,6 +277,7 @@ def main() -> None:
         }
 
     selected_name = min(comparisons, key=lambda key: comparisons[key]["grouped_cv_mae_mean"])
+<<<<<<< HEAD
     selected_candidate = model_candidates()[selected_name]
     selected_regressor, selected_char_ngrams = selected_candidate if isinstance(selected_candidate, tuple) else (selected_candidate, False)
     selected = build_pipeline(selected_regressor, selected_char_ngrams)
@@ -179,6 +297,25 @@ def main() -> None:
             "rmse": float(np.sqrt(mean_squared_error(source_target, source_predictions))),
             "r2": float(r2_score(source_target, source_predictions)) if len(source_target) > 1 else None,
         }
+=======
+    test_frame = frame.iloc[test_idx]
+    baseline = model_candidates()[BASELINE_NAME]
+    baseline.fit(frame.iloc[train_idx], target[train_idx])
+    selected = model_candidates()[selected_name]
+    selected.fit(frame.iloc[train_idx], target[train_idx])
+    baseline_predictions = np.clip(baseline.predict(test_frame), 0, 5)
+    predictions = np.clip(selected.predict(test_frame), 0, 5)
+    baseline_metrics = {
+        "mae": float(mean_absolute_error(target[test_idx], baseline_predictions)),
+        "rmse": float(np.sqrt(mean_squared_error(target[test_idx], baseline_predictions))),
+        "r2": float(r2_score(target[test_idx], baseline_predictions)),
+    }
+    selected_metrics = {
+        "mae": float(mean_absolute_error(target[test_idx], predictions)),
+        "rmse": float(np.sqrt(mean_squared_error(target[test_idx], predictions))),
+        "r2": float(r2_score(target[test_idx], predictions)),
+    }
+>>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     metrics = {
         "datasets": {
             "Mohler": "nkazi/MohlerASAG cleaned/open_ended; CC BY 4.0",
@@ -192,6 +329,7 @@ def main() -> None:
         "test_rows": int(len(test_idx)),
         "question_overlap": int(len(set(groups[train_idx]) & set(groups[test_idx]))),
         "score_scale": "0-5",
+<<<<<<< HEAD
         "feature_pipeline": "TF-IDF word unigrams/bigrams" + (" plus character 3-5-grams" if selected_char_ngrams else "") + " over question, reference answer, and student answer",
         "model_comparison": comparisons,
         "selected_model": selected_name,
@@ -204,10 +342,25 @@ def main() -> None:
 
     deployment_model = build_pipeline(selected_regressor, selected_char_ngrams)
     deployment_model.fit(texts, target)
+=======
+        "feature_pipeline": "Combined and answer-pair word TF-IDF, character n-grams, and explicit answer-reference overlap/length features",
+        "model_comparison": comparisons,
+        "selected_model": selected_name,
+        "baseline_holdout": baseline_metrics,
+        "selected_holdout": selected_metrics,
+        "holdout_mae": selected_metrics["mae"],
+        "holdout_rmse": selected_metrics["rmse"],
+        "holdout_r2": selected_metrics["r2"],
+        "split": "GroupShuffleSplit by normalized question, test_size=0.2, random_state=42",
+    }
+
+    deployment_model = model_candidates()[selected_name]
+    deployment_model.fit(frame, target)
+>>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     joblib.dump(
         {
             "pipeline": deployment_model,
-            "feature_version": 2,
+            "feature_version": 3,
             "target_min": 0.0,
             "target_max": 5.0,
             "dataset": "Mohler + SAF Communication Networks + JorGPT English (human grades)",
