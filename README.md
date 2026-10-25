@@ -94,7 +94,7 @@ The response contains a 0–100 display score, the Mohler 0–5 prediction, conc
 
 The app averages the current answer score with up to two previous non-skipped scores. An average of 78 or higher recommends one difficulty level up; below 42 recommends one level down; otherwise the current level remains. PrepAI selects an unused question in that topic at the recommended level, or the nearest available level.
 
-This is an explainable adaptive policy, not a second trained model. Mohler provides grades for answers, but it does not label which question difficulty should follow an answer. Claiming a supervised difficulty model without such target labels would not be justified. This policy can be evaluated during HCI walkthroughs and later replaced if suitable interaction data is collected.
+Topic and difficulty selection use an online Bayesian mastery model. It updates a per-topic mastery estimate from each scored answer and uses the estimate and its uncertainty to focus upcoming questions. It keeps the other selected topics in rotation and targets a higher difficulty for them. The model is recalculated from saved browser history and current-session answers; it is not a separately pretrained supervised model because the dataset does not contain topic-by-topic learning trajectories or next-question labels.
 
 ## HCI, ML, and SDLC presentation
 
