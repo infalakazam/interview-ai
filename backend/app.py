@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import os
+import re
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
@@ -57,6 +58,12 @@ model: Any | None = None
 model_metadata: dict[str, Any] = {}
 model_status = "The trained Mohler artifact is missing. Run train_mohler.py to create it."
 LEVELS = ["Easy", "Medium", "Hard"]
+_TOKEN_RE = re.compile(r"[a-z0-9+#.]+", re.IGNORECASE)
+_STOP_WORDS = {
+    "a", "an", "and", "are", "as", "at", "be", "been", "being", "by", "for",
+    "from", "has", "have", "in", "into", "is", "it", "its", "of", "on", "or",
+    "that", "the", "their", "this", "to", "was", "were", "with", "which", "when",
+}
 
 
 def load_model() -> None:
@@ -67,7 +74,7 @@ def load_model() -> None:
         import joblib
 
         artifact = joblib.load(ARTIFACT_PATH)
-        if artifact.get("feature_version") != 2 or "pipeline" not in artifact:
+        if artifact.get("feature_version") not in {2, 3} or "pipeline" not in artifact:
             raise ValueError("Unsupported model artifact. Re-run train_mohler.py.")
         model = artifact["pipeline"]
         model_metadata = artifact
@@ -150,6 +157,49 @@ def recommend_difficulty(score: int, current: str, previous: list[float]) -> str
     return LEVELS[index]
 
 
+def _content_terms(text: str) -> set[str]:
+    """Return useful lexical evidence while ignoring common function words."""
+    terms = {token.casefold() for token in _TOKEN_RE.findall(text)}
+    return {term for term in terms if term not in _STOP_WORDS and len(term) > 1}
+
+
+def _concept_is_present(concept: str, answer_terms: set[str], answer: str) -> bool:
+    normalized = concept.casefold().strip()
+    if not normalized:
+        return False
+    if normalized in answer.casefold():
+        return True
+    concept_terms = _content_terms(normalized)
+    # For a multiword concept, require most of its meaningful words. This
+    # supports wording variation while avoiding credit for a single generic word.
+    if len(concept_terms) >= 2:
+        return len(concept_terms & answer_terms) / len(concept_terms) >= 0.67
+    return bool(concept_terms & answer_terms)
+
+
+def apply_relevance_guard(
+    prediction: float, reference: str, answer: str, concepts: list[str]
+) -> tuple[float, list[str]]:
+    """Cap predictions with little evidence that the answer addresses the prompt."""
+    reference_terms = _content_terms(reference)
+    answer_terms = _content_terms(answer)
+    overlap = reference_terms & answer_terms
+    ref_coverage = len(overlap) / max(1, len(reference_terms))
+    answer_precision = len(overlap) / max(1, len(answer_terms))
+    matched = [concept for concept in concepts if _concept_is_present(concept, answer_terms, answer)]
+    concept_coverage = len(matched) / max(1, len([c for c in concepts if c.strip()]))
+
+    # The Mohler-trained regressor can over-credit fluent but unrelated text.
+    # A conservative ceiling is safer than treating its raw score as certainty.
+    if len(answer_terms) < 2:
+        prediction = min(prediction, 1.0)
+    elif ref_coverage < 0.05 and concept_coverage == 0:
+        prediction = min(prediction, 0.75)
+    elif ref_coverage < 0.12 and concept_coverage < 0.20 and answer_precision < 0.15:
+        prediction = min(prediction, 1.5)
+    return prediction, matched
+
+
 @app.post("/api/score", response_model=ScoreResponse)
 def score(payload: ScoreRequest) -> ScoreResponse:
     if model is None:
@@ -157,15 +207,24 @@ def score(payload: ScoreRequest) -> ScoreResponse:
     if not payload.reference_answer.strip():
         raise HTTPException(status_code=422, detail="A reference answer is required for this model.")
 
-    text = compose_text(payload.question, payload.reference_answer, payload.student_answer)
-    raw_prediction = float(model.predict([text])[0])
+    if model_metadata and model_metadata.get("feature_version") == 3:
+        model_input = [{
+            "question": payload.question,
+            "reference_answer": payload.reference_answer,
+            "student_answer": payload.student_answer,
+        }]
+    else:
+        # Keep compatibility with the original v2 TF-IDF artifact.
+        model_input = [compose_text(payload.question, payload.reference_answer, payload.student_answer)]
+    raw_prediction = float(model.predict(model_input)[0])
+    raw_prediction, matched = apply_relevance_guard(
+        raw_prediction,
+        payload.reference_answer,
+        payload.student_answer,
+        payload.key_concepts,
+    )
     score_out_of_5 = max(0.0, min(5.0, raw_prediction))
     score_100 = round(score_out_of_5 * 20)
-    matched = [
-        concept
-        for concept in payload.key_concepts
-        if concept.strip() and concept.casefold() in payload.student_answer.casefold()
-    ]
     return ScoreResponse(
         score=score_100,
         score_out_of_5=round(score_out_of_5, 3),
@@ -175,8 +234,8 @@ def score(payload: ScoreRequest) -> ScoreResponse:
         ),
         method="mohler_tfidf_classical_ml",
         note=(
-            "Supervised score estimate from traditional ML trained on Mohler short-answer data. "
-            "Accuracy on longer technical interview answers should be evaluated separately."
+            "ML estimate with a relevance check against the reference answer and key concepts. "
+            "Technical paraphrases can still need human review."
         ),
     )
 

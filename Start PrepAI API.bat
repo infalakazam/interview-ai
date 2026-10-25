@@ -9,7 +9,7 @@ if not exist ".venv\Scripts\python.exe" (
     if errorlevel 1 goto setup_error
 )
 
-".venv\Scripts\python.exe" -c "import fastapi, sklearn, joblib, google.auth, dotenv" >nul 2>&1
+".venv\Scripts\python.exe" -c "import fastapi, sklearn, joblib, google.auth.transport.requests, dotenv" >nul 2>&1
 if errorlevel 1 (
     echo Installing the packages PrepAI needs. This may take a few minutes...
     ".venv\Scripts\python.exe" -m pip install -r requirements-ml.txt
