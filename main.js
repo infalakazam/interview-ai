@@ -452,9 +452,9 @@ function renderDashboardFeatures() {
     ];
     return `<section class="dashboard-features" aria-labelledby="dashboard-features-title">
         <div class="section-heading"><div><p class="eyebrow">PREPAI TOOLS</p><h2 id="dashboard-features-title">Practice with a clear next step</h2></div></div>
-        <div class="feature-grid">${features.map(([icon, title, description, href, action]) => `
-            <a class="feature-card" href="${href}">
-                <span class="feature-icon" aria-hidden="true">${icon}</span>
+        <div class="feature-grid">${features.map(([icon, title, description, href, action, theme = ""]) => `
+            <a class="feature-card ${theme ? `feature-card-${theme}` : ""}" href="${href}">
+                <span class="feature-icon ${theme ? `feature-icon-${theme}` : ""}" aria-hidden="true">${icon}</span>
                 <span class="feature-copy"><strong>${title}</strong><span>${description}</span><b>${action} →</b></span>
             </a>`).join("")}
         </div>
@@ -501,7 +501,7 @@ function renderDashboard() {
     const stats = getStats();
     const history = getHistory();
     const name = getUserName().trim();
-    return `${renderHeader("YOUR PREPARATION", `Welcome${name ? `, ${escapeHTML(name)}` : " back"}!`, "Build confidence one interview question at a time.")}
+    return `${renderHeader("ADAPTIVE INTERVIEW PREPARATION", `Welcome${name ? `, ${escapeHTML(name)}` : " back"}!`, "Personalized practice, adaptive questions, and clear feedback in one workspace.")}
         ${renderPreparationGroupFilter()}
         ${renderDashboardFeatures()}
         <section class="dashboard-grid">
