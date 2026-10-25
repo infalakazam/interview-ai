@@ -51,17 +51,21 @@ const NAVIGATION = [
 ];
 
 const TOPIC_INFO = {
-    Python: ["🐍", "Language basics, data types, and object-oriented programming"],
-    Java: ["☕", "Core Java, object-oriented programming, and language concepts"],
-    "C++": ["⌘", "C and C++ fundamentals and programming concepts"],
-    "Data Structures": ["▦", "Data structures, algorithms, and problem solving"],
-    Algorithms: ["⌁", "Algorithm design, analysis, and complexity"],
-    "Operating Systems": ["▣", "Processes, memory, scheduling, and operating systems"],
-    "Database Management": ["▤", "Databases, SQL, and transaction concepts"],
-    "Computer Networks": ["♧", "Networking concepts, protocols, and communication"],
-    OOP: ["◇", "Object-oriented programming concepts"],
-    SQL: ["▤", "Queries, joins, and relational databases"],
-    "Software Engineering": ["⚙", "Software design and development practices"]
+    Python: ["🐍", "Language basics, data types, and object-oriented programming", "blue"],
+    Java: ["☕", "Core Java, object-oriented programming, and language concepts", "red"],
+    "C++": ["⚙", "C and C++ fundamentals and programming concepts", "blue"],
+    "Data Structures": ["▦", "Data structures, algorithms, and problem solving", "violet"],
+    Algorithms: ["⌘", "Algorithm design, analysis, and complexity", "pink"],
+    "Operating Systems": ["▣", "Processes, memory, scheduling, and operating systems", "cyan"],
+    "Database Management": ["▤", "Databases, SQL, and transaction concepts", "orange"],
+    "Computer Networks": ["⌘", "Networking concepts, protocols, and communication", "blue"],
+    "Machine Learning": ["✣", "Models, training, evaluation, and applied machine learning", "pink"],
+    "System Design": ["◈", "Scalable architecture, components, and system tradeoffs", "violet"],
+    "Web Development": ["◎", "Frontend, backend, APIs, and web technologies", "cyan"],
+    Aptitude: ["∑", "Numerical reasoning, logic, and problem solving", "orange"],
+    OOP: ["◇", "Object-oriented programming concepts", "violet"],
+    SQL: ["▤", "Queries, joins, and relational databases", "orange"],
+    "Software Engineering": ["⚙", "Software design and development practices", "green"]
 };
 
 const PREPARATION_GROUPS = {
@@ -231,7 +235,8 @@ function getTopics() {
         name,
         count,
         icon: TOPIC_INFO[name]?.[0] || "▤",
-        description: TOPIC_INFO[name]?.[1] || "Interview questions and concepts"
+        description: TOPIC_INFO[name]?.[1] || "Interview questions and concepts",
+        iconColor: TOPIC_INFO[name]?.[2] || "violet"
     }));
 }
 
@@ -326,7 +331,7 @@ function renderTopicCards(list = getTopics(), selectedTopics = []) {
     return `<div class="topic-grid">${list.map(topic => `
         <label class="topic-card topic-select-card">
             <input type="checkbox" name="practice-topic" value="${escapeHTML(topic.name)}" ${selectedTopics.includes(topic.name) ? "checked" : ""} />
-            <span class="topic-icon" aria-hidden="true">${topic.icon}</span><span class="topic-card-copy"><strong>${escapeHTML(topic.name)}</strong><span>${escapeHTML(topic.description)}</span></span>
+            <span class="topic-icon topic-icon-${topic.iconColor}" aria-hidden="true">${topic.icon}</span><span class="topic-card-copy"><strong>${escapeHTML(topic.name)}</strong><span>${escapeHTML(topic.description)}</span></span>
             <span class="topic-card-footer"><span>${topic.count} questions</span><span>Select topic</span></span>
         </label>`).join("")}</div>`;
 }
@@ -539,8 +544,9 @@ function renderPrepare() {
         <section class="prep-topic-grid" aria-label="Suggested topics for ${escapeHTML(group.label)}">${recommendedTopics.map(topic => {
             const levels = getDifficulties(topic.name);
             const icon = TOPIC_INFO[topic.name]?.[0] || "▤";
+            const iconColor = TOPIC_INFO[topic.name]?.[2] || "violet";
             return `<article class="card prep-topic-card">
-                <label class="prep-topic-select"><input type="checkbox" name="prep-topic" value="${escapeHTML(topic.name)}" /><span class="prep-topic-heading"><span class="topic-icon" aria-hidden="true">${icon}</span><span><strong>${escapeHTML(topic.name)}</strong><small>${topic.count} questions in the bank</small></span></span></label>
+                <label class="prep-topic-select"><input type="checkbox" name="prep-topic" value="${escapeHTML(topic.name)}" /><span class="prep-topic-heading"><span class="topic-icon topic-icon-${iconColor}" aria-hidden="true">${icon}</span><span><strong>${escapeHTML(topic.name)}</strong><small>${topic.count} questions in the bank</small></span></span></label>
                 <p>${escapeHTML(topic.description)}</p>
                 <span class="prep-topic-availability">Available levels: ${levels.map(level => level.value).join(" · ") || "No levels listed"}</span>
             </article>`;
@@ -575,7 +581,7 @@ function renderNotes() {
 function renderNotesCatalog(notes) {
     if (!notes.length) return `<p class="empty-inline">No topics match your search.</p>`;
     return notes.map(note => `<a class="notes-topic-card" href="topic-notes.html?topic=${encodeURIComponent(note.topic)}" aria-label="Open full notes for ${escapeHTML(note.topic)}">
-        <span class="notes-topic-icon" aria-hidden="true">${TOPIC_INFO[note.topic]?.[0] || "▤"}</span>
+        <span class="notes-topic-icon topic-icon-${TOPIC_INFO[note.topic]?.[2] || "violet"}" aria-hidden="true">${TOPIC_INFO[note.topic]?.[0] || "▤"}</span>
         <span class="notes-topic-copy"><strong>${escapeHTML(note.topic)}</strong></span>
     </a>`).join("");
 }
@@ -647,12 +653,61 @@ function renderBank() {
         <article class="card"><div class="filters bank-filters"><div class="field"><label for="bank-topic">Topic</label><select id="bank-topic"><option value="all">All topics</option>${topics.map(topic => `<option value="${escapeHTML(topic.name)}">${escapeHTML(topic.name)}</option>`).join("")}</select></div><div class="field"><label for="bank-difficulty">Difficulty</label><select id="bank-difficulty"><option value="all">All levels</option><option>Easy</option><option>Medium</option><option>Hard</option></select></div><div class="field"><label for="bank-search">Search question text</label><input id="bank-search" value="${escapeHTML(search)}" placeholder="Try a keyword..." /></div></div><p class="result-count" id="bank-count" aria-live="polite"></p><div class="question-list" id="bank-results"></div></article>`;
 }
 
+function renderAccuracyTrend() {
+    const daily = new Map();
+    getHistory().forEach(session => {
+        const date = new Date(session.date || "");
+        if (!Number.isFinite(date.getTime())) return;
+        const key = date.toISOString().slice(0, 10);
+        const day = daily.get(key) || { correct: 0, total: 0 };
+        session.answers.filter(answer => !answer.skipped && Number.isFinite(Number(answer.score))).forEach(answer => {
+            day.total += 1;
+            if (Number(answer.score) >= 60) day.correct += 1;
+        });
+        if (day.total) daily.set(key, day);
+    });
+    const points = [...daily.entries()].sort(([a], [b]) => a.localeCompare(b)).slice(-8);
+    if (!points.length) return `<div class="report-chart-empty">Complete practice sessions to see your accuracy trend.</div>`;
+    const width = 600, height = 220, left = 42, right = 18, top = 20, bottom = 42;
+    const chartWidth = width - left - right, chartHeight = height - top - bottom;
+    const coords = points.map(([date, result], index) => ({
+        x: points.length === 1 ? left + chartWidth / 2 : left + index * chartWidth / (points.length - 1),
+        y: top + chartHeight * (1 - result.correct / result.total),
+        date,
+        accuracy: Math.round(result.correct / result.total * 100)
+    }));
+    const line = coords.map(point => `${point.x},${point.y}`).join(" ");
+    return `<svg class="accuracy-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Accuracy trend over recent practice days">
+        ${[0, 25, 50, 75, 100].map(value => { const y = top + chartHeight * (1 - value / 100); return `<line x1="${left}" y1="${y}" x2="${width - right}" y2="${y}" class="trend-gridline"/><text x="${left - 8}" y="${y + 4}" text-anchor="end" class="trend-axis-label">${value}%</text>`; }).join("")}
+        <polyline points="${line}" class="trend-line"/>${coords.map(point => `<circle cx="${point.x}" cy="${point.y}" r="4" class="trend-point"><title>${point.accuracy}% on ${escapeHTML(point.date)}</title></circle><text x="${point.x}" y="${height - 12}" text-anchor="middle" class="trend-axis-label">${escapeHTML(point.date.slice(5))}</text>`).join("")}
+    </svg>`;
+}
+
+function renderTopicDistribution(answers) {
+    const counts = new Map();
+    answers.forEach(answer => counts.set(answer.topic || "Other", (counts.get(answer.topic || "Other") || 0) + 1));
+    const entries = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+    if (!entries.length) return `<div class="report-chart-empty">Your topic breakdown will appear after you complete a practice session.</div>`;
+    const palette = ["#5969e8", "#37a8d8", "#f1a142", "#ed6b78", "#49b994", "#9a76df", "#8290a8"];
+    let start = 0;
+    const stops = entries.map(([, count], index) => {
+        const end = start + count / answers.length * 100;
+        const segment = `${palette[index % palette.length]} ${start}% ${end}%`;
+        start = end;
+        return segment;
+    });
+    return `<div class="topic-distribution-layout"><div class="topic-donut" style="--topic-donut: conic-gradient(${stops.join(", ")})" role="img" aria-label="Distribution of ${answers.length} answered questions by topic"><span>${answers.length}<small>answered</small></span></div><ul class="topic-distribution-legend">${entries.map(([topic, count], index) => `<li><span class="topic-legend-name"><i style="--legend-color:${palette[index % palette.length]}"></i>${escapeHTML(topic)}</span><strong>${Math.round(count / answers.length * 100)}%</strong></li>`).join("")}</ul></div>`;
+}
+
 function renderReport() {
-    const stats = getStats();
-    const performance = getTopicPerformance();
+    const answers = getHistory().flatMap(session => session.answers);
+    const answered = answers.filter(answer => !answer.skipped && answer.score !== null && answer.score !== undefined && Number.isFinite(Number(answer.score)));
+    const correct = answered.filter(answer => Number(answer.score) >= 60).length;
+    const incorrect = answered.length - correct;
+    const accuracy = answered.length ? Math.round(correct / answered.length * 100) : 0;
     return `${renderHeader("YOUR HISTORY", "Performance report", "Review results saved in this browser.", '<button class="button button-secondary" id="export-report" type="button">↓ Export report</button>')}
-        <section class="stats-grid">${renderStat("▤", "Saved sessions", stats.sessions, "Latest 100 sessions are retained", "blue")}${renderStat("✎", "Questions answered", stats.questions, "From saved sessions", "purple")}${renderStat("✓", "Strong answers", stats.strong, "Estimate of 60% or more", "green")}${renderStat("◉", "Average estimate", `${stats.average}%`, "Keyword coverage estimate", "amber")}</section>
-        <section class="report-grid"><article class="card"><div class="section-heading"><div><p class="eyebrow">TOPIC BREAKDOWN</p><h2>Average score estimate</h2></div></div>${performance.length ? renderProgressBars(performance, true) : renderEmpty("No score history yet. Finish a session to build your report.")}</article><article class="card"><p class="eyebrow">HOW TO READ THIS</p><h2>Scores are estimates</h2><p class="body-copy">The current built-in fallback checks for key concepts and words from a reference answer. It does not understand meaning. If the ML API is configured, its result will be identified separately.</p></article></section>
+        <section class="stats-grid report-summary-grid">${renderStat("▤", "Questions answered", answered.length, "Across your saved sessions", "blue")}${renderStat("✓", "Correct", correct, "Score estimate of 60% or higher", "green")}${renderStat("×", "Incorrect", incorrect, "Score estimate below 60%", "red")}${renderStat("◉", "Accuracy", `${accuracy}%`, "Correct answers ÷ answered questions", "purple")}</section>
+        <section class="report-grid report-visuals"><article class="card"><div class="section-heading"><div><p class="eyebrow">ACCURACY TREND</p><h2>Recent practice</h2></div></div>${renderAccuracyTrend()}</article><article class="card"><div class="section-heading"><div><p class="eyebrow">TOPIC DISTRIBUTION</p><h2>Questions by topic</h2></div></div>${renderTopicDistribution(answered)}</article></section>
         <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">HISTORY</p><h2>Recent sessions</h2></div></div>${renderSessionList(getHistory())}</article>`;
 }
 
@@ -683,7 +738,7 @@ function renderSession() {
     const isMock = sessionStorage.getItem(STORAGE.mode) === "mock";
     const role = sessionStorage.getItem(STORAGE.role) || "";
     const isMcq = sessionStorage.getItem(STORAGE.questionType) === "mcq";
-    return `${renderHeader(isMock ? "AI MOCK INTERVIEW" : "FOCUSED PRACTICE", isMock ? `${escapeHTML(role)} interview` : "Practice session", isMock ? "Answer as you would in an interview. PrepAI will score each response and adapt the next question." : isMcq ? "Choose the best option for each question. You can go back and change submitted answers before finishing." : "Write what you know. You can go back and change an answer before finishing.")}
+    return `${renderHeader(isMock ? "AI MOCK INTERVIEW" : "FOCUSED PRACTICE", isMock ? `${escapeHTML(role)} interview` : "Practice session", isMock ? "Answer as you would in an interview. PrepAI will focus on topics that need work, keep your other topics in rotation, and raise their difficulty." : `${isMcq ? "Choose the best option for each question." : "Write what you know."} PrepAI uses your recent results to revisit topics that need work, while keeping your other selected topics in rotation at a higher difficulty. You can go back and change submitted answers before finishing.`)}
         <section class="session-panel"><article class="card session-card"><div class="session-topline"><span class="badge" id="session-label"></span><span id="session-position" class="muted"></span></div><div class="progress-track"><span id="session-progress-bar"></span></div><p class="eyebrow question-number" id="question-meta"></p><h2 class="session-question" id="question-text"></h2><form id="answer-form"><fieldset id="mcq-options" class="mcq-options" hidden><legend>Select one answer</legend></fieldset><div class="field" id="descriptive-answer-field"><label for="answer-input">Your answer</label><textarea id="answer-input" rows="8" placeholder="Explain your answer in your own words..."></textarea><small id="answer-hint">Your answer stays in this browser session.</small></div><div id="answer-status" class="notice" aria-live="polite"></div><div class="session-controls"><button class="button button-secondary" id="previous-question" type="button">← Previous</button><div><button class="button button-secondary" id="skip-question" type="button">Skip</button> <button class="button" id="submit-answer" type="submit">Save and continue →</button></div></div></form></article></section>`;
 }
 
@@ -743,7 +798,7 @@ function connectPageControls() {
 
 function startPracticeSession(topics, difficultyLabel, count, sessionInfo = {}) {
     const selectedTopics = [...new Set(topics)].filter(topic => questionBank.some(question => question.topic === topic));
-    const firstQuestion = chooseQuestion(selectedTopics, difficultyValue(difficultyLabel));
+    const firstQuestion = chooseAdaptiveQuestion(selectedTopics, difficultyValue(difficultyLabel), [], [], []);
     if (!firstQuestion) return false;
     const topicLabel = selectedTopics.length === 1 ? selectedTopics[0] : `${selectedTopics.length} topics`;
     sessionStorage.setItem(STORAGE.topic, topicLabel);
@@ -1026,6 +1081,82 @@ function chooseQuestion(topics, targetDifficulty, usedIds = []) {
     return atLevel[Math.floor(Math.random() * atLevel.length)];
 }
 
+function fitTopicMasteryModel(topics, sessionAnswers = []) {
+    const savedAnswers = getHistory()
+        .slice()
+        .sort((a, b) => Date.parse(a.date || "") - Date.parse(b.date || ""))
+        .flatMap(session => session.answers);
+    const model = new Map();
+    topics.forEach(topic => {
+        // Beta(2,2) prior keeps early estimates from swinging on one response.
+        let alpha = 2;
+        let beta = 2;
+        const evidence = [...savedAnswers, ...sessionAnswers]
+            .filter(answer => answer?.topic === topic && !answer.skipped && answer.score !== null && answer.score !== undefined && Number.isFinite(Number(answer.score)))
+            .slice(-12);
+        evidence.forEach(answer => {
+            // Each score is fractional evidence because the scorer itself is an estimate.
+            const outcome = Math.max(0, Math.min(1, Number(answer.score) / 100));
+            alpha += outcome;
+            beta += 1 - outcome;
+        });
+        const strength = alpha + beta;
+        model.set(topic, {
+            mastery: alpha / strength,
+            uncertainty: Math.sqrt((alpha * beta) / (strength * strength * (strength + 1))),
+            observations: evidence.length
+        });
+    });
+    return model;
+}
+
+function chooseAdaptiveQuestion(topics, targetDifficulty, usedIds = [], sessionAnswers = [], askedTopics = []) {
+    const selectedTopics = [...new Set(topics)].filter(topic => questionBank.some(question => question.topic === topic));
+    const used = new Set(usedIds.map(String));
+    const selected = selectedTopics.filter(topic => questionBank.some(question =>
+        question.topic === topic && ADAPTIVE_LEVELS.includes(question.difficulty) && !used.has(String(question.id))
+    ));
+    if (!selected.length) return null;
+    const alreadyAsked = new Set(askedTopics);
+    const notYetCovered = selected.filter(topic => !alreadyAsked.has(topic));
+    // Re-fit from saved practice outcomes on every selection: this is the learner's
+    // online topic-mastery model, with uncertainty reduced as more answers arrive.
+    const masteryModel = fitTopicMasteryModel(selected, sessionAnswers);
+    const priority = topic => {
+        const estimate = masteryModel.get(topic);
+        return (1 - estimate.mastery) + 0.25 * estimate.uncertainty;
+    };
+    const known = selected.filter(topic => masteryModel.get(topic).observations > 0);
+    const focusTopic = known.length
+        ? [...known].sort((a, b) => priority(b) - priority(a))[0]
+        : null;
+    const scores = new Map(selected.map(topic => [topic, masteryModel.get(topic).mastery * 100]));
+
+    let topic;
+    if (notYetCovered.length) {
+        // Give every selected topic a turn before revisiting one.
+        topic = notYetCovered.sort((a, b) => (scores.get(a) ?? 100) - (scores.get(b) ?? 100))[0];
+    } else if (focusTopic && selected.length > 1) {
+        const lastTwo = askedTopics.slice(-2);
+        const mustRotate = lastTwo.length === 2 && lastTwo.every(item => item === focusTopic);
+        const alternatives = selected.filter(item => item !== focusTopic);
+        topic = mustRotate ? alternatives.sort((a, b) => (scores.get(a) ?? 100) - (scores.get(b) ?? 100))[0] : focusTopic;
+    } else if (focusTopic) {
+        topic = focusTopic;
+    } else {
+        topic = selected[Math.floor(Math.random() * selected.length)];
+    }
+
+    let targetIndex = Math.max(0, ADAPTIVE_LEVELS.indexOf(targetDifficulty));
+    if (focusTopic && topic !== focusTopic) {
+        // Keep other topics in rotation, but challenge the learner more there.
+        targetIndex = Math.min(ADAPTIVE_LEVELS.length - 1, targetIndex + 1);
+    } else if (focusTopic && topic === focusTopic && scores.get(topic) < 40) {
+        targetIndex = Math.max(0, targetIndex - 1);
+    }
+    return chooseQuestion([topic], ADAPTIVE_LEVELS[targetIndex], usedIds);
+}
+
 function buildMcqOptions(question) {
     const correct = String(question.reference_answer || "").trim();
     if (!correct) return [];
@@ -1116,7 +1247,13 @@ function connectSession() {
         // If the learner edits an earlier answer, discard the old future path and adapt it again.
         questions = questions.slice(0, index + 1);
         answers = answers.slice(0, index + 1);
-        const nextQuestion = chooseQuestion(selectedTopics, targetDifficulty, usedIds);
+        const nextQuestion = chooseAdaptiveQuestion(
+            selectedTopics,
+            targetDifficulty,
+            usedIds,
+            answers,
+            questions.map(question => question.topic)
+        );
         if (!nextQuestion) {
             sessionStorage.setItem(STORAGE.answers, JSON.stringify(answers));
             finishSession(topicLabel, difficulty, answers);

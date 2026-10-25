@@ -217,6 +217,13 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .topic-card { display: grid; grid-template-columns: 43px 1fr; gap: 12px; padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: white; transition: transform .15s, border-color .15s, box-shadow .15s; }
 .topic-card:hover { transform: translateY(-2px); border-color: #c9c2ff; box-shadow: var(--shadow); }
 .topic-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 12px; background: var(--primary-soft); font-size: 19px; }
+.topic-icon-blue, .notes-topic-icon.topic-icon-blue { background: #e8f1ff; color: #3277d5; }
+.topic-icon-red, .notes-topic-icon.topic-icon-red { background: #fff0f1; color: #d95361; }
+.topic-icon-violet, .notes-topic-icon.topic-icon-violet { background: #f0edff; color: #5948e8; }
+.topic-icon-pink, .notes-topic-icon.topic-icon-pink { background: #ffeef5; color: #d94c83; }
+.topic-icon-cyan, .notes-topic-icon.topic-icon-cyan { background: #e7f6ff; color: #1889ba; }
+.topic-icon-orange, .notes-topic-icon.topic-icon-orange { background: #fff2e2; color: #dc801d; }
+.topic-icon-green, .notes-topic-icon.topic-icon-green { background: #e8f7ee; color: #24885e; }
 .topic-card-copy h3 { margin: 2px 0 6px; font-size: 12px; }
 .topic-card-copy p { min-height: 32px; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
 .topic-card-footer { display: flex; grid-column: 1 / -1; justify-content: space-between; padding-top: 11px; border-top: 1px solid #f0f0f6; color: var(--muted); font-size: 9px; }
@@ -332,6 +339,26 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .badge-model { background: var(--blue-soft); color: var(--blue); }
 .badge.badge-incorrect { background: var(--red-soft); color: var(--red); }
 .badge.badge-correct { background: var(--green-soft); color: var(--green); }
+.report-summary-grid { margin-bottom: 18px; }
+.report-visuals { align-items: stretch; }
+.report-visuals > .card { min-width: 0; }
+.accuracy-chart { display: block; width: 100%; min-height: 210px; overflow: visible; }
+.trend-gridline { stroke: #e9eaf2; stroke-width: 1; }
+.trend-axis-label { fill: #8a8da2; font-size: 10px; }
+.trend-line { fill: none; stroke: #5d62e9; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.trend-point { fill: #5d62e9; stroke: white; stroke-width: 2; }
+.report-chart-empty { display: grid; min-height: 210px; place-items: center; padding: 24px; border-radius: 12px; background: #fafaff; color: var(--muted); font-size: 11px; text-align: center; }
+.topic-distribution-layout { display: flex; min-height: 210px; align-items: center; justify-content: space-evenly; gap: 18px; }
+.topic-donut { position: relative; display: grid; width: 170px; height: 170px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--topic-donut); }
+.topic-donut::before { position: absolute; width: 58%; height: 58%; border-radius: 50%; background: white; content: ""; }
+.topic-donut > span { z-index: 1; display: grid; color: var(--ink); font-size: 20px; font-weight: 800; text-align: center; }
+.topic-donut small { color: var(--muted); font-size: 9px; font-weight: 500; }
+.topic-distribution-legend { display: grid; min-width: 0; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.topic-distribution-legend li, .topic-legend-name { display: flex; align-items: center; gap: 8px; }
+.topic-distribution-legend li { justify-content: space-between; gap: 14px; color: var(--muted); font-size: 10px; }
+.topic-distribution-legend strong { color: var(--ink); }
+.topic-legend-name { min-width: 0; }
+.topic-legend-name i { width: 9px; height: 9px; flex: 0 0 auto; border-radius: 3px; background: var(--legend-color); }
 .badge-difficulty-easy { background: var(--green-soft); color: var(--green); }
 .badge-difficulty-medium { background: #fff3c4; color: #8a6500; }
 .badge-difficulty-hard { background: var(--red-soft); color: var(--red); }
@@ -416,6 +443,8 @@ button:disabled { opacity: .55; cursor: not-allowed; }
     .chart-topic { font-size: 7px; }
     .topic-grid { grid-template-columns: 1fr; }
     .setup-grid, .report-grid, .notes-layout { grid-template-columns: 1fr; }
+    .topic-distribution-layout { flex-direction: column; }
+    .topic-distribution-legend { width: 100%; }
     .setup-aside { min-height: 0; }
     .notes-topics { padding: 14px; }
     .note-topic-list { display: flex; overflow-x: auto; }
