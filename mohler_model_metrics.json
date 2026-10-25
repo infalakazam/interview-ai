@@ -1,29 +1,62 @@
 {
-  "dataset": "nkazi/MohlerASAG, cleaned/open_ended",
-  "rows": 2273,
-  "distinct_questions": 79,
-  "train_rows": 1830,
-  "test_rows": 443,
+  "datasets": {
+    "Mohler": "nkazi/MohlerASAG cleaned/open_ended; CC BY 4.0",
+    "SAF Communication Networks": "Short-Answer-Feedback/saf_communication_networks_english train + validation; CC BY 4.0; per-question score normalization",
+    "JorGPT English": "Zenodo record 18981627 dataset_en.csv; teacher grades only; grade 0-10 divided by 2; CC BY 4.0"
+  },
+  "rows_by_dataset": {
+    "JorGPT English": 3003,
+    "Mohler": 2203,
+    "SAF Communication Networks": 2096
+  },
+  "rows": 7302,
+  "distinct_questions": 155,
+  "train_rows": 5809,
+  "test_rows": 1493,
   "question_overlap": 0,
   "score_scale": "0-5",
-  "feature_pipeline": "TF-IDF word unigrams and bigrams over question, reference answer, and student answer",
+  "feature_pipeline": "TF-IDF word unigrams/bigrams over question, reference answer, and student answer",
   "model_comparison": {
     "Ridge Regression": {
-      "grouped_cv_mae_mean": 0.8969833252434132,
-      "grouped_cv_mae_std": 0.0797035826660228
+      "grouped_cv_mae_mean": 1.1307820643617168,
+      "grouped_cv_mae_std": 0.055533156947056836
     },
     "Linear Support Vector Regression": {
-      "grouped_cv_mae_mean": 0.8650213321988598,
-      "grouped_cv_mae_std": 0.07839348911725916
+      "grouped_cv_mae_mean": 1.0895181429408771,
+      "grouped_cv_mae_std": 0.0491569721970901
     },
-    "Extra Trees Regression": {
-      "grouped_cv_mae_mean": 0.9232818548964522,
-      "grouped_cv_mae_std": 0.06846361934823776
+    "Word + character Ridge Regression": {
+      "grouped_cv_mae_mean": 1.152150560448339,
+      "grouped_cv_mae_std": 0.05648490405766696
+    },
+    "Word + character Linear SVR": {
+      "grouped_cv_mae_mean": 1.114390800767262,
+      "grouped_cv_mae_std": 0.06194430809804545
     }
   },
   "selected_model": "Linear Support Vector Regression",
-  "holdout_mae": 0.7817003394559852,
-  "holdout_rmse": 1.010669520375561,
-  "holdout_r2": 0.014395678521521793,
-  "split": "GroupShuffleSplit by normalized question, test_size=0.2, random_state=42"
+  "holdout_mae": 0.9919895973656957,
+  "holdout_rmse": 1.2406595791574337,
+  "holdout_r2": 0.2838484670750633,
+  "holdout_metrics_by_dataset": {
+    "JorGPT English": {
+      "rows": 682,
+      "mae": 1.0920832347585825,
+      "rmse": 1.344382738609443,
+      "r2": 0.012397110538121203
+    },
+    "Mohler": {
+      "rows": 406,
+      "mae": 0.8018577466634483,
+      "rmse": 1.07506872047132,
+      "r2": -0.16279171657156155
+    },
+    "SAF Communication Networks": {
+      "rows": 405,
+      "mae": 1.0140381669537546,
+      "rmse": 1.2133140019098734,
+      "r2": 0.0639751754117035
+    }
+  },
+  "split": "GroupShuffleSplit by normalized question, test_size=0.2, random_state=42; 3-fold GroupKFold on training questions"
 }

@@ -71,7 +71,7 @@ def load_model() -> None:
             raise ValueError("Unsupported model artifact. Re-run train_mohler.py.")
         model = artifact["pipeline"]
         model_metadata = artifact
-        model_status = f"Mohler {artifact.get('selected_model', 'regression')} model loaded."
+        model_status = f"PrepAI {artifact.get('selected_model', 'regression')} model loaded."
     except Exception as error:
         model = None
         model_status = f"Model could not be loaded: {type(error).__name__}: {error}"
@@ -173,9 +173,10 @@ def score(payload: ScoreRequest) -> ScoreResponse:
         recommended_difficulty=recommend_difficulty(
             score_100, payload.current_difficulty, payload.recent_scores
         ),
-        method="mohler_tfidf_classical_ml",
+        method="multi_dataset_tfidf_classical_ml",
         note=(
-            "Supervised score estimate from traditional ML trained on Mohler short-answer data. "
+            "Supervised score estimate from traditional ML trained on Mohler, SAF communication-network, "
+            "and JorGPT computer-science answers with human grades. "
             "Accuracy on longer technical interview answers should be evaluated separately."
         ),
     )

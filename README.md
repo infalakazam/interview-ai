@@ -41,9 +41,9 @@ If you see “PrepAI cannot reach its API,” the black terminal window is close
 
 Sign-in gates the app interface and keeps browser history separate for each verified Google account. This prototype does not issue a persistent server session or sync the practice data to a database, so the account and its history are local to the browser.
 
-## Train the Mohler ML model
+## Train the short-answer ML model
 
-The scorer uses traditional ML, not deep learning: TF-IDF word unigram/bigram features with Ridge Regression, Linear Support Vector Regression, and Extra Trees Regression. The script compares these candidates with grouped cross-validation, reports a held-out test split grouped by question, selects the candidate with the best CV MAE, and writes a deployment artifact plus evaluation metrics.
+The scorer uses traditional ML, not deep learning: TF-IDF word unigram/bigram features with Ridge Regression and Linear Support Vector Regression. The trainer combines human-scored English examples from Mohler, the SAF Communication Networks dataset, and JorGPT. It normalizes their scores to 0–5 and splits by question so answers to the same question cannot appear in both training and the held-out test set.
 
 From this project folder in PowerShell:
 
@@ -53,11 +53,13 @@ py -m venv .venv
 .venv\Scripts\python.exe train_mohler.py
 ```
 
-Training downloads the cleaned open-ended MohlerASAG dataset. It creates `prepai_mohler_model.joblib` and `mohler_model_metrics.json` beside `questions.json`. The held-out MAE, RMSE, R², candidate CV scores, and split counts are recorded in the metrics file. The API uses the selected sklearn pipeline saved in the artifact.
+Training downloads the cleaned open-ended MohlerASAG dataset, the English SAF communication-networks set, and JorGPT's English-translated records. SAF uses its released training and validation partitions; its scores are normalized per question to account for documented score-scale inconsistencies. JorGPT contributes teacher grades only, converted from 0–10 to 0–5. Dataset licenses are CC BY 4.0; the trainer records the sources and row counts in `mohler_model_metrics.json`. It creates `prepai_mohler_model.joblib` and the metrics file beside `questions.json`. The metrics include grouped cross-validation and held-out MAE, RMSE, and R² overall and by dataset. The API uses the selected sklearn pipeline saved in the artifact.
+
+The source datasets are [MohlerASAG](https://huggingface.co/datasets/nkazi/MohlerASAG), [SAF Communication Networks](https://huggingface.co/datasets/Short-Answer-Feedback/saf_communication_networks_english), and [JorGPT on Zenodo](https://zenodo.org/records/18981627). Cite the original datasets if using this model in a report. Training requires internet access to download these sources; the datasets themselves are not copied into the project.
 
 For the Google Colab workflow, open `Mohler_Traditional_ML_Colab.ipynb`, upload `train_mohler.py` when prompted, run the cells, and download both generated files. Put the `.joblib` artifact beside `questions.json` to use that trained model locally. `Untitled4_ML_Models_Improved.ipynb` is an older exploratory experiment that uses a sentence-transformer; it is not part of the deployed scoring path.
 
-The training data is Mohler short-answer grading data, so its predictions are not guaranteed to transfer well to long technical interview answers. Report the held-out metrics and treat them as a dataset-specific result.
+These are educational short-answer datasets, not interview-answer datasets. The grouped holdout is useful evidence about unseen course questions but does not prove accuracy on long interview answers; treat every displayed score as an estimate and report the held-out metrics with that limitation.
 
 ## Start the scoring API later
 

@@ -243,6 +243,37 @@ function renderProgressBars(items, includeCount = false) {
     return items.map(item => `<div class="progress-row"><div class="progress-label"><span>${escapeHTML(item.name)}</span><strong>${item.score}%${includeCount ? ` · ${item.count} answers` : ""}</strong></div><div class="progress-track" role="img" aria-label="${escapeHTML(item.name)}: ${item.score}%"><span style="width:${Math.max(0, Math.min(100, item.score))}%"></span></div></div>`).join("");
 }
 
+function getRevisionItems() {
+    const attempts = new Map();
+    getHistory().forEach(session => session.answers.forEach(answer => {
+        if (answer.skipped || !answer.question) return;
+        const key = String(answer.questionId ?? answer.question);
+        const list = attempts.get(key) || [];
+        list.push({ ...answer, date: session.date });
+        attempts.set(key, list);
+    }));
+    return [...attempts.values()].map(list => {
+        const latest = list.sort((a, b) => Date.parse(b.date || 0) - Date.parse(a.date || 0))[0];
+        return { ...latest, attempts: list.length };
+    }).filter(answer => Number.isFinite(Number(answer.score)))
+        .sort((a, b) => Number(a.score) - Number(b.score) || Date.parse(b.date || 0) - Date.parse(a.date || 0))
+        .slice(0, 5);
+}
+
+function renderRevisionPlan() {
+    const items = getRevisionItems();
+    if (!items.length) return `<p class="body-copy">Finish a practice session and your lowest scoring answers will appear here as a focused review plan.</p>`;
+    return `<p class="body-copy">Start with your lowest recent estimates. Revisit the reference answer, then try the topic again.</p><div class="revision-list">${items.map(item => `<article class="revision-item"><div><span class="badge">${escapeHTML(item.topic || "General")}</span> <span class="badge badge-soft">${Number(item.score)}% latest · ${item.attempts} attempt${item.attempts === 1 ? "" : "s"}</span><h3>${escapeHTML(item.question)}</h3><p class="muted small-note">${item.matchedConcepts?.length ? `Covered: ${item.matchedConcepts.map(escapeHTML).join(", ")}.` : "Review the reference answer and key concepts."}</p><details><summary>Review reference answer</summary><p class="body-copy">${escapeHTML(item.referenceAnswer || "No reference answer is available.")}</p></details></div><a class="button button-secondary" href="start-practice.html?topic=${encodeURIComponent(item.topic || "")}">Practice topic</a></article>`).join("")}</div>`;
+}
+
+function renderAnswerHistory() {
+    const attempts = getHistory().flatMap(session => session.answers.map(answer => ({ ...answer, date: session.date })))
+        .filter(answer => !answer.skipped && answer.question)
+        .sort((a, b) => Date.parse(b.date || 0) - Date.parse(a.date || 0));
+    if (!attempts.length) return `<p class="body-copy">Your saved answers will appear here after you complete a session.</p>`;
+    return `<div class="feedback-list">${attempts.slice(0, 30).map((answer, index) => `<details class="answer-history-item"><summary><span>${escapeHTML(answer.question)}</span><span class="badge">${Number(answer.score) || 0}%</span></summary><p class="muted small-note">${escapeHTML(answer.topic || "General")} · ${answer.date && Number.isFinite(Date.parse(answer.date)) ? new Date(answer.date).toLocaleString() : "Saved attempt"} · ${answer.method === "ml_model" ? "ML model estimate" : "keyword estimate"}</p><p><strong>Your answer</strong><br>${escapeHTML(answer.answer || "No answer text saved.")}</p><p><strong>Reference answer</strong><br>${escapeHTML(answer.referenceAnswer || "No reference answer is available.")}</p>${answer.concepts?.length ? `<p><strong>Key concepts</strong><br>${answer.concepts.map(concept => `<span class="concept-chip ${answer.matchedConcepts?.includes(concept) ? "matched" : "missing"}">${escapeHTML(concept)}</span>`).join(" ")}</p>` : ""}</details>`).join("")}</div>`;
+}
+
 function renderDashboard() {
     const stats = getStats();
     const history = getHistory();
@@ -318,7 +349,8 @@ function renderReport() {
     return `${renderHeader("YOUR HISTORY", "Performance report", "Review results saved in this browser.", '<button class="button button-secondary" id="export-report" type="button">↓ Export report</button>')}
         <section class="stats-grid">${renderStat("▤", "Saved sessions", stats.sessions, "Latest 100 sessions are retained", "blue")}${renderStat("✎", "Questions answered", stats.questions, "From saved sessions", "purple")}${renderStat("✓", "Strong answers", stats.strong, "Estimate of 60% or more", "green")}${renderStat("◉", "Average estimate", `${stats.average}%`, "Keyword coverage estimate", "amber")}</section>
         <section class="report-grid"><article class="card"><div class="section-heading"><div><p class="eyebrow">TOPIC BREAKDOWN</p><h2>Average score estimate</h2></div></div>${performance.length ? renderProgressBars(performance, true) : renderEmpty("No score history yet. Finish a session to build your report.")}</article><article class="card"><p class="eyebrow">HOW TO READ THIS</p><h2>Scores are estimates</h2><p class="body-copy">The current built-in fallback checks for key concepts and words from a reference answer. It does not understand meaning. If the ML API is configured, its result will be identified separately.</p></article></section>
-        <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">HISTORY</p><h2>Recent sessions</h2></div></div>${renderSessionList(getHistory())}</article>`;
+        <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">HISTORY</p><h2>Recent sessions</h2></div></div>${renderSessionList(getHistory())}</article>
+        <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">ANSWER HISTORY</p><h2>Review past answers</h2></div></div>${renderAnswerHistory()}</article>`;
 }
 
 function renderGaps() {
@@ -332,7 +364,7 @@ function renderGaps() {
     return `${renderHeader("PRACTICE REFLECTION", "Skill gaps", "These are practice trends, not a definitive measure of ability.")}
         ${lowEvidence.length ? `<article class="notice notice-info"><strong>More practice data is needed.</strong> ${lowEvidence.map(item => `${escapeHTML(item.name)} has ${item.count} answer(s); we use at least five answers before calling a topic a trend.`).join(" ")}</article>` : ""}
         <section class="report-grid"><article class="card"><p class="eyebrow">REVIEW FIRST</p><h2>Lower current estimates</h2>${reviewTopics.length ? renderProgressBars(reviewTopics, true) : `<p class="body-copy">No topic with enough answers is currently below the review threshold.</p>`}</article><article class="card"><p class="eyebrow">CURRENT STRENGTHS</p><h2>Topics going well</h2>${strongTopics.length ? renderProgressBars(strongTopics, true) : `<p class="body-copy">More practice is needed before identifying higher-scoring topics.</p>`}</article></section>
-        <article class="card section-card"><h2>Suggested next step</h2><p class="body-copy">Use lower estimates as a prompt to revisit questions and reference answers. The scoring method is a rough text comparison, so review your answers yourself too.</p><a class="button" href="start-practice.html">Practice a topic</a></article>`;
+        <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">PERSONALIZED REVIEW</p><h2>Your revision plan</h2></div></div>${renderRevisionPlan()}<p class="muted small-note">Scores are rough estimates. Use your judgment when reviewing answers.</p></article>`;
 }
 
 function renderProfile() {
