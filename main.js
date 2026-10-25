@@ -23,7 +23,11 @@ const STORAGE = {
     lastFeedback: `iqLastFeedback_${ACCOUNT_SCOPE}`
 };
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = window.PREPAI_API_BASE || (
+    location.hostname === "localhost" || location.hostname === "127.0.0.1"
+        ? "http://127.0.0.1:8000"
+        : ""
+);
 const page = document.body.dataset.page || "dashboard";
 const app = document.getElementById("app");
 const questionBank = [];

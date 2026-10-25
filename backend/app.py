@@ -8,6 +8,7 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
@@ -23,6 +24,15 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )
+
+# Serve only the public frontend assets when deployed as a single Render web
+# service. An explicit allowlist prevents exposing .env, .git, or source files.
+PUBLIC_ASSETS = {
+    "index.html", "login.html", "start-practice.html", "practice-by-topic.html",
+    "practice-session.html", "feedback.html", "question-bank.html", "short-notes.html",
+    "performance-report.html", "skill-gaps.html", "profile-settings.html",
+    "login.js", "main.js", "style.css", "questions.json", "README.md",
+}
 
 
 class ScoreRequest(BaseModel):
@@ -169,3 +179,15 @@ def score(payload: ScoreRequest) -> ScoreResponse:
             "Accuracy on longer technical interview answers should be evaluated separately."
         ),
     )
+
+
+@app.get("/", include_in_schema=False)
+def serve_home() -> FileResponse:
+    return FileResponse(ROOT / "login.html")
+
+
+@app.get("/{asset_path:path}", include_in_schema=False)
+def serve_frontend_asset(asset_path: str) -> FileResponse:
+    if asset_path not in PUBLIC_ASSETS:
+        raise HTTPException(status_code=404, detail="Not found")
+    return FileResponse(ROOT / asset_path)

@@ -16,6 +16,18 @@ PrepAI is a browser-based interview practice app. Students choose a topic and se
 
 Run the frontend with VS Code Live Server (starting at `index.html`) or another local web server. Opening HTML directly can prevent the browser from loading `questions.json`. After Google verifies the sign-in, each account's display name and practice history are stored separately in that browser's `localStorage`; there is no remote user database or synchronization across browsers.
 
+## Deploy online with Render
+
+The included `render.yaml` deploys the frontend and API together as one Render web service. Once deployed, visitors can open the Render URL without running Live Server or starting the API on their own computers. Their practice history remains in each browser's local storage; this deployment does not add a shared database.
+
+1. In the project folder, run `git rm --cached .env` once before committing. This removes the already-tracked `.env` from Git while keeping the local file. Then commit and push the project, including `render.yaml`, to GitHub. Do not commit `.env`; enter the Google Web Client ID as a Render environment variable instead.
+2. In Render, choose **New > Blueprint**, connect the GitHub repository, and apply the `render.yaml` configuration. When prompted, set `GOOGLE_CLIENT_ID` to your Google OAuth **Web Client ID** (not a client secret).
+3. Wait for the first deploy to finish and copy the service's `https://…onrender.com` URL.
+4. In Google Cloud Console, open that OAuth client's **Authorized JavaScript origins** and add the Render origin, with no path (for example, `https://prepai-interviewiq.onrender.com`). If the OAuth consent screen is in testing mode, add each person who needs to sign in as a test user.
+5. Open the Render URL. The service serves the login page, frontend assets, and API from the same origin. You do not need to run `Start PrepAI API.bat` or Live Server for the hosted version.
+
+For local development, keep using the setup below. The code automatically uses the local API when the frontend is opened from `localhost` or `127.0.0.1`, and uses the same origin when hosted.
+
 ## First-time Google login setup
 
 You do not need to understand or write backend code. The backend is a small PrepAI program that runs in a terminal while you use the site. Google requires a one-time Web Client ID before it will show the real sign-in button.

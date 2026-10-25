@@ -1,5 +1,9 @@
 const AUTH_STORAGE_KEY = "prepai_google_user";
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = window.PREPAI_API_BASE || (
+    location.hostname === "localhost" || location.hostname === "127.0.0.1"
+        ? "http://127.0.0.1:8000"
+        : ""
+);
 const ALLOWED_DESTINATIONS = new Set([
     "index.html", "start-practice.html", "practice-by-topic.html", "practice-session.html",
     "feedback.html", "question-bank.html", "short-notes.html", "performance-report.html",
@@ -89,7 +93,7 @@ async function initializeLogin() {
         showLoginMessage("Use your Google account to continue.");
     } catch (error) {
         if (error instanceof TypeError) {
-            showLoginMessage("PrepAI cannot reach its API at 127.0.0.1:8000. Start the API in a separate terminal, keep it open, then reload this page.", "error");
+            showLoginMessage("PrepAI cannot reach its API. Start the API and reload this page.", "error");
         } else {
             showLoginMessage(error.message || "Sign-in is unavailable. Follow the setup instructions and try again.", "error");
         }
