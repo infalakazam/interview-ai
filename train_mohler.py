@@ -1,8 +1,7 @@
-"""Train and export PrepAI's classical ML short-answer scorer.
+"""Train and export PrepAI's classical ML Mohler answer scorer.
 
-Combines comparable English computer-science answer-grading datasets, compares
-traditional regressors with grouped cross-validation, reports an untouched
-question-group holdout, then fits the selected pipeline on all rows.
+Compares three traditional regressors with grouped cross-validation, reports an
+untouched question-group holdout, then fits the selected pipeline on all rows.
 """
 
 from __future__ import annotations
@@ -20,10 +19,7 @@ from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import GroupKFold, GroupShuffleSplit, cross_val_score
 from sklearn.pipeline import FeatureUnion, Pipeline
-<<<<<<< HEAD
-=======
 from sklearn.preprocessing import FunctionTransformer, StandardScaler
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
 from sklearn.svm import LinearSVR
 from backend.model_features import (
     answer_pair_text,
@@ -47,76 +43,50 @@ def compose_text(question: str, reference: str, answer: str) -> str:
     return f"Question: {question}\nReference answer: {reference}\nStudent answer: {answer}"
 
 
-<<<<<<< HEAD
 def clean_text_column(values: pd.Series) -> pd.Series:
     return values.fillna("").astype(str).str.replace("<br>", " ", regex=False).str.strip()
 
 
 def load_training_data() -> pd.DataFrame:
-    """Load only human-scored examples with usable question/reference/answer text."""
+    """Load human-scored Mohler, SAF, and JorGPT answer examples."""
     moh = load_dataset(DATASET_NAME, name="cleaned", split="open_ended").to_pandas()
-    moh = moh.rename(columns={"instructor_answer": "reference_answer", "student_answer": "answer", "score_avg": "score"})
-    moh = moh[["question", "reference_answer", "answer", "score"]].copy()
+    moh = moh.rename(columns={"instructor_answer": "reference_answer", "student_answer": "student_answer", "score_avg": "score"})
+    moh = moh[["question", "reference_answer", "student_answer", "score"]].copy()
     moh["source"] = "Mohler"
 
     saf_splits = load_dataset(SAF_DATASET)
-    saf = pd.concat(
-        [saf_splits[split].to_pandas() for split in ("train", "validation") if split in saf_splits],
-        ignore_index=True,
-    )
-    # SAF has score-scale inconsistencies across questions. Normalize within
-    # each question using the maximum in the released training/validation rows.
-    saf = saf.rename(columns={"provided_answer": "answer"})
+    saf_parts = [saf_splits[name].to_pandas() for name in ("train", "validation") if name in saf_splits]
+    if not saf_parts:
+        raise ValueError("The SAF dataset did not provide train or validation rows.")
+    saf = pd.concat(saf_parts, ignore_index=True).rename(columns={"provided_answer": "student_answer"})
     saf["score"] = pd.to_numeric(saf["score"], errors="coerce")
-    saf["question_max"] = saf.groupby("question")["score"].transform("max")
-    saf["score"] = (saf["score"] / saf["question_max"].replace(0, np.nan)) * 5.0
-    saf = saf[["question", "reference_answer", "answer", "score"]].copy()
+    question_max = saf.groupby("question")["score"].transform("max")
+    saf["score"] = (saf["score"] / question_max.replace(0, np.nan)) * 5.0
+    saf = saf[["question", "reference_answer", "student_answer", "score"]].copy()
     saf["source"] = "SAF Communication Networks"
 
     jorgpt = load_dataset("csv", data_files=JORGPT_CSV, split="train").to_pandas()
-    jorgpt = jorgpt.rename(columns={"question_text": "question", "student_answer": "answer", "ideal_answer": "reference_answer"})
+    jorgpt = jorgpt.rename(columns={"question_text": "question", "student_answer": "student_answer", "ideal_answer": "reference_answer"})
     jorgpt["score"] = pd.to_numeric(jorgpt["teacher_grade"], errors="coerce") / 2.0
-    jorgpt = jorgpt[["question", "reference_answer", "answer", "score"]].copy()
+    jorgpt = jorgpt[["question", "reference_answer", "student_answer", "score"]].copy()
     jorgpt["source"] = "JorGPT English"
 
     frame = pd.concat([moh, saf, jorgpt], ignore_index=True)
-    for column in ("question", "reference_answer", "answer"):
+    for column in ("question", "reference_answer", "student_answer"):
         frame[column] = clean_text_column(frame[column])
     frame["score"] = pd.to_numeric(frame["score"], errors="coerce")
     frame = frame[
         frame["question"].ne("")
         & frame["reference_answer"].ne("")
-        & frame["answer"].ne("")
+        & frame["student_answer"].ne("")
         & frame["score"].between(0, 5)
-    ].drop_duplicates(subset=["question", "reference_answer", "answer", "score"]).reset_index(drop=True)
+    ].drop_duplicates(subset=["question", "reference_answer", "student_answer", "score"])
+    frame = frame.reset_index(drop=True)
     if frame.empty:
         raise ValueError("No usable answer-grading examples were loaded.")
     return frame
 
 
-def build_pipeline(regressor, include_char_ngrams: bool = False) -> Pipeline:
-    word_features = TfidfVectorizer(
-        lowercase=True,
-        strip_accents="unicode",
-        stop_words="english",
-        ngram_range=(1, 2),
-        max_features=8000,
-        sublinear_tf=True,
-    )
-    features = word_features
-    if include_char_ngrams:
-        features = FeatureUnion([
-            ("word", word_features),
-            ("char", TfidfVectorizer(
-                analyzer="char_wb", lowercase=True, ngram_range=(3, 5),
-                min_df=2, max_features=12000, sublinear_tf=True,
-            )),
-        ])
-    return Pipeline(
-        [
-            ("tfidf", features),
-            ("regressor", regressor),
-=======
 BASELINE_NAME = "Baseline TF-IDF + LinearSVR"
 
 
@@ -136,7 +106,6 @@ def build_baseline_pipeline(regressor=None) -> Pipeline:
                 ),
             ),
             ("regressor", regressor or LinearSVR(C=0.5, epsilon=0.1, random_state=42, max_iter=20000)),
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
         ]
     )
 
@@ -191,76 +160,31 @@ def build_hybrid_pipeline(regressor) -> Pipeline:
 
 def model_candidates() -> dict[str, Pipeline]:
     return {
-<<<<<<< HEAD
-        "Ridge Regression": Ridge(alpha=2.0),
-        "Linear Support Vector Regression": LinearSVR(C=0.5, epsilon=0.1, random_state=42, max_iter=3000, tol=1e-3),
-        "Word + character Ridge Regression": (Ridge(alpha=2.0), True),
-        "Word + character Linear SVR": (LinearSVR(C=0.5, epsilon=0.1, random_state=42, max_iter=3000, tol=1e-3), True),
-=======
         BASELINE_NAME: build_baseline_pipeline(),
         "Hybrid Ridge (alpha=0.5)": build_hybrid_pipeline(Ridge(alpha=0.5)),
         "Hybrid Ridge (alpha=2.0)": build_hybrid_pipeline(Ridge(alpha=2.0)),
         "Hybrid LinearSVR (C=0.25)": build_hybrid_pipeline(LinearSVR(C=0.25, epsilon=0.08, random_state=42, max_iter=20000)),
         "Hybrid LinearSVR (C=0.75)": build_hybrid_pipeline(LinearSVR(C=0.75, epsilon=0.08, random_state=42, max_iter=20000)),
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     }
 
 
 def main() -> None:
-<<<<<<< HEAD
     frame = load_training_data()
-    texts = [
-        compose_text(question, reference, answer)
-        for question, reference, answer in zip(
-            frame["question"], frame["reference_answer"], frame["answer"]
-        )
-    ]
     target = frame["score"].astype(float).to_numpy()
-=======
-    dataset = load_dataset(DATASET_NAME, name="cleaned", split="open_ended")
-    frame = dataset.to_pandas()[
-        ["question", "instructor_answer", "student_answer", "score_avg"]
-    ].copy()
-    frame = frame.rename(columns={"instructor_answer": "reference_answer"})
-    for column in ["question", "reference_answer", "student_answer"]:
-        frame[column] = frame[column].fillna("").astype(str).str.strip()
-    frame = frame[
-        (frame["question"] != "")
-        & (frame["reference_answer"] != "")
-        & (frame["student_answer"] != "")
-        & frame["score_avg"].notna()
-    ].reset_index(drop=True)
-    if frame.empty:
-        raise ValueError("No usable open-ended Mohler rows were loaded.")
-
-    target = frame["score_avg"].astype(float).to_numpy()
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     if target.min() < 0 or target.max() > 5:
         raise ValueError(f"Expected normalized training scores on a 0-5 scale; observed {target.min()} to {target.max()}.")
 
     groups = frame["question"].map(normalize_group).to_numpy()
     split = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
-<<<<<<< HEAD
-    train_idx, test_idx = next(split.split(texts, target, groups))
-    cv_splits = min(3, len(np.unique(groups[train_idx])))
-=======
     train_idx, test_idx = next(split.split(frame, target, groups))
     cv_splits = min(5, len(np.unique(groups[train_idx])))
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     if cv_splits < 2:
         raise ValueError("Not enough distinct questions for grouped model selection.")
     cv = GroupKFold(n_splits=cv_splits)
 
     comparisons = {}
-<<<<<<< HEAD
-    for name, candidate in model_candidates().items():
-        print(f"Evaluating {name} with {cv_splits}-fold question-grouped validation…", flush=True)
-        regressor, include_char_ngrams = candidate if isinstance(candidate, tuple) else (candidate, False)
-        pipeline = build_pipeline(regressor, include_char_ngrams)
-=======
     candidates = model_candidates()
     for name, pipeline in candidates.items():
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
         negative_mae = cross_val_score(
             pipeline,
             frame.iloc[train_idx],
@@ -269,7 +193,6 @@ def main() -> None:
             cv=cv,
             scoring="neg_mean_absolute_error",
             n_jobs=1,
-            verbose=2,
         )
         comparisons[name] = {
             "grouped_cv_mae_mean": float(-negative_mae.mean()),
@@ -277,27 +200,6 @@ def main() -> None:
         }
 
     selected_name = min(comparisons, key=lambda key: comparisons[key]["grouped_cv_mae_mean"])
-<<<<<<< HEAD
-    selected_candidate = model_candidates()[selected_name]
-    selected_regressor, selected_char_ngrams = selected_candidate if isinstance(selected_candidate, tuple) else (selected_candidate, False)
-    selected = build_pipeline(selected_regressor, selected_char_ngrams)
-    train_texts = [texts[i] for i in train_idx]
-    test_texts = [texts[i] for i in test_idx]
-    selected.fit(train_texts, target[train_idx])
-    predictions = np.clip(selected.predict(test_texts), 0, 5)
-    holdout_by_dataset = {}
-    test_sources = frame.iloc[test_idx]["source"].to_numpy()
-    for source in sorted(set(test_sources)):
-        source_mask = test_sources == source
-        source_target = target[test_idx][source_mask]
-        source_predictions = predictions[source_mask]
-        holdout_by_dataset[source] = {
-            "rows": int(source_mask.sum()),
-            "mae": float(mean_absolute_error(source_target, source_predictions)),
-            "rmse": float(np.sqrt(mean_squared_error(source_target, source_predictions))),
-            "r2": float(r2_score(source_target, source_predictions)) if len(source_target) > 1 else None,
-        }
-=======
     test_frame = frame.iloc[test_idx]
     baseline = model_candidates()[BASELINE_NAME]
     baseline.fit(frame.iloc[train_idx], target[train_idx])
@@ -315,11 +217,10 @@ def main() -> None:
         "rmse": float(np.sqrt(mean_squared_error(target[test_idx], predictions))),
         "r2": float(r2_score(target[test_idx], predictions)),
     }
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     metrics = {
         "datasets": {
-            "Mohler": "nkazi/MohlerASAG cleaned/open_ended; CC BY 4.0",
-            "SAF Communication Networks": "Short-Answer-Feedback/saf_communication_networks_english train + validation; CC BY 4.0; per-question score normalization",
+            "Mohler": f"{DATASET_NAME} cleaned/open_ended; CC BY 4.0",
+            "SAF Communication Networks": f"{SAF_DATASET} train + validation; CC BY 4.0; per-question score normalization",
             "JorGPT English": "Zenodo record 18981627 dataset_en.csv; teacher grades only; grade 0-10 divided by 2; CC BY 4.0",
         },
         "rows_by_dataset": {str(name): int(count) for name, count in frame["source"].value_counts().items()},
@@ -329,20 +230,6 @@ def main() -> None:
         "test_rows": int(len(test_idx)),
         "question_overlap": int(len(set(groups[train_idx]) & set(groups[test_idx]))),
         "score_scale": "0-5",
-<<<<<<< HEAD
-        "feature_pipeline": "TF-IDF word unigrams/bigrams" + (" plus character 3-5-grams" if selected_char_ngrams else "") + " over question, reference answer, and student answer",
-        "model_comparison": comparisons,
-        "selected_model": selected_name,
-        "holdout_mae": float(mean_absolute_error(target[test_idx], predictions)),
-        "holdout_rmse": float(np.sqrt(mean_squared_error(target[test_idx], predictions))),
-        "holdout_r2": float(r2_score(target[test_idx], predictions)),
-        "holdout_metrics_by_dataset": holdout_by_dataset,
-        "split": f"GroupShuffleSplit by normalized question, test_size=0.2, random_state=42; {cv_splits}-fold GroupKFold on training questions",
-    }
-
-    deployment_model = build_pipeline(selected_regressor, selected_char_ngrams)
-    deployment_model.fit(texts, target)
-=======
         "feature_pipeline": "Combined and answer-pair word TF-IDF, character n-grams, and explicit answer-reference overlap/length features",
         "model_comparison": comparisons,
         "selected_model": selected_name,
@@ -356,7 +243,6 @@ def main() -> None:
 
     deployment_model = model_candidates()[selected_name]
     deployment_model.fit(frame, target)
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
     joblib.dump(
         {
             "pipeline": deployment_model,

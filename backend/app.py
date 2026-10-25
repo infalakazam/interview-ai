@@ -32,6 +32,7 @@ PUBLIC_ASSETS = {
     "index.html", "login.html", "start-practice.html", "practice-by-topic.html",
     "practice-session.html", "feedback.html", "question-bank.html", "short-notes.html",
     "performance-report.html", "skill-gaps.html", "profile-settings.html",
+    "mock-interview.html", "prepare.html", "topic-notes.html",
     "login.js", "main.js", "style.css", "questions.json", "README.md",
 }
 
@@ -234,14 +235,9 @@ def score(payload: ScoreRequest) -> ScoreResponse:
         ),
         method="multi_dataset_tfidf_classical_ml",
         note=(
-<<<<<<< HEAD
-            "Supervised score estimate from traditional ML trained on Mohler, SAF communication-network, "
-            "and JorGPT computer-science answers with human grades. "
-            "Accuracy on longer technical interview answers should be evaluated separately."
-=======
             "ML estimate with a relevance check against the reference answer and key concepts. "
-            "Technical paraphrases can still need human review."
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
+            "The model was trained on Mohler, SAF communication-network, and JorGPT answers; "
+            "technical paraphrases can still need human review."
         ),
     )
 

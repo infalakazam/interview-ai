@@ -43,13 +43,10 @@ Sign-in gates the app interface and keeps browser history separate for each veri
 
 ## Train the short-answer ML model
 
-<<<<<<< HEAD
 The scorer uses traditional ML, not deep learning: TF-IDF word unigram/bigram features with Ridge Regression and Linear Support Vector Regression. The trainer combines human-scored English examples from Mohler, the SAF Communication Networks dataset, and JorGPT. It normalizes their scores to 0–5 and splits by question so answers to the same question cannot appear in both training and the held-out test set.
-=======
-The scorer uses traditional ML, not deep learning. Training now compares the previous TF-IDF + LinearSVR baseline with hybrid Ridge and LinearSVR pipelines that add word and character n-grams plus explicit answer/reference coverage and length features. Grouped cross-validation and a held-out split keep questions separate between training and evaluation. The script selects the lowest-CV-MAE candidate and records its held-out metrics beside the baseline metrics. Deploy the new artifact only after the metrics show an improvement; the API continues to support the existing v2 artifact until then.
+Training compares a TF-IDF + LinearSVR baseline with hybrid Ridge and LinearSVR pipelines that add word and character n-grams plus explicit answer/reference coverage and length features. Grouped cross-validation and a held-out split keep questions separate between training and evaluation. The script selects the lowest-CV-MAE candidate and records its held-out metrics beside the baseline metrics.
 
 The API also applies a relevance guard after model prediction. It checks meaningful word overlap with the reference and coverage of supplied key concepts, then caps scores when both signals indicate that an answer is unrelated. This reduces false positives from fluent but off-topic responses; lexical checks can still miss valid paraphrases, so scores remain estimates.
->>>>>>> 0d26d952f3512e269d6c2d56ec106ff4b7e9095d
 
 From this project folder in PowerShell:
 

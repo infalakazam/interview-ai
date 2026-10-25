@@ -737,16 +737,11 @@ function renderReport() {
     const incorrect = answered.length - correct;
     const accuracy = answered.length ? Math.round(correct / answered.length * 100) : 0;
     return `${renderHeader("YOUR HISTORY", "Performance report", "Review results saved in this browser.", '<button class="button button-secondary" id="export-report" type="button">↓ Export report</button>')}
-<<<<<<< HEAD
-        <section class="stats-grid">${renderStat("▤", "Saved sessions", stats.sessions, "Latest 100 sessions are retained", "blue")}${renderStat("✎", "Questions answered", stats.questions, "From saved sessions", "purple")}${renderStat("✓", "Strong answers", stats.strong, "Estimate of 60% or more", "green")}${renderStat("◉", "Average estimate", `${stats.average}%`, "Keyword coverage estimate", "amber")}</section>
-        <section class="report-grid"><article class="card"><div class="section-heading"><div><p class="eyebrow">TOPIC BREAKDOWN</p><h2>Average score estimate</h2></div></div>${performance.length ? renderProgressBars(performance, true) : renderEmpty("No score history yet. Finish a session to build your report.")}</article><article class="card"><p class="eyebrow">HOW TO READ THIS</p><h2>Scores are estimates</h2><p class="body-copy">The current built-in fallback checks for key concepts and words from a reference answer. It does not understand meaning. If the ML API is configured, its result will be identified separately.</p></article></section>
-        <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">HISTORY</p><h2>Recent sessions</h2></div></div>${renderSessionList(getHistory())}</article>
-        <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">ANSWER HISTORY</p><h2>Review past answers</h2></div></div>${renderAnswerHistory()}</article>`;
-=======
         <section class="stats-grid report-summary-grid">${renderStat("▤", "Questions answered", answered.length, "Across your saved sessions", "blue")}${renderStat("✓", "Correct", correct, "Score estimate of 60% or higher", "green")}${renderStat("×", "Incorrect", incorrect, "Score estimate below 60%", "red")}${renderStat("◉", "Accuracy", `${accuracy}%`, "Correct answers ÷ answered questions", "purple")}</section>
         <section class="report-grid report-visuals"><article class="card"><div class="section-heading"><div><p class="eyebrow">ACCURACY TREND</p><h2>Recent practice</h2></div></div>${renderAccuracyTrend()}</article><article class="card"><div class="section-heading"><div><p class="eyebrow">TOPIC DISTRIBUTION</p><h2>Questions by topic</h2></div></div>${renderTopicDistribution(answered)}</article></section>
-        <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">HISTORY</p><h2>Recent sessions</h2></div></div>${renderSessionList(getHistory())}</article>`;
->>>>>>> b2d88b2a356611edbe61e21cfd6837a2e31492c6
+        <section class="report-grid"><article class="card"><div class="section-heading"><div><p class="eyebrow">TOPIC PERFORMANCE</p><h2>Average score estimate</h2></div></div>${getTopicPerformance().length ? renderProgressBars(getTopicPerformance(), true) : renderEmpty("No score history yet. Finish a session to build your report.")}</article><article class="card"><p class="eyebrow">HOW TO READ THIS</p><h2>Scores are estimates</h2><p class="body-copy">Scores are estimates based on answer coverage and model predictions. Review answers and use your judgment, especially for technical paraphrases.</p></article></section>
+        <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">HISTORY</p><h2>Recent sessions</h2></div></div>${renderSessionList(getHistory())}</article>
+        <article class="card section-card"><div class="section-heading"><div><p class="eyebrow">ANSWER HISTORY</p><h2>Review past answers</h2></div></div>${renderAnswerHistory()}</article>`;
 }
 
 function renderGaps() {
