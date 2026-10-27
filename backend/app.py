@@ -2,12 +2,19 @@
 
 from __future__ import annotations
 
+import base64
+from datetime import datetime
+import hashlib
+import hmac
+import json
+import binascii
 from pathlib import Path
 import os
 import re
+import time
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from dotenv import load_dotenv
@@ -17,13 +24,17 @@ ROOT = Path(__file__).resolve().parent.parent
 ARTIFACT_PATH = ROOT / "prepai_mohler_model.joblib"
 load_dotenv(ROOT / ".env")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "").strip()
+DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = "postgresql://" + DATABASE_URL[len("postgres://"):]
+SESSION_SECRET = os.getenv("SESSION_SECRET", "").strip()
 
 app = FastAPI(title="PrepAI Mohler scoring API", version="2.0.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 # Serve only the public frontend assets when deployed as a single Render web
@@ -53,6 +64,20 @@ class ScoreResponse(BaseModel):
     recommended_difficulty: str
     method: str
     note: str
+
+
+class PracticeSessionRecord(BaseModel):
+    id: str = Field(min_length=1, max_length=128)
+    topic: str = Field(default="", max_length=200)
+    difficulty: str = Field(default="", max_length=40)
+    mode: str = Field(default="practice", max_length=40)
+    role: str = Field(default="", max_length=200)
+    date: datetime
+    answers: list[dict[str, Any]] = Field(default_factory=list, max_length=100)
+
+
+class PracticeHistorySync(BaseModel):
+    sessions: list[PracticeSessionRecord] = Field(default_factory=list, max_length=100)
 
 
 model: Any | None = None
@@ -88,6 +113,88 @@ def load_model() -> None:
 load_model()
 
 
+def _token_segment(value: bytes) -> str:
+    return base64.urlsafe_b64encode(value).decode("ascii").rstrip("=")
+
+
+def create_session_token(sub: str, email: str, name: str) -> str:
+    if not SESSION_SECRET:
+        return ""
+    payload = _token_segment(json.dumps({
+        "sub": sub,
+        "email": email,
+        "name": name,
+        "exp": int(time.time()) + 60 * 60 * 24 * 7,
+    }, separators=(",", ":")).encode("utf-8"))
+    signature = hmac.new(SESSION_SECRET.encode("utf-8"), payload.encode("ascii"), hashlib.sha256).digest()
+    return f"{payload}.{_token_segment(signature)}"
+
+
+def authenticated_user(authorization: str | None) -> dict[str, str]:
+    if not authorization or not authorization.startswith("Bearer ") or not SESSION_SECRET:
+        raise HTTPException(status_code=401, detail="Sign in again to sync your practice history.")
+    try:
+        payload, signature = authorization[7:].split(".", 1)
+        expected = hmac.new(SESSION_SECRET.encode("utf-8"), payload.encode("ascii"), hashlib.sha256).digest()
+        supplied = base64.urlsafe_b64decode(signature + "=" * (-len(signature) % 4))
+        if not hmac.compare_digest(expected, supplied):
+            raise ValueError("Invalid signature")
+        decoded = base64.urlsafe_b64decode(payload + "=" * (-len(payload) % 4))
+        user = json.loads(decoded)
+        if not user.get("sub") or int(user.get("exp", 0)) <= int(time.time()):
+            raise ValueError("Expired session")
+        return {
+            "sub": str(user["sub"]),
+            "email": str(user.get("email", "")),
+            "name": str(user.get("name", "")),
+        }
+    except (ValueError, TypeError, KeyError, json.JSONDecodeError, binascii.Error) as error:
+        raise HTTPException(status_code=401, detail="Your sign-in expired. Sign in again to sync history.") from error
+
+
+def connect_database():
+    if not DATABASE_URL:
+        raise HTTPException(status_code=503, detail="PostgreSQL is not configured; browser history is still available.")
+    try:
+        import psycopg
+
+        return psycopg.connect(DATABASE_URL)
+    except Exception as error:
+        raise HTTPException(status_code=503, detail="PostgreSQL is unavailable; browser history is still available.") from error
+
+
+def ensure_database_schema(connection: Any) -> None:
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS prepai_users (
+            google_sub TEXT PRIMARY KEY,
+            email TEXT NOT NULL,
+            display_name TEXT NOT NULL,
+            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+            updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        )
+    """)
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS practice_sessions (
+            google_sub TEXT NOT NULL REFERENCES prepai_users(google_sub) ON DELETE CASCADE,
+            session_id TEXT NOT NULL,
+            session_date TIMESTAMPTZ NOT NULL,
+            session_data JSONB NOT NULL,
+            PRIMARY KEY (google_sub, session_id)
+        )
+    """)
+
+
+def upsert_database_user(connection: Any, user: dict[str, str]) -> None:
+    connection.execute("""
+        INSERT INTO prepai_users (google_sub, email, display_name)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (google_sub) DO UPDATE SET
+            email = EXCLUDED.email,
+            display_name = EXCLUDED.display_name,
+            updated_at = NOW()
+    """, (user["sub"], user["email"], user["name"]))
+
+
 @app.get("/api/health")
 def health() -> dict[str, Any]:
     return {
@@ -102,7 +209,12 @@ def health() -> dict[str, Any]:
 @app.get("/api/auth/config")
 def auth_config() -> dict[str, Any]:
     """Expose the public Google OAuth client ID to the browser login page."""
-    return {"google_enabled": bool(GOOGLE_CLIENT_ID), "google_client_id": GOOGLE_CLIENT_ID}
+    return {
+        "google_enabled": bool(GOOGLE_CLIENT_ID),
+        "google_client_id": GOOGLE_CLIENT_ID,
+        "database_configured": bool(DATABASE_URL),
+        "history_sync_enabled": bool(DATABASE_URL and SESSION_SECRET),
+    }
 
 
 class GoogleCredential(BaseModel):
@@ -110,7 +222,7 @@ class GoogleCredential(BaseModel):
 
 
 @app.post("/api/auth/google")
-def authenticate_google(payload: GoogleCredential) -> dict[str, str]:
+def authenticate_google(payload: GoogleCredential) -> dict[str, Any]:
     """Verify Google's signed ID token before the client stores profile details."""
     if not GOOGLE_CLIENT_ID:
         raise HTTPException(status_code=503, detail="Google sign-in is not configured on the server.")
@@ -131,12 +243,88 @@ def authenticate_google(payload: GoogleCredential) -> dict[str, str]:
 
     if not claims.get("email_verified") or not claims.get("sub") or not claims.get("email"):
         raise HTTPException(status_code=401, detail="Google did not provide a verified account email.")
-    return {
+    user = {
         "sub": str(claims["sub"]),
         "email": str(claims["email"]),
         "name": str(claims.get("name") or claims["email"].split("@")[0]),
         "picture": str(claims.get("picture") or ""),
+        "history_sync_enabled": bool(DATABASE_URL and SESSION_SECRET),
     }
+    session_token = create_session_token(user["sub"], user["email"], user["name"])
+    if session_token:
+        user["session_token"] = session_token
+    if user["history_sync_enabled"]:
+        try:
+            with connect_database() as connection:
+                ensure_database_schema(connection)
+                upsert_database_user(connection, user)
+        except Exception:
+            # Keep sign-in available with browser-only history when Postgres is temporarily down.
+            user["database_available"] = False
+        else:
+            user["database_available"] = True
+    return user
+
+
+@app.get("/api/history")
+def get_practice_history(authorization: str | None = Header(default=None)) -> list[dict[str, Any]]:
+    user = authenticated_user(authorization)
+    try:
+        with connect_database() as connection:
+            ensure_database_schema(connection)
+            upsert_database_user(connection, user)
+            rows = connection.execute(
+                "SELECT session_data FROM practice_sessions WHERE google_sub = %s ORDER BY session_date DESC LIMIT 100",
+                (user["sub"],),
+            ).fetchall()
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=503, detail="PostgreSQL could not load history. Your browser copy is preserved.") from error
+    return [row[0] for row in rows]
+
+
+@app.put("/api/history")
+def sync_practice_history(
+    payload: PracticeHistorySync,
+    authorization: str | None = Header(default=None),
+) -> dict[str, int]:
+    user = authenticated_user(authorization)
+    try:
+        from psycopg.types.json import Jsonb
+
+        with connect_database() as connection:
+            ensure_database_schema(connection)
+            upsert_database_user(connection, user)
+            for session in payload.sessions:
+                session_data = session.model_dump(mode="json")
+                connection.execute("""
+                    INSERT INTO practice_sessions (google_sub, session_id, session_date, session_data)
+                    VALUES (%s, %s, %s, %s)
+                    ON CONFLICT (google_sub, session_id) DO UPDATE SET
+                        session_date = EXCLUDED.session_date,
+                        session_data = EXCLUDED.session_data
+                """, (user["sub"], session.id, session.date, Jsonb(session_data)))
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=503, detail="PostgreSQL could not save history. Your browser copy is preserved.") from error
+    return {"saved": len(payload.sessions)}
+
+
+@app.delete("/api/history")
+def clear_practice_history(authorization: str | None = Header(default=None)) -> dict[str, int]:
+    user = authenticated_user(authorization)
+    try:
+        with connect_database() as connection:
+            ensure_database_schema(connection)
+            cursor = connection.execute("DELETE FROM practice_sessions WHERE google_sub = %s", (user["sub"],))
+            deleted = cursor.rowcount
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=503, detail="PostgreSQL could not clear history. Your server copy is unchanged.") from error
+    return {"deleted": deleted}
 
 
 def compose_text(question: str, reference_answer: str, student_answer: str) -> str:

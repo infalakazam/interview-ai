@@ -224,6 +224,66 @@ function getHistory() {
         : [];
 }
 
+async function historySyncConfig() {
+    const response = await fetch(`${API_BASE}/api/auth/config`);
+    if (!response.ok) throw new Error("Could not read history sync configuration.");
+    return response.json();
+}
+
+async function requestHistory(path, method = "GET", sessions) {
+    const profile = readJSON(localStorage, GOOGLE_USER_KEY, null);
+    if (!profile?.session_token) return null;
+    const options = { method, headers: { Authorization: `Bearer ${profile.session_token}` } };
+    if (sessions) {
+        options.headers["Content-Type"] = "application/json";
+        options.body = JSON.stringify({ sessions });
+    }
+    const response = await fetch(`${API_BASE}${path}`, options);
+    if (response.status === 401) {
+        localStorage.removeItem(GOOGLE_USER_KEY);
+        const next = location.pathname.split("/").pop();
+        location.replace(`login.html?next=${encodeURIComponent(next || "index.html")}`);
+        return null;
+    }
+    if (!response.ok) throw new Error(`History sync failed (HTTP ${response.status}).`);
+    return response.json();
+}
+
+async function synchronizeHistoryWithDatabase() {
+    try {
+        const config = await historySyncConfig();
+        if (!config.history_sync_enabled) return true;
+        if (!AUTH_USER?.session_token) {
+            const next = location.pathname.split("/").pop();
+            location.replace(`login.html?next=${encodeURIComponent(next || "index.html")}`);
+            return false;
+        }
+        const remote = await requestHistory("/api/history");
+        if (!Array.isArray(remote)) return false;
+        const merged = new Map();
+        remote.forEach(session => { if (session?.id) merged.set(session.id, session); });
+        getHistory().forEach(session => { if (session?.id) merged.set(session.id, session); });
+        const sessions = [...merged.values()]
+            .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
+            .slice(0, 100);
+        localStorage.setItem(STORAGE.history, JSON.stringify(sessions));
+        await requestHistory("/api/history", "PUT", sessions);
+        return true;
+    } catch (error) {
+        console.warn("PostgreSQL history sync is unavailable; using this browser's saved history.", error);
+        return true;
+    }
+}
+
+async function persistHistoryRecord(record) {
+    try {
+        const config = await historySyncConfig();
+        if (config.history_sync_enabled) await requestHistory("/api/history", "PUT", [record]);
+    } catch (error) {
+        console.warn("Could not sync this session to PostgreSQL. The browser copy is preserved.", error);
+    }
+}
+
 function getSessionAnswers() {
     const saved = readJSON(sessionStorage, STORAGE.answers, []);
     return Array.isArray(saved) ? saved : [];
@@ -1123,8 +1183,8 @@ function connectProfile() {
         }
     };
     showUndo();
-    document.getElementById("clear-progress").addEventListener("click", () => {
-        if (!confirm("Clear saved practice history from this browser? You can undo this for 30 seconds.")) return;
+    document.getElementById("clear-progress").addEventListener("click", async () => {
+        if (!confirm("Clear saved practice history for your Google account on all devices? You can undo this for 30 seconds.")) return;
         const undo = {
             history: localStorage.getItem(STORAGE.history),
             lastPractice: localStorage.getItem("interviewiq_last_practice"),
@@ -1133,8 +1193,17 @@ function connectProfile() {
         localStorage.setItem(HISTORY_UNDO_KEY, JSON.stringify(undo));
         localStorage.removeItem(STORAGE.history);
         localStorage.removeItem("interviewiq_last_practice");
+        try {
+            const config = await historySyncConfig();
+            if (config.history_sync_enabled) await requestHistory("/api/history", "DELETE");
+        } catch (error) {
+            clearMessage.textContent = "Browser history cleared, but the database could not be updated. Undo can restore the browser copy.";
+            console.warn("PostgreSQL history could not be cleared.", error);
+        }
         undoButton.hidden = false;
-        clearMessage.textContent = "Practice history cleared. Undo is available for 30 seconds.";
+        if (!clearMessage.textContent.startsWith("Browser history cleared")) {
+            clearMessage.textContent = "Practice history cleared. Undo is available for 30 seconds.";
+        }
         clearTimeout(undoExpiryTimer);
         undoExpiryTimer = setTimeout(() => {
             undoButton.hidden = true;
@@ -1142,7 +1211,7 @@ function connectProfile() {
             localStorage.removeItem(HISTORY_UNDO_KEY);
         }, undoWindowMs);
     });
-    undoButton.addEventListener("click", () => {
+    undoButton.addEventListener("click", async () => {
         const pending = clearExpiredUndo();
         if (!pending) {
             undoButton.hidden = true;
@@ -1151,10 +1220,21 @@ function connectProfile() {
         }
         if (pending.history !== null) localStorage.setItem(STORAGE.history, pending.history);
         if (pending.lastPractice !== null) localStorage.setItem("interviewiq_last_practice", pending.lastPractice);
+        const restored = pending.history ? readJSON({ getItem: () => pending.history }, "history", []) : [];
+        try {
+            const config = await historySyncConfig();
+            if (config.history_sync_enabled) {
+                await requestHistory("/api/history", "DELETE");
+                await requestHistory("/api/history", "PUT", restored);
+            }
+        } catch (error) {
+            clearMessage.textContent = "Browser history restored. PostgreSQL could not be updated; it will sync when available.";
+            console.warn("PostgreSQL history restore failed.", error);
+        }
         localStorage.removeItem(HISTORY_UNDO_KEY);
         clearTimeout(undoExpiryTimer);
         undoButton.hidden = true;
-        clearMessage.textContent = "Practice history restored.";
+        if (!clearMessage.textContent.startsWith("Browser history restored")) clearMessage.textContent = "Practice history restored.";
     });
 }
 
@@ -1353,9 +1433,9 @@ function connectSession() {
         sessionStorage.setItem(STORAGE.questionIds, JSON.stringify(questions.map(question => question.id)));
     }
 
-    function advanceToNext(targetDifficulty) {
+    async function advanceToNext(targetDifficulty) {
         if (index + 1 >= plannedCount) {
-            finishSession(topicLabel, difficulty, answers);
+            await finishSession(topicLabel, difficulty, answers);
             return;
         }
         const usedIds = questions.slice(0, index + 1).map(question => question.id);
@@ -1371,7 +1451,7 @@ function connectSession() {
         );
         if (!nextQuestion) {
             sessionStorage.setItem(STORAGE.answers, JSON.stringify(answers));
-            finishSession(topicLabel, difficulty, answers);
+            await finishSession(topicLabel, difficulty, answers);
             return;
         }
         questions.push(nextQuestion);
@@ -1435,10 +1515,10 @@ function connectSession() {
         document.getElementById("submit-answer").disabled = false;
         document.getElementById("end-test").disabled = false;
         isSubmitting = false;
-        advanceToNext(result.recommendedDifficulty || recommendDifficulty(result.score, question.difficulty, priorScores));
+        await advanceToNext(result.recommendedDifficulty || recommendDifficulty(result.score, question.difficulty, priorScores));
     }
 
-    function skipQuestion() {
+    async function skipQuestion() {
         const question = questions[index];
         const priorScores = answers.slice(0, index).filter(answer => answer?.submitted && !answer.skipped).map(answer => Number(answer.score));
         const nextDifficulty = recommendDifficulty(0, question.difficulty, priorScores);
@@ -1453,7 +1533,7 @@ function connectSession() {
             recommendedDifficulty: nextDifficulty, note: "Skipped by learner.", skipped: true, submitted: true
         };
         saveState();
-        advanceToNext(nextDifficulty);
+        await advanceToNext(nextDifficulty);
     }
 
     document.getElementById("answer-input").addEventListener("input", () => {
@@ -1481,11 +1561,11 @@ function connectSession() {
     document.getElementById("previous-question").addEventListener("click", () => {
         if (index > 0) { index -= 1; saveState(); drawQuestion(); }
     });
-    document.getElementById("end-test").addEventListener("click", () => {
+    document.getElementById("end-test").addEventListener("click", async () => {
         if (isSubmitting) return;
         if (!confirm("End this test now? All submitted answers will appear in your results. Your current unsaved answer will not be scored.")) return;
         const submittedAnswers = answers.filter(answer => answer?.submitted);
-        finishSession(topicLabel, difficulty, submittedAnswers, { endedEarly: true });
+        await finishSession(topicLabel, difficulty, submittedAnswers, { endedEarly: true });
     });
     document.addEventListener("keydown", event => {
         const target = event.target;
@@ -1570,7 +1650,7 @@ async function scoreAnswer(question, answer, currentDifficulty, recentScores) {
     }
 }
 
-function finishSession(topic, difficulty, answers, { endedEarly = false } = {}) {
+async function finishSession(topic, difficulty, answers, { endedEarly = false } = {}) {
     const id = sessionStorage.getItem(STORAGE.sessionId);
     const completed = answers.map((answer, index) => {
         const question = questionBank.find(item => String(item.id) === String(answer.questionId));
@@ -1607,6 +1687,7 @@ function finishSession(topic, difficulty, answers, { endedEarly = false } = {}) 
         localStorage.setItem(STORAGE.history, JSON.stringify(history.slice(0, 100)));
     }
     sessionStorage.setItem(STORAGE.lastFeedback, JSON.stringify(record));
+    await persistHistoryRecord(record);
     location.href = "feedback.html";
 }
 
@@ -1648,5 +1729,10 @@ if (page !== "login" && (!AUTH_USER?.sub || !AUTH_USER?.email)) {
     const next = safePages.has(requested) ? requested : "index.html";
     location.replace(`login.html?next=${encodeURIComponent(next)}`);
 } else if (page !== "login") {
-    loadQuestionBank().then(render).catch(showLoadError);
+    loadQuestionBank()
+        .then(async () => {
+            const synced = await synchronizeHistoryWithDatabase();
+            if (synced && !location.pathname.endsWith("login.html")) render();
+        })
+        .catch(showLoadError);
 }

@@ -74,15 +74,17 @@ async function initializeLogin() {
     retryLogin.hidden = true;
     showLoginMessage("Connecting to Google sign-in…");
     try {
-        const storedUser = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY) || "null");
-        if (storedUser?.sub && storedUser?.email) {
-            location.replace(safeDestination());
-            return;
-        }
-
         const configResponse = await fetch(`${API_BASE}/api/auth/config`);
         if (!configResponse.ok) throw new Error("Could not read the sign-in configuration.");
         const config = await configResponse.json();
+        const storedUser = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY) || "null");
+        if (storedUser?.sub && storedUser?.email && (!config.history_sync_enabled || storedUser.session_token)) {
+            location.replace(safeDestination());
+            return;
+        }
+        if (storedUser?.sub && config.history_sync_enabled && !storedUser.session_token) {
+            showLoginMessage("Sign in again with Google to securely sync your existing practice history.");
+        }
         if (!config.google_enabled || !config.google_client_id) {
             showLoginMessage("Google sign-in needs a Google OAuth client ID. Follow the setup steps in README.md.", "error");
             googleButton.innerHTML = '<a class="login-setup-link" href="README.md">Open Google sign-in setup instructions</a>';
