@@ -12,6 +12,7 @@ const ALLOWED_DESTINATIONS = new Set([
 
 const loginMessage = document.getElementById("login-message");
 const googleButton = document.getElementById("google-button");
+const retryLogin = document.getElementById("retry-login");
 
 function safeDestination() {
     const requested = new URLSearchParams(location.search).get("next") || "index.html";
@@ -21,6 +22,16 @@ function safeDestination() {
 function showLoginMessage(message, state = "info") {
     loginMessage.textContent = message;
     loginMessage.dataset.state = state;
+}
+
+function apiConnectionHelp() {
+    if (location.protocol === "file:") {
+        return "Open PrepAI through VS Code Live Server, start the API with Start PrepAI API.bat, then retry.";
+    }
+    if (["localhost", "127.0.0.1", "::1"].includes(location.hostname)) {
+        return "PrepAI cannot reach its API at 127.0.0.1:8000. Start Start PrepAI API.bat, keep its window open, then choose Retry connection.";
+    }
+    return "PrepAI cannot reach its sign-in API. Check your connection and choose Retry connection.";
 }
 
 function loadGoogleIdentityScript() {
@@ -60,6 +71,8 @@ async function handleGoogleCredential(response) {
 window.handleGoogleCredential = handleGoogleCredential;
 
 async function initializeLogin() {
+    retryLogin.hidden = true;
+    showLoginMessage("Connecting to Google sign-in…");
     try {
         const storedUser = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY) || "null");
         if (storedUser?.sub && storedUser?.email) {
@@ -93,11 +106,14 @@ async function initializeLogin() {
         showLoginMessage("Use your Google account to continue.");
     } catch (error) {
         if (error instanceof TypeError) {
-            showLoginMessage("PrepAI cannot reach its API. Start the API and reload this page.", "error");
+            showLoginMessage(apiConnectionHelp(), "error");
+            retryLogin.hidden = false;
         } else {
             showLoginMessage(error.message || "Sign-in is unavailable. Follow the setup instructions and try again.", "error");
+            retryLogin.hidden = false;
         }
     }
 }
 
+retryLogin.addEventListener("click", initializeLogin);
 initializeLogin();

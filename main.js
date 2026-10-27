@@ -27,6 +27,7 @@ const STORAGE = {
     sessionId: `iqCurrentSessionId_${ACCOUNT_SCOPE}`,
     lastFeedback: `iqLastFeedback_${ACCOUNT_SCOPE}`
 };
+const HISTORY_UNDO_KEY = `prepai_history_undo_${ACCOUNT_SCOPE}`;
 
 const API_BASE = window.PREPAI_API_BASE || (
     location.hostname === "localhost" || location.hostname === "127.0.0.1"
@@ -764,7 +765,7 @@ function renderProfile() {
     const initials = name.trim() ? name.trim().charAt(0).toUpperCase() : "?";
     return `${renderHeader("YOUR DETAILS", "Profile & settings", "Your Google account identifies you; your practice history stays in this browser.")}
         <article class="card profile-card"><div class="profile-summary"><span class="big-avatar">${escapeHTML(initials)}</span><div><h2>${escapeHTML(name || "Your name")}</h2><p>${escapeHTML(email)}</p></div></div><form id="profile-form" class="form-stack profile-form"><div class="field"><label for="profile-name">Display name</label><input id="profile-name" maxlength="80" required value="${escapeHTML(name)}" placeholder="Enter your name" /></div><div class="form-feedback" id="profile-message" aria-live="polite"></div><button class="button" type="submit">Save name</button></form>
-        <div class="danger-zone"><h2>Practice history</h2><p>Clearing removes saved practice history from this browser. Your profile name stays saved.</p><button class="button button-danger" type="button" id="clear-progress">Clear practice history</button><span id="clear-message" class="form-feedback" aria-live="polite"></span></div></article>`;
+        <div class="danger-zone"><h2>Practice history</h2><p>Clearing removes saved practice history from this browser. Your profile name stays saved. You can undo the clear for 30 seconds.</p><button class="button button-danger" type="button" id="clear-progress">Clear practice history</button><span id="clear-message" class="form-feedback" aria-live="polite"></span><button class="text-link undo-history-button" type="button" id="undo-clear-progress" hidden>Undo clear</button></div></article>`;
 }
 
 function renderSession() {
@@ -772,12 +773,12 @@ function renderSession() {
     const role = sessionStorage.getItem(STORAGE.role) || "";
     const isMcq = sessionStorage.getItem(STORAGE.questionType) === "mcq";
     return `${renderHeader(isMock ? "AI MOCK INTERVIEW" : "FOCUSED PRACTICE", isMock ? `${escapeHTML(role)} interview` : "Practice session", isMock ? "Answer as you would in an interview. PrepAI will focus on topics that need work, keep your other topics in rotation, and raise their difficulty." : `${isMcq ? "Choose the best option for each question." : "Write what you know."} PrepAI uses your recent results to revisit topics that need work, while keeping your other selected topics in rotation at a higher difficulty. You can go back and change submitted answers before finishing.`)}
-        <section class="session-panel"><article class="card session-card"><div class="session-topline"><span class="badge" id="session-label"></span><span id="session-position" class="muted"></span></div><div class="progress-track"><span id="session-progress-bar"></span></div><p class="eyebrow question-number" id="question-meta"></p><h2 class="session-question" id="question-text"></h2><form id="answer-form"><fieldset id="mcq-options" class="mcq-options" hidden><legend>Select one answer</legend></fieldset><div class="field" id="descriptive-answer-field"><label for="answer-input">Your answer</label><textarea id="answer-input" rows="8" placeholder="Explain your answer in your own words..."></textarea><small id="answer-hint">Your answer stays in this browser session.</small></div><div id="answer-status" class="notice" aria-live="polite"></div><div class="session-controls"><button class="button button-secondary" id="previous-question" type="button">← Previous</button><div><button class="button button-secondary" id="skip-question" type="button">Skip</button> <button class="button" id="submit-answer" type="submit">Save and continue →</button></div></div></form></article></section>`;
+        <section class="session-panel"><article class="card session-card"><div class="session-topline"><span class="badge" id="session-label"></span><span id="session-position" class="muted"></span></div><p class="session-context" id="session-context"></p><div class="progress-track" role="progressbar" aria-label="Practice session progress" aria-valuemin="0" aria-valuemax="${Number(sessionStorage.getItem(STORAGE.count)) || 5}" aria-valuenow="1"><span id="session-progress-bar"></span></div><p class="eyebrow question-number" id="question-meta"></p><h2 class="session-question" id="question-text"></h2><form id="answer-form"><fieldset id="mcq-options" class="mcq-options" hidden><legend>Select one answer</legend></fieldset><div class="field" id="descriptive-answer-field"><label for="answer-input">Your answer</label><textarea id="answer-input" rows="8" placeholder="Explain your answer in your own words..."></textarea><small id="answer-hint">Your answer stays in this browser session.</small></div><div id="answer-status" class="notice" aria-live="polite"></div><p class="shortcut-hint">Shortcuts: <kbd>Ctrl</kbd> + <kbd>Enter</kbd> save and continue · <kbd>Alt</kbd> + <kbd>←</kbd> previous · <kbd>Alt</kbd> + <kbd>S</kbd> skip (when not typing)</p><div class="session-controls"><button class="button button-secondary" id="previous-question" type="button">← Previous</button><div><button class="button button-secondary" id="skip-question" type="button">Skip</button> <button class="button" id="submit-answer" type="submit">Save and continue →</button></div><button class="button button-danger" id="end-test" type="button">End test</button></div><p class="session-end-hint">You can end at any time. Only submitted answers are included in results.</p></form></article></section>`;
 }
 
 function renderFeedback() {
     const feedback = readJSON(sessionStorage, STORAGE.lastFeedback, null);
-    if (!feedback || !Array.isArray(feedback.answers) || !feedback.answers.length) {
+    if (!feedback || !Array.isArray(feedback.answers)) {
         return `${renderHeader("SESSION REVIEW", "Practice feedback", "Complete a practice session to see answer feedback.")}
             <article class="card">${renderEmpty("No completed session is available in this browser tab.")}</article>`;
     }
@@ -786,12 +787,19 @@ function renderFeedback() {
     const correctCount = answered.filter(answer => Number(answer.score) >= 60).length;
     const incorrectCount = answered.length - correctCount;
     const isMock = feedback.mode === "mock";
-    const title = isMock ? `${escapeHTML(feedback.role || "Role-based")} interview review` : "Practice feedback";
-    const action = isMock ? '<a class="button" href="mock-interview.html">Start another interview</a>' : '<a class="button" href="start-practice.html">Practice again</a>';
-    return `${renderHeader(isMock ? "AI MOCK INTERVIEW REVIEW" : "SESSION REVIEW", title, `${escapeHTML(feedback.topic)} · ${escapeHTML(feedback.difficulty)} · ${new Date(feedback.date).toLocaleString()}`, action)}
-        <section class="stats-grid">${renderStat("◉", "Average estimate", `${average}%`, `${answered.length} answered question${answered.length === 1 ? "" : "s"}`, "purple")}${renderStat("✓", "Correct", correctCount, "Score of 60% or higher", "green")}${renderStat("×", "Incorrect", incorrectCount, "Score below 60%", "red")}${renderStat("↷", "Skipped", feedback.answers.length - answered.length, "Not included in correct/incorrect", "amber")}</section>
-        <article class="card"><div class="section-heading"><div><p class="eyebrow">ANSWER BY ANSWER</p><h2>Review your responses</h2></div></div><div class="feedback-list">${feedback.answers.map((answer, index) => `
-            <section class="feedback-item"><p class="eyebrow">QUESTION ${String(index + 1).padStart(2, "0")} · ${escapeHTML(answer.topic || "General")}</p><h3>${escapeHTML(answer.question)}</h3><p><strong>Question difficulty</strong><br />${escapeHTML(answer.difficulty || "Unspecified")}${answer.recommendedDifficulty ? ` · next question recommendation: ${escapeHTML(answer.recommendedDifficulty)}` : ""}</p><p><strong>Your answer</strong><br />${escapeHTML(answer.answer || "Skipped")}</p><p><strong>Reference answer</strong><br />${escapeHTML(answer.referenceAnswer || "No reference answer is available.")}</p>${answer.concepts?.length ? `<p><strong>Key concepts</strong><br />${answer.concepts.map(concept => `<span class="concept-chip ${answer.matchedConcepts?.includes(concept) ? "matched" : "missing"}">${escapeHTML(concept)}</span>`).join(" ")}</p>` : ""}<span class="badge ${answer.method === "ml_model" ? "badge-model" : ""} ${!answer.skipped && Number(answer.score) < 60 ? "badge-incorrect" : !answer.skipped ? "badge-correct" : ""}">${answer.skipped ? "Skipped" : answer.method === "mcq" ? (Number(answer.score) >= 60 ? "Correct choice · 100%" : "Incorrect choice · 0%") : `${Number(answer.score)}% · ${answer.method === "ml_model" ? "ML model estimate" : "keyword estimate"}`}</span>${answer.note ? `<p class="muted small-note">${escapeHTML(answer.note)}</p>` : ""}</section>`).join("")}</div></article>`;
+    const skippedCount = feedback.answers.length - answered.length;
+    const completionTitle = feedback.endedEarly
+        ? (isMock ? "Interview ended" : "Practice session ended")
+        : (isMock ? "Interview completed successfully!" : "Practice session completed successfully!");
+    const completionDescription = feedback.endedEarly
+        ? "You ended the session. Your submitted answers are ready to review."
+        : "Your session is complete and your results are ready to view.";
+    const completionMessage = `${answered.length} answered · ${skippedCount} skipped · ${escapeHTML(feedback.topic)} · ${escapeHTML(feedback.difficulty)}`;
+    const nextAction = isMock ? '<a class="button button-secondary" href="mock-interview.html">Start another interview</a>' : '<a class="button button-secondary" href="start-practice.html">Practice again</a>';
+    return `<section class="card completion-banner" id="completion-screen" aria-labelledby="completion-title"><span class="completion-mark" aria-hidden="true">✓</span><div class="completion-copy"><p class="eyebrow">${feedback.endedEarly ? "SESSION ENDED" : "INTERVIEW COMPLETE"}</p><h1 id="completion-title" tabindex="-1">${completionTitle}</h1><p>${completionDescription}</p><p class="completion-meta">${completionMessage} · ${new Date(feedback.date).toLocaleString()}</p></div><div class="completion-actions"><button class="button" id="view-results" type="button">View results ↓</button>${nextAction}</div></section>
+        <div id="feedback-results" hidden><button class="button button-secondary results-back-button" id="back-to-completion" type="button">← Back to completion</button><section class="stats-grid" id="session-results" tabindex="-1" aria-label="Interview results">${renderStat("◉", "Average estimate", `${average}%`, `${answered.length} answered question${answered.length === 1 ? "" : "s"}`, "purple")}${renderStat("✓", "Correct", correctCount, "Score of 60% or higher", "green")}${renderStat("×", "Incorrect", incorrectCount, "Score below 60%", "red")}${renderStat("↷", "Skipped", skippedCount, "Not included in correct/incorrect", "amber")}</section>
+        <article class="card"><div class="section-heading"><div><p class="eyebrow">ANSWER BY ANSWER</p><h2>Review your responses</h2></div></div>${feedback.answers.length ? `<div class="feedback-list">${feedback.answers.map((answer, index) => `
+            <section class="feedback-item"><p class="eyebrow">QUESTION ${String(index + 1).padStart(2, "0")} · ${escapeHTML(answer.topic || "General")}</p><h3>${escapeHTML(answer.question)}</h3><p><strong>Question difficulty</strong><br />${escapeHTML(answer.difficulty || "Unspecified")}${answer.recommendedDifficulty ? ` · next question recommendation: ${escapeHTML(answer.recommendedDifficulty)}` : ""}</p><p><strong>Your answer</strong><br />${escapeHTML(answer.answer || "Skipped")}</p><p><strong>Reference answer</strong><br />${escapeHTML(answer.referenceAnswer || "No reference answer is available.")}</p>${answer.concepts?.length ? `<p><strong>Key concepts</strong><br />${answer.concepts.map(concept => `<span class="concept-chip ${answer.matchedConcepts?.includes(concept) ? "matched" : "missing"}">${escapeHTML(concept)}</span>`).join(" ")}</p>` : ""}<span class="badge ${answer.method === "ml_model" ? "badge-model" : ""} ${!answer.skipped && Number(answer.score) < 60 ? "badge-incorrect" : !answer.skipped ? "badge-correct" : ""}">${answer.skipped ? "Skipped" : answer.method === "mcq" ? (Number(answer.score) >= 60 ? "Correct choice · 100%" : "Incorrect choice · 0%") : `${Number(answer.score)}% · ${answer.method === "ml_model" ? "ML model estimate" : "keyword estimate"}`}</span>${answer.note ? `<p class="muted small-note">${escapeHTML(answer.note)}</p>` : ""}</section>`).join("")}</div>` : '<p class="empty-inline">No answers were submitted before the test ended.</p>'}</article></div>`;
 }
 
 function render() {
@@ -803,6 +811,25 @@ function render() {
     };
     renderShell((renderers[page] || renderDashboard)());
     connectPageControls();
+}
+
+function connectFeedback() {
+    const completion = document.getElementById("completion-screen");
+    const results = document.getElementById("feedback-results");
+    if (!completion || !results) return;
+
+    document.getElementById("view-results").addEventListener("click", () => {
+        completion.hidden = true;
+        results.hidden = false;
+        document.getElementById("session-results").focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    document.getElementById("back-to-completion").addEventListener("click", () => {
+        results.hidden = true;
+        completion.hidden = false;
+        document.getElementById("completion-title").focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 }
 
 function connectPageControls() {
@@ -827,6 +854,7 @@ function connectPageControls() {
     if (page === "gaps") connectGaps();
     if (page === "profile") connectProfile();
     if (page === "session") connectSession();
+    if (page === "feedback") connectFeedback();
 }
 
 function startPracticeSession(topics, difficultyLabel, count, sessionInfo = {}) {
@@ -1069,12 +1097,64 @@ function connectProfile() {
         message.textContent = "Name saved.";
         setTimeout(() => location.reload(), 250);
     });
+    const clearMessage = document.getElementById("clear-message");
+    const undoButton = document.getElementById("undo-clear-progress");
+    const undoWindowMs = 30000;
+    let undoExpiryTimer;
+    const clearExpiredUndo = () => {
+        const pending = readJSON(localStorage, HISTORY_UNDO_KEY, null);
+        if (!pending || pending.expiresAt <= Date.now()) {
+            localStorage.removeItem(HISTORY_UNDO_KEY);
+            return null;
+        }
+        return pending;
+    };
+    const showUndo = () => {
+        const pending = clearExpiredUndo();
+        undoButton.hidden = !pending;
+        if (pending) {
+            clearMessage.textContent = `Practice history is cleared. Undo is available for ${Math.ceil((pending.expiresAt - Date.now()) / 1000)} seconds.`;
+            clearTimeout(undoExpiryTimer);
+            undoExpiryTimer = setTimeout(() => {
+                undoButton.hidden = true;
+                clearMessage.textContent = "The undo period has expired.";
+                localStorage.removeItem(HISTORY_UNDO_KEY);
+            }, pending.expiresAt - Date.now());
+        }
+    };
+    showUndo();
     document.getElementById("clear-progress").addEventListener("click", () => {
-        if (!confirm("Clear saved practice history from this browser? Your profile name will stay saved.")) return;
+        if (!confirm("Clear saved practice history from this browser? You can undo this for 30 seconds.")) return;
+        const undo = {
+            history: localStorage.getItem(STORAGE.history),
+            lastPractice: localStorage.getItem("interviewiq_last_practice"),
+            expiresAt: Date.now() + undoWindowMs
+        };
+        localStorage.setItem(HISTORY_UNDO_KEY, JSON.stringify(undo));
         localStorage.removeItem(STORAGE.history);
         localStorage.removeItem("interviewiq_last_practice");
-        document.getElementById("clear-message").textContent = "Saved practice history cleared.";
-        setTimeout(() => location.href = "index.html", 300);
+        undoButton.hidden = false;
+        clearMessage.textContent = "Practice history cleared. Undo is available for 30 seconds.";
+        clearTimeout(undoExpiryTimer);
+        undoExpiryTimer = setTimeout(() => {
+            undoButton.hidden = true;
+            clearMessage.textContent = "The undo period has expired.";
+            localStorage.removeItem(HISTORY_UNDO_KEY);
+        }, undoWindowMs);
+    });
+    undoButton.addEventListener("click", () => {
+        const pending = clearExpiredUndo();
+        if (!pending) {
+            undoButton.hidden = true;
+            clearMessage.textContent = "The undo period has expired.";
+            return;
+        }
+        if (pending.history !== null) localStorage.setItem(STORAGE.history, pending.history);
+        if (pending.lastPractice !== null) localStorage.setItem("interviewiq_last_practice", pending.lastPractice);
+        localStorage.removeItem(HISTORY_UNDO_KEY);
+        clearTimeout(undoExpiryTimer);
+        undoButton.hidden = true;
+        clearMessage.textContent = "Practice history restored.";
     });
 }
 
@@ -1248,6 +1328,8 @@ function connectSession() {
         const question = questions[index];
         document.getElementById("session-label").textContent = isMock ? `${role} · AI interviewer` : `${topicLabel} · ${questionType === "mcq" ? "Multiple choice" : "Descriptive practice"}`;
         document.getElementById("session-position").textContent = `Question ${index + 1} of up to ${plannedCount}`;
+        document.getElementById("session-context").textContent = `${isMock ? `${role} · ` : ""}${selectedTopics.join(", ")} · ${difficulty} start · ${plannedCount} planned · ${questionType === "mcq" ? "Multiple choice" : "Descriptive"}`;
+        document.querySelector('.progress-track[role="progressbar"]').setAttribute("aria-valuenow", String(index + 1));
         document.getElementById("session-progress-bar").style.width = `${Math.min(100, ((index + 1) / plannedCount) * 100)}%`;
         document.getElementById("question-meta").textContent = `${question.subtopic || question.topic} · ${question.difficulty || "Unspecified"}`;
         questionText.textContent = question.question;
@@ -1262,7 +1344,7 @@ function connectSession() {
         document.getElementById("previous-question").disabled = index === 0;
         document.getElementById("skip-question").textContent = index + 1 >= plannedCount ? "Skip and finish" : "Skip";
         document.getElementById("submit-answer").textContent = index + 1 >= plannedCount ? "Save and finish" : "Save and continue →";
-        feedback.textContent = answers[index]?.submitted ? `Saved score: ${answers[index].score}% (${answers[index].method === "mcq" ? "multiple choice" : answers[index].method === "ml_model" ? "ML model" : "keyword estimate"}). You can edit and save this answer again.` : "";
+        feedback.textContent = answers[index]?.submitted ? `Saved score: ${answers[index].score}% (${answers[index].method === "mcq" ? "multiple choice" : answers[index].method === "ml_model" ? "ML model estimate" : "keyword estimate"}). ${answers[index].note ? `${answers[index].note} ` : ""}You can edit and save this answer again.` : "";
     }
 
     function saveState() {
@@ -1298,8 +1380,10 @@ function connectSession() {
         drawQuestion();
     }
 
+    let isSubmitting = false;
     async function submitAnswer(event) {
         event.preventDefault();
+        if (isSubmitting) return;
         const question = questions[index];
         const isMcq = questionType === "mcq";
         const text = isMcq
@@ -1311,7 +1395,9 @@ function connectSession() {
             else answerInput.focus();
             return;
         }
+        isSubmitting = true;
         document.getElementById("submit-answer").disabled = true;
+        document.getElementById("end-test").disabled = true;
         feedback.textContent = isMcq ? "Checking your choice…" : "Scoring answer…";
         const priorScores = answers.slice(0, index).filter(answer => answer?.submitted && !answer.skipped).map(answer => Number(answer.score));
         const result = isMcq
@@ -1347,6 +1433,8 @@ function connectSession() {
         };
         saveState();
         document.getElementById("submit-answer").disabled = false;
+        document.getElementById("end-test").disabled = false;
+        isSubmitting = false;
         advanceToNext(result.recommendedDifficulty || recommendDifficulty(result.score, question.difficulty, priorScores));
     }
 
@@ -1373,7 +1461,18 @@ function connectSession() {
         answers[index] = {
             ...(answers[index] || {}), questionId: question.id,
             question: question.question, topic: question.topic,
-            answer: answerInput.value, submitted: Boolean(answers[index]?.submitted)
+            answer: answerInput.value, submitted: false
+        };
+        saveState();
+    });
+    mcqOptionsElement.addEventListener("change", event => {
+        if (event.target.name !== "mcq-answer") return;
+        const question = questions[index];
+        const selected = buildMcqOptions(question)[Number(event.target.value)];
+        answers[index] = {
+            ...(answers[index] || {}), questionId: question.id,
+            question: question.question, topic: question.topic,
+            answer: selected?.text || "", submitted: false
         };
         saveState();
     });
@@ -1381,6 +1480,29 @@ function connectSession() {
     document.getElementById("skip-question").addEventListener("click", skipQuestion);
     document.getElementById("previous-question").addEventListener("click", () => {
         if (index > 0) { index -= 1; saveState(); drawQuestion(); }
+    });
+    document.getElementById("end-test").addEventListener("click", () => {
+        if (isSubmitting) return;
+        if (!confirm("End this test now? All submitted answers will appear in your results. Your current unsaved answer will not be scored.")) return;
+        const submittedAnswers = answers.filter(answer => answer?.submitted);
+        finishSession(topicLabel, difficulty, submittedAnswers, { endedEarly: true });
+    });
+    document.addEventListener("keydown", event => {
+        const target = event.target;
+        const isTyping = target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
+        if (event.ctrlKey && event.key === "Enter" && target instanceof HTMLElement && target.closest("#answer-form")) {
+            event.preventDefault();
+            if (!isSubmitting) document.getElementById("answer-form").requestSubmit();
+            return;
+        }
+        if (isTyping || event.metaKey || event.ctrlKey || event.shiftKey) return;
+        if (event.altKey && event.key === "ArrowLeft") {
+            event.preventDefault();
+            document.getElementById("previous-question").click();
+        } else if (event.altKey && event.key.toLowerCase() === "s") {
+            event.preventDefault();
+            document.getElementById("skip-question").click();
+        }
     });
     drawQuestion();
 }
@@ -1436,19 +1558,19 @@ async function scoreAnswer(question, answer, currentDifficulty, recentScores) {
                     note: result.note || "Model score is an estimate."
                 };
             }
-            const fallback = localEstimate(question, answer, "The scoring API returned an invalid score; showing the local keyword estimate instead.");
+            const fallback = localEstimate(question, answer, "The scoring service returned an invalid result, so PrepAI used a local keyword estimate. Check the scoring API configuration if this keeps happening.");
             return { ...fallback, recommendedDifficulty: recommendDifficulty(fallback.score, currentDifficulty, recentScores) };
         }
-        const detail = await response.json().catch(() => ({}));
-        const fallback = localEstimate(question, answer, detail.detail || "ML model is not configured; showing the local keyword estimate.");
+        await response.json().catch(() => ({}));
+        const fallback = localEstimate(question, answer, "The scoring model could not score this answer, so PrepAI used a local keyword estimate. Check the API and model setup if this keeps happening.");
         return { ...fallback, recommendedDifficulty: recommendDifficulty(fallback.score, currentDifficulty, recentScores) };
     } catch {
-        const fallback = localEstimate(question, answer, "ML scoring service is unavailable; showing the local keyword estimate.");
+        const fallback = localEstimate(question, answer, "The scoring service is unavailable, so PrepAI used a local keyword estimate. Check that the API is running if this keeps happening.");
         return { ...fallback, recommendedDifficulty: recommendDifficulty(fallback.score, currentDifficulty, recentScores) };
     }
 }
 
-function finishSession(topic, difficulty, answers) {
+function finishSession(topic, difficulty, answers, { endedEarly = false } = {}) {
     const id = sessionStorage.getItem(STORAGE.sessionId);
     const completed = answers.map((answer, index) => {
         const question = questionBank.find(item => String(item.id) === String(answer.questionId));
@@ -1475,6 +1597,7 @@ function finishSession(topic, difficulty, answers) {
         difficulty,
         mode: sessionStorage.getItem(STORAGE.mode) || "practice",
         role: sessionStorage.getItem(STORAGE.role) || "",
+        endedEarly,
         date: new Date().toISOString(),
         answers: completed
     };

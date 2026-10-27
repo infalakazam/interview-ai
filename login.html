@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#fffaf4">
     <title>PrepAI | Sign in</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="login.js" defer></script>
+    <link rel="stylesheet" href="style.css?v=prepai-project-20261027-updated">
+    <script src="login.js?v=prepai-project-20261027-retry" defer></script>
 </head>
 <body class="login-page">
     <main class="login-layout">
@@ -18,6 +18,7 @@
             <p class="login-copy">Sign in with your Google account to open your interview practice workspace.</p>
             <div id="google-button" class="google-button-slot" aria-live="polite"></div>
             <p id="login-message" class="login-message" role="status" aria-live="polite">Connecting to Google sign-in…</p>
+            <button id="retry-login" class="login-retry-button" type="button" hidden>Retry connection</button>
             <a class="login-help-link" href="README.md">How to start the API and configure Google sign-in</a>
             <div class="login-divider"><span>YOUR PRACTICE, YOUR SPACE</span></div>
             <ul class="login-benefits">

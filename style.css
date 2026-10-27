@@ -65,6 +65,8 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .google-button-slot[aria-busy="true"] { opacity: .6; pointer-events: none; }
 .login-message { min-height: 20px; margin: 10px 0 14px; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .login-message[data-state="error"] { color: var(--red); }
+.login-retry-button { margin: -8px 0 14px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--primary); font: inherit; font-size: 10px; font-weight: 700; cursor: pointer; }
+.login-retry-button:hover { border-color: var(--primary); background: var(--primary-soft); }
 .login-help-link { align-self: flex-start; margin-top: -8px; color: var(--primary); font-size: 10px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .login-setup-link { color: var(--primary); font-size: 12px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .login-divider { display: flex; align-items: center; gap: 12px; margin: 10px 0 18px; color: #a0a2b5; font-size: 9px; font-weight: 700; letter-spacing: 1px; white-space: nowrap; }
@@ -381,12 +383,28 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .danger-zone { display: grid; justify-items: start; gap: 11px; padding-top: 20px; border-top: 1px solid var(--line); }
 .danger-zone h2 { font-size: 13px; }
 .form-feedback { min-height: 16px; color: var(--green); font-size: 10px; }
+.completion-banner { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px; margin-bottom: 18px; padding: clamp(18px, 3vw, 28px); border-color: #c8e5d5; background: #f2faf5; }
+.completion-mark { display: grid; width: 52px; height: 52px; place-items: center; border-radius: 50%; background: #d9f2e3; color: #198754; font-size: 26px; font-weight: 800; }
+.completion-copy .eyebrow { margin: 0 0 5px; color: #198754; }
+.completion-copy h1 { margin: 0 0 6px; color: var(--ink); font-size: clamp(19px, 2.6vw, 25px); line-height: 1.3; }
+.completion-copy > p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.completion-copy .completion-meta { margin-top: 6px !important; font-size: 9px !important; }
+.completion-actions { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+#feedback-results[hidden] { display: none; }
+.results-back-button { margin-bottom: 14px; }
+#session-results { scroll-margin-top: 20px; }
+#session-results:focus { outline: none; }
 .session-panel { max-width: 900px; margin: 0 auto; }
 .session-card { padding: clamp(18px, 4vw, 32px); }
 .session-topline { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; font-size: 10px; }
+.session-context { margin: 0 0 10px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+.shortcut-hint { margin: 12px 0 0; color: var(--muted); font-size: 9px; line-height: 1.6; }
+.shortcut-hint kbd { display: inline-block; padding: 2px 5px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); color: var(--ink); font: inherit; font-weight: 700; }
+.undo-history-button { display: block; margin-top: 10px; padding: 0; border: 0; background: transparent; color: var(--primary); font: inherit; font-size: 11px; font-weight: 700; text-decoration: underline; cursor: pointer; }
 .session-question { margin: 12px 0 22px; font-size: clamp(19px, 2.4vw, 24px); line-height: 1.45; letter-spacing: -.35px; }
 .question-number { margin-top: 30px; }
 .session-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; }
+.session-end-hint { margin: 8px 0 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
 .feedback-list { display: grid; }
 .feedback-item { padding: 19px 0; border-top: 1px solid var(--line); }
 .feedback-item h3 { margin: 0 0 14px; font-size: 14px; line-height: 1.6; }
@@ -591,6 +609,8 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 }
 
 @media (max-width: 720px) {
+    .completion-banner { grid-template-columns: auto minmax(0, 1fr); gap: 12px; }
+    .completion-actions { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; }
     .topic-practice-controls { grid-template-columns: 1fr; }
     .topic-selection-status { grid-column: auto; }
 }
