@@ -38,6 +38,7 @@ const page = document.body.dataset.page || "dashboard";
 const app = document.getElementById("app");
 const questionBank = [];
 let dashboardRange = 7;
+let HISTORY_SYNC_ENABLED = null;
 
 const NAVIGATION = [
     ["dashboard", "⌂", "Dashboard", "index.html"],
@@ -252,6 +253,7 @@ async function requestHistory(path, method = "GET", sessions) {
 async function synchronizeHistoryWithDatabase() {
     try {
         const config = await historySyncConfig();
+        HISTORY_SYNC_ENABLED = Boolean(config.history_sync_enabled);
         if (!config.history_sync_enabled) return true;
         if (!AUTH_USER?.session_token) {
             const next = location.pathname.split("/").pop();
@@ -364,6 +366,7 @@ function renderShell(content) {
                     </a>
                     <button class="sign-out-button" id="sign-out" type="button">Sign out</button>
                 </header>
+                ${HISTORY_SYNC_ENABLED === false ? '<div class="notice notice-info" role="status"><strong>History sync is off.</strong> Practice history is saved only in this browser. Configure PostgreSQL on the API server, then open PrepAI once on the browser that has your old history to import it.</div>' : ""}
                 ${content}
                 <footer class="footer-note">PrepAI · Interview preparation, practice, and reflection</footer>
             </main>

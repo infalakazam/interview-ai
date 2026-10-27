@@ -10,6 +10,15 @@ services:
       - key: GOOGLE_CLIENT_ID
         sync: false
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: prepai-interviewiq-db
+          property: connectionString
       - key: SESSION_SECRET
         generateValue: true
+
+databases:
+  - name: prepai-interviewiq-db
+    databaseName: prepai
+    user: prepai
+    plan: free
+    ipAllowList: []

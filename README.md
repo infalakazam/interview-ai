@@ -18,10 +18,10 @@ Run the frontend with VS Code Live Server (starting at `index.html`) or another 
 
 ## Deploy online with Render
 
-The included `render.yaml` deploys the frontend and API together as one Render web service. Once deployed, visitors can open the Render URL without running Live Server or starting the API on their own computers. Add a PostgreSQL database and configure its connection string to enable account history sync.
+The included `render.yaml` deploys the frontend, API, and a PostgreSQL database on Render. The Blueprint connects the API to PostgreSQL and generates the history-signing secret automatically.
 
-1. In the project folder, run `git rm --cached .env` once before committing. This removes the already-tracked `.env` from Git while keeping the local file. Then commit and push the project, including `render.yaml`, to GitHub. Do not commit `.env`; enter the Google Web Client ID as a Render environment variable instead.
-2. In Render, choose **New > Blueprint**, connect the GitHub repository, and apply the `render.yaml` configuration. When prompted, set `GOOGLE_CLIENT_ID` to your Google OAuth **Web Client ID** (not a client secret), and set `DATABASE_URL` to the PostgreSQL connection string from your database provider. Render generates `SESSION_SECRET` for the service.
+1. Push the project, including `render.yaml`, to GitHub. Do not commit `.env`; enter the Google Web Client ID as a Render environment variable instead.
+2. In Render, choose **New > Blueprint**, connect the GitHub repository, and apply/sync the `render.yaml` configuration. Render creates the database and sets `DATABASE_URL` and `SESSION_SECRET`; set `GOOGLE_CLIENT_ID` to your Google OAuth **Web Client ID** (not a client secret).
 3. Wait for the first deploy to finish and copy the service's `https://…onrender.com` URL.
 4. In Google Cloud Console, open that OAuth client's **Authorized JavaScript origins** and add the Render origin, with no path (for example, `https://prepai-interviewiq.onrender.com`). If the OAuth consent screen is in testing mode, add each person who needs to sign in as a test user.
 5. Open the Render URL. The service serves the login page, frontend assets, and API from the same origin. You do not need to run `Start PrepAI API.bat` or Live Server for the hosted version.
@@ -50,7 +50,7 @@ Set these server environment variables (see `.env.example`):
 - `DATABASE_URL`: the PostgreSQL connection URL supplied by your provider.
 - `SESSION_SECRET`: a long, random secret used to sign history-sync tokens. Keep it private and stable so sessions remain valid.
 
-After enabling database sync, sign in with Google again on any browser that contains older local history. PrepAI merges that history with the account's database records, then syncs completed sessions going forward. If PostgreSQL is unavailable, the local browser copy remains available and the app continues in browser-only mode. `render.yaml` declares these variables but does not provision a database; create/select a PostgreSQL database with your hosting provider first.
+After enabling database sync, sign in with Google again on any browser that contains older local history. PrepAI merges that history with the account's database records, then syncs completed sessions going forward. If PostgreSQL is unavailable, the local browser copy remains available and the app continues in browser-only mode. The Render Blueprint uses a free PostgreSQL instance to avoid requiring a paid plan; Render's free databases expire after 30 days, so upgrade the database in Render before then to keep history long term.
 
 ## Train the short-answer ML model
 
